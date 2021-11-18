@@ -68,34 +68,32 @@ app.get('/', function (req, res, next) {
 
 
 app.post('/login', function(req, res) {
-    db.connect(function(err) {
-        var id = req.body.id;
-        var password = req.body.password;
+    var id = req.body.id;
+    var password = req.body.password;
 
     db.query('SELECT * FROM user WHERE id = ? ',[id],
-    function(error,results){
-        if (error) throw error;
-        else {
-            if(results.length>0){
-            bcrypt.compare(req.body.password,results[0].password, function(err,result){
-                if(result){
-                    req.session.loggedin = true;
-                    req.session.id = id;
-                    res.redirect('/welcome');
+        function(error,results){
+            if (error) throw error;
+            else {
+                if(results.length>0){
+                    bcrypt.compare(password, results[0].password, function(err,result){
+                        if(result){
+                            req.session.loggedin = true;
+                            req.session.user_id = id;
+                            req.session.save(function() {
+                                res.redirect('/welcome');
+                            });
+                        }else{
+                            res.send('<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); document.location.href="/login";</script>');    
+                            console.log(req.body.password + ", " + results[0].password);
+                        }
+                    });
+                } else{
+                    res.send('<script type="text/javascript">alert("id과 pwd를 입력하세요!"); document.location.href="/login";</script>');    
                     res.end();
-                }else{
-                    res.send('<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); document.location.href="/login";</script>');    
-                    console.log(req.body.password + ", " + results[0].password);
                 }
-            });
-            }else{
-
-            res.send('<script type="text/javascript">alert("id과 pwd를 입력하세요!"); document.location.href="/login";</script>');    
-            res.end();
             }
-        }
-    });
-});
+        });
 });
 
 
