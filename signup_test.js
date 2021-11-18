@@ -6,14 +6,7 @@ app.use(body_parser.urlencoded({ extended: false}));
 
 const bcrypt = require('bcrypt');
 
-const mysql = require('mysql');
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'dldms',
-    password: 'password!',
-    database: `pit_a_pet`
-});
-db.connect();
+var db = require('./db');
 
 function template(id_check_txt, check_id) { 
     return `
