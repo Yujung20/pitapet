@@ -12,15 +12,7 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 
-const mysql = require('mysql');
-
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: `pitapet`
-});
-db.connect();
+var db = require('./db');
 
 
 app.use(session({
@@ -30,9 +22,9 @@ app.use(session({
     saveUninitialized: true,
     store: new MySQLStore({
         host: 'localhost',
-        user: 'root',
-        password: 'password',
-        database: 'pitapet'
+        user: 'dldms',
+        password: 'password!',
+        database: 'pit_a_pet'
       })
   }))
 
@@ -80,7 +72,7 @@ app.post('/login', function(req, res) {
         var id = req.body.id;
         var password = req.body.password;
 
-    db.query('SELECT * FROM user WHERE id = ? ',[password],
+    db.query('SELECT * FROM user WHERE id = ? ',[id],
     function(error,results){
         if (error) throw error;
         else {
@@ -93,7 +85,7 @@ app.post('/login', function(req, res) {
                     res.end();
                 }else{
                     res.send('<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); document.location.href="/login";</script>');    
-
+                    console.log(req.body.password + ", " + results[0].password);
                 }
             });
             }else{
