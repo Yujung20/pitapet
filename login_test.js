@@ -6,7 +6,7 @@ app.use(body_parser.urlencoded({ extended: false}));
 const bcrypt = require('bcrypt');
 //const passport = require('passport');
 
-
+const register_router = require('./create_animal');
 
 
 const session = require('express-session');
@@ -88,7 +88,7 @@ app.post('/login', function(req, res) {
                             console.log(req.body.password + ", " + results[0].password);
                         }
                     });
-                } else{
+                } else {
                     res.send('<script type="text/javascript">alert("id과 pwd를 입력하세요!"); document.location.href="/login";</script>');    
                     res.end();
                 }
@@ -109,6 +109,7 @@ app.get('/welcome',(req,res)=>{
         output+=`
             <h1>Welcome</h1>
             <a href="/logout">logout</a>
+            <a href="/register">register</a>
         `;
         res.send(output);
         
@@ -121,6 +122,8 @@ app.get('/welcome',(req,res)=>{
         res.send(output);
     }
 });
+
+app.use('/register', register_router);
 
 app.get('/logout',(req,res)=>{
     if(req.session.id){
