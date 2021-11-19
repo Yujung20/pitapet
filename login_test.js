@@ -106,6 +106,7 @@ app.get('/welcome',(req,res)=>{
     var output="";
     if(req.session.id)
     {   
+        // button add
         output+=`
             <h1>Welcome</h1>
             <a href="/logout">logout</a>
@@ -123,6 +124,7 @@ app.get('/welcome',(req,res)=>{
     }
 });
 
+// router add
 app.use('/register', register_router);
 
 app.get('/logout',(req,res)=>{
