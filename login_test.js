@@ -104,7 +104,7 @@ app.post('/login', function(req, res) {
 
 app.get('/welcome',(req,res)=>{
     var output="";
-    if(req.session.id)
+    if(req.session.user_id)
     {   
         // button add
         output+=`
@@ -113,6 +113,7 @@ app.get('/welcome',(req,res)=>{
             <a href="/register">register</a>
         `;
         res.send(output);
+        console.log(req.session.user_id);
         
     }
     else{
@@ -144,7 +145,6 @@ app.get('/logout',(req,res)=>{
 db.query(`SELECT * FROM user`, function(error, users) {
     console.log(users);
 })
-
 
 
 app.listen(80);
