@@ -25,7 +25,7 @@ function main_template(question_list) {
     `;
 }
 
-function detail_template(title, content) {
+function detail_template(title, content, user, date) {
     return `
     <!doctype html>
     <html>
@@ -36,6 +36,8 @@ function detail_template(title, content) {
         <body>
             <h1>${title}</h1>
             <p>${content}</p>
+            <p>${user}</p>
+            <p>${date}</p>
         </body>
     </html>
     `
@@ -117,7 +119,9 @@ app.get('/question/', function(req, res) {
                 throw error;
             }
             console.log(question);
-            res.end(detail_template(question[0].title, question[0].content));
+            const date = String(question[0].date).split(" ");
+            var formating_date = date[3] + "-" + date[1] + "-" + date[2] + "-" + date[4]
+            res.end(detail_template(question[0].title, question[0].content, question[0].user_id, formating_date));
         })
     }
 })
