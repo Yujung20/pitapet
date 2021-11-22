@@ -6,8 +6,9 @@ app.use(body_parser.urlencoded({ extended: false}));
 const bcrypt = require('bcrypt');
 //const passport = require('passport');
 
+// router header add
 const register_router = require('./create_animal');
-
+const qna_router = require('./question_and_answer');
 
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
@@ -111,6 +112,7 @@ app.get('/welcome',(req,res)=>{
             <h1>Welcome</h1>
             <a href="/logout">logout</a>
             <a href="/register">register</a>
+            <a href="/qna">QnA</a>
         `;
         res.send(output);
         console.log(req.session.user_id);
@@ -127,6 +129,7 @@ app.get('/welcome',(req,res)=>{
 
 // router add
 app.use('/register', register_router);
+app.use('/qna', qna_router);
 
 app.get('/logout',(req,res)=>{
     if(req.session.id){
