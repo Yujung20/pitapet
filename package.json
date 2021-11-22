@@ -1,0 +1,28 @@
+{
+  "name": "pit-a-pet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "create_animal.js",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-mysql-session": "^2.1.7",
+    "express-session": "^1.17.2",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eunjungL/pitapet.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eunjungL/pitapet/issues"
+  },
+  "homepage": "https://github.com/eunjungL/pitapet#readme"
+}
