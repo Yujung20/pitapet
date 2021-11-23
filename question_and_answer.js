@@ -7,6 +7,7 @@ const body_parser = require('body-parser');
 app.use(body_parser.urlencoded({ extended: false}));
 
 var db = require('./db');
+const path = require('path');
 
 function main_template(question_list) {
     return `
@@ -78,7 +79,7 @@ app.get('/', function(req, res) {
     var question_list = ``;
     db.query(`SELECT * FROM question`, function(error, questions) {
         for (var i = 0; i < Object.keys(questions).length; i++) {
-            question_list += `<p><a href="/qna/question/?id=${questions[i].question_number}">${questions[i].title}</a><p>`;
+            question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
         }
         res.end(main_template(question_list));
     });
@@ -107,8 +108,8 @@ app.post('/write_question/', function(req, res) {
     })
 })
 
-app.get('/question/', function(req, res) {
-    const question_id = url.parse(req.url, true).query.id;
+app.get('/question/:question_id', function(req, res) {
+    const question_id = req.params.question_id;
 
     if (question_id) {
         db.query(`SELECT * FROM question WHERE question_number = ?`, 
@@ -121,7 +122,7 @@ app.get('/question/', function(req, res) {
             console.log(question);
             const date = String(question[0].date).split(" ");
             var formating_date = date[3] + "-" + date[1] + "-" + date[2] + "-" + date[4]
-            res.end(detail_template(question[0].title, question[0].content, question[0].user_id, formating_date));
+            res.send(detail_template(question[0].title, question[0].content, question[0].user_id, formating_date));
         })
     }
 })
