@@ -187,8 +187,8 @@ app.get('/question/:question_id', function(req, res) {
                 let auth_btn = ``;
                 if (req.session.user_id === question[0].user_id) {
                     auth_btn = `
-                        <p><input type="submit" value="수정" onClick="location.href='/qna/question/${question_id}/update'"></p>
-                        <p><input type="submit" value="삭제" onClick="location.href='/qna/question/${question_id}/delete'"></p>
+                        <p><input type="submit" value="수정" onClick="location.href='/qna/question/${question_id}/update/'"></p>
+                        <p><input type="submit" value="삭제" onClick="location.href='/qna/question/${question_id}/delete/'"></p>
                     `
                 }
 
@@ -259,6 +259,21 @@ app.post('/question/:question_id/update_process/', function(req, res) {
         console.log(question);
         res.redirect(`/qna/question/${question_id}/`);
     })
+});
+
+app.get('/question/:question_id/delete/', function(req, res) {
+    const question_id = req.params.question_id;
+
+    db.query(`DELETE FROM question WHERE question_number = ?`,
+    [question_id],
+    function(err, result) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+
+        res.redirect('/qna/');
+    });
 });
 
 module.exports = app;
