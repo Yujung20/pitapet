@@ -172,13 +172,25 @@ app.get('/question/:question_id', function(req, res) {
                 for (var i = 0; i < Object.keys(answers).length; i++) {
                     const adate = String(answers[i].date).split(" ");
                     var formating_adate = adate[3] + "-" + adate[1] + "-" + adate[2] + "-" + adate[4];
-                    answer_list += `
-                        <p>${answers[i].content}</p>
-                        <p>${answers[i].user_id}</p>
-                        <p>${formating_adate}</p>
-                        <p>${answers[i].category}</p>
-                        <hr/>
-                    `
+
+                    if (req.session.user_id === answers[i].user_id) {
+                        answer_list += `
+                            <p>${answers[i].content}</p>
+                            <p>${answers[i].user_id}</p>
+                            <p>${formating_adate}</p>
+                            <p>${answers[i].category}</p>
+                            <p><input type="submit" value="삭제" onClick="location.href='answer/${answers[i].answer_number}/delete/'"></p>
+                            <hr/>
+                        `
+                    } else {
+                        answer_list += `
+                            <p>${answers[i].content}</p>
+                            <p>${answers[i].user_id}</p>
+                            <p>${formating_adate}</p>
+                            <p>${answers[i].category}</p>
+                            <hr/>
+                        `
+                    }
                 }
 
                 const qdate = String(question[0].date).split(" ");
@@ -271,6 +283,22 @@ app.get('/question/:question_id/delete/', function(req, res) {
             res.send(err);
             throw err;
         }
+
+        res.redirect('/qna/');
+    });
+});
+
+app.get('/question/answer/:answer_id/delete/', function(req, res) {
+    const answer_id = req.params.answer_id;
+
+    db.query(`DELETE FROM answer WHERE answer_number = ?`,
+    [answer_id],
+    function(err, result) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+        console.log(result);
 
         res.redirect('/qna/');
     });
