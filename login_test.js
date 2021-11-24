@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt');
 // router header add
 const register_router = require('./create_animal');
 const qna_router = require('./question_and_answer');
+const information_router=require('./information');
 
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
@@ -23,8 +24,8 @@ app.use(session({
     saveUninitialized: true,
     store: new MySQLStore({
         host: 'localhost',
-        user: 'dldms',
-        password: 'password!',
+        user: 'root',
+        password: 'password',
         database: 'pit_a_pet'
       })
   }))
@@ -113,6 +114,7 @@ app.get('/welcome',(req,res)=>{
             <a href="/logout">logout</a>
             <a href="/register">register</a>
             <a href="/qna">QnA</a>
+            <a href="/information">information</a>
         `;
         res.send(output);
         console.log(req.session.user_id);
@@ -130,6 +132,7 @@ app.get('/welcome',(req,res)=>{
 // router add
 app.use('/register', register_router);
 app.use('/qna', qna_router);
+app.use('/information',information_router)
 
 app.get('/logout',(req,res)=>{
     if(req.session.id){
