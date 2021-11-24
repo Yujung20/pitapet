@@ -27,7 +27,7 @@ function main_template(question_list) {
 }
 
 function detail_template(question_id, question_title, question_content, question_user, question_date, question_category,
-    answer) {
+    answer, auth_btn) {
     return `
     <!doctype html>
     <html>
@@ -41,6 +41,7 @@ function detail_template(question_id, question_title, question_content, question
             <p>${question_content}</p>
             <p>${question_user}</p>
             <p>${question_date}</p>
+            ${auth_btn}
             <hr/>
             <h3>답변</h3>
             <form action="/qna/write_answer/" method="post">
@@ -79,6 +80,36 @@ function question_template() {
                 </select></p>
                 <p><textarea name="content"></textarea></p>
                 <p><input type="submit" value="질문 등록하기"></p>
+            </form>
+        </body>
+    </html>
+    `;
+}
+
+function question_update_template(question_id, question_title, question_content, question_category) {
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>create question</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+            <form action="/qna/question/${question_id}/update_process/" method="post">
+                <h1><input type="text" name="title" value="${question_title}"></h1>
+                <p><textarea name="content">${question_content}</textarea></p>
+                <p><select name="category" value="${question_category}">
+                    <option value="개">개</option>
+                    <option value="고양이">고양이</option>
+                    <option value="토끼">토끼</option>
+                    <option value="햄스터">햄스터</option>
+                    <option value="앵무새">앵무새</option>
+                    <option value="기니피그">기니피그</option>
+                    <option value="페럿">페럿</option>
+                    <option value="고슴도치">고슴도치</option>
+                    <option value="기타">기타</option>
+                </select></p>
+                <p><input type="submit" value="수정"></p>
             </form>
         </body>
     </html>
@@ -152,7 +183,16 @@ app.get('/question/:question_id', function(req, res) {
 
                 const qdate = String(question[0].date).split(" ");
                 var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
-                res.send(detail_template(question_id, question[0].title, question[0].content, question[0].user_id, formating_qdate, question[0].category, answer_list));
+
+                let auth_btn = ``;
+                if (req.session.user_id === question[0].user_id) {
+                    auth_btn = `
+                        <p><input type="submit" value="수정" onClick="location.href='/qna/question/${question_id}/update'"></p>
+                        <p><input type="submit" value="삭제" onClick="location.href='/qna/question/${question_id}/delete'"></p>
+                    `
+                }
+
+                res.send(detail_template(question_id, question[0].title, question[0].content, question[0].user_id, formating_qdate, question[0].category, answer_list, auth_btn));
             })
         })
     }
@@ -182,6 +222,42 @@ app.post('/write_answer/', function(req, res) {
         }
         console.log(answer);
         res.redirect(`/qna/question/${question_id}`);
+    })
+});
+
+app.get('/question/:question_id/update/', function(req, res) {
+    const question_id = req.params.question_id;
+    console.log(question_id);
+
+    db.query(`SELECT * FROM question WHERE question_number = ?`,
+    [question_id],
+    function(err, question) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+        console.log(question);
+        res.send(question_update_template(question_id, question[0].title, question[0].content, question[0].category));
+    })
+});
+
+app.post('/question/:question_id/update_process/', function(req, res) {
+    const question_id = req.params.question_id;
+
+    const body = req.body;
+    const title = body.title;
+    const content = body.content;
+    const category = body.category;
+
+    db.query(`UPDATE question SET title=?, content=?, category=? WHERE question_number = ?`,
+    [title, content, category, question_id],
+    function(err, question) {
+        if(err) {
+            res.send(err);
+            throw err;
+        }
+        console.log(question);
+        res.redirect(`/qna/question/${question_id}/`);
     })
 });
 
