@@ -4,7 +4,7 @@ const app = express();
 const body_parser = require('body-parser');
 app.use(body_parser.urlencoded({ extended: false}));
 const bcrypt = require('bcrypt');
-//const passport = require('passport');
+
 
 // router header add
 const register_router = require('./create_animal');
@@ -15,7 +15,12 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 
 var db = require('./db');
+/*
+var dbOptions= require('./dbOptions');
 
+const connection = mysql.createConnection(dbOptions);
+const sessionStore=new MySQLStore({},connection);
+*/
 
 app.use(session({
     key: 'LoginSession',
@@ -29,9 +34,15 @@ app.use(session({
         database: 'pit_a_pet'
       })
   }))
+/*
 
-
-
+app.use(session({
+    key: 'LoginSession',
+    secret: 'Secret',
+    resave: false,
+    saveUninitialized: true,
+    store: sessionStore }));
+*/
 app.get('/login',(req,res)=> { 
     var output=`
         
@@ -63,8 +74,24 @@ app.get('/index',function(req,res){
     res.render('index');
 });
 
+function main_template(){
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>main</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+            <a href="/login">login</a>
+            <a href="/information">information</a>
+        </body>
+    </html>
+    `;
+}
+
 app.get('/', function (req, res, next) {
-    res.send('<a href="/login">login</a>');
+    res.end(main_template());
 });
 
 
