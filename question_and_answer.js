@@ -127,8 +127,12 @@ function question_update_template(question_id, question_title, question_content,
 app.get('/', function(req, res) {
     var question_list = ``;
     db.query(`SELECT * FROM question`, function(error, questions) {
-        for (var i = 0; i < Object.keys(questions).length; i++) {
-            question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+        if (Object.keys(questions).length > 0) {
+            for (var i = 0; i < Object.keys(questions).length; i++) {
+                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+            }
+        } else {
+            question_list = `아직 올라온 질문이 없습니다.`;
         }
         res.end(main_template(question_list));
     });
