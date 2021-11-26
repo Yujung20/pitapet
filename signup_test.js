@@ -18,8 +18,8 @@ function template(id_check_txt, check_id) {
             </head>
             <body>
                 <h1>sign up</h1>
-                <form action="/signup" method="post">
-                    <p><input type="text" name="id" placeholder="id" value="${check_id}" formaction="/id_check"> <input type="submit" value="아이디 확인" formaction="/id_check">
+                <form action="/signup/signup_process" method="post">
+                    <p><input type="text" name="id" placeholder="id" value="${check_id}" formaction="/signup/id_check"> <input type="submit" value="아이디 확인" formaction="/signup/id_check">
                     <p id="id_check_txt">${id_check_txt}</p>
                     </p>
                     <p><input type="password" name="pwd" placeholder="password"></p>
@@ -60,7 +60,7 @@ app.post('/id_check', function(request, response) {
     })
 });
 
-app.post('/signup', function(request, response) {
+app.post('/signup_process', function(request, response) {
     const post = request.body;
     const id = post.id;
     const pwd = post.pwd;
@@ -94,4 +94,4 @@ db.query(`SELECT * FROM user`, function(error, users) {
     console.log(users);
 })
 
-app.listen(80);
+module.exports = app;
