@@ -10,9 +10,10 @@ const bcrypt = require('bcrypt');
 const register_router = require('./create_animal');
 const qna_router = require('./question_and_answer');
 const information_router=require('./information');
-
+const hospital_router= require('./hospital')
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
+
 
 var db = require('./db');
 /*
@@ -29,9 +30,9 @@ app.use(session({
     saveUninitialized: true,
     store: new MySQLStore({
         host: 'localhost',
-        user: 'dldms',
-        password: 'password!',
-        database: 'pit_a_pet'
+        user: 'flora',
+        password: 'shin*7883',
+        database: 'pit_a_pet_example'
       })
   }))
 /*
@@ -85,6 +86,7 @@ function main_template(){
         <body>
             <a href="/login">login</a>
             <a href="/information">information</a>
+            <a href="/hospital">hospital</a>
         </body>
     </html>
     `;
@@ -142,6 +144,7 @@ app.get('/welcome',(req,res)=>{
             <a href="/register">register</a>
             <a href="/qna">QnA</a>
             <a href="/information">information</a>
+            <a href="/hospital">hospital</a>
         `;
         res.send(output);
         console.log(req.session.user_id);
@@ -160,6 +163,7 @@ app.get('/welcome',(req,res)=>{
 app.use('/register', register_router);
 app.use('/qna', qna_router);
 app.use('/information',information_router)
+app.use('/hospital',hospital_router)
 
 app.get('/logout',(req,res)=>{
     if(req.session.id){
