@@ -10,7 +10,12 @@ const bcrypt = require('bcrypt');
 const register_router = require('./create_animal');
 const qna_router = require('./question_and_answer');
 const information_router=require('./information');
+
 const hospital_router= require('./hospital')
+
+const signup_router = require('./signup_test');
+
+
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 
@@ -86,7 +91,10 @@ function main_template(){
         <body>
             <a href="/login">login</a>
             <a href="/information">information</a>
+
             <a href="/hospital">hospital</a>
+
+            <a href="/signup">sign up</a>
         </body>
     </html>
     `;
@@ -153,7 +161,7 @@ app.get('/welcome',(req,res)=>{
     else{
         output+=`
             <h1>Welcome</h1>
-            <a href="/login>login</a>
+            <a href="/login">login</a>
         `;
         res.send(output);
     }
@@ -162,8 +170,10 @@ app.get('/welcome',(req,res)=>{
 // router add
 app.use('/register', register_router);
 app.use('/qna', qna_router);
-app.use('/information',information_router)
 app.use('/hospital',hospital_router)
+app.use('/information',information_router);
+app.use('/signup', signup_router);
+
 
 app.get('/logout',(req,res)=>{
     if(req.session.id){
