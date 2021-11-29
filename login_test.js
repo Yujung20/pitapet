@@ -28,6 +28,19 @@ const connection = mysql.createConnection(dbOptions);
 const sessionStore=new MySQLStore({},connection);
 */
 
+// app.use(session({
+//     key: 'LoginSession',
+//     secret: 'Secret',
+//     resave: false,
+//     saveUninitialized: true,
+//     store: new MySQLStore({
+//         host: 'localhost',
+//         user: 'flora',
+//         password: 'shin*7883',
+//         database: 'pit_a_pet_example'
+//       })
+//   }))
+
 app.use(session({
     key: 'LoginSession',
     secret: 'Secret',
@@ -35,11 +48,12 @@ app.use(session({
     saveUninitialized: true,
     store: new MySQLStore({
         host: 'localhost',
-        user: 'flora',
-        password: 'shin*7883',
-        database: 'pit_a_pet_example'
+        user: 'dldms',
+        password: 'password!',
+        database: 'pit_a_pet'
       })
   }))
+
 /*
 
 app.use(session({
