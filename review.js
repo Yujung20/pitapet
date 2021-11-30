@@ -6,6 +6,9 @@ app.use(body_parser.urlencoded({ extended: false }));
 
 const db = require('./db');
 
+const multer = require('multer');
+const upload = multer({dest: './upload/review_img'});
+
 function main_template(review_list) {
     return `
     <!doctype html>
@@ -31,16 +34,9 @@ function review_create_template() {
             <title>리뷰 작성하기</title>
             <meta charset="utf-8">
         </head>
-        <script>
-            function numberWithCommas(x) {
-                x = x.replace(/[^0-9]/g,'');   // 입력값이 숫자가 아니면 공백
-                x = x.replace(/,/g,'');          // ,값 공백처리
-                $("#price").val(x.replace(/\B(?=(\d{3})+(?!\d))/g, ",")); // 정규식을 이용해서 3자리 마다 , 추가 
-            }
-        </script>
         <body>
             <h1>리뷰 작성하기</h1>
-            <form action="/review/write_reivew/" method="post">
+            <form action="/review/write_review/" method="post" enctype="multipart/form-data">
                 <p><input type"text" name="title" placeholder="title"></p>
                 <p><select name="category">
                     <option value="개">개</option>
@@ -62,8 +58,17 @@ function review_create_template() {
             </form>
         </body>
     </html>
+    <script>
+        function numberWithCommas(x) {
+            x = x.replace(/[^0-9]/g,'');   // 입력값이 숫자가 아니면 공백
+            x = x.replace(/,/g,'');          // ,값 공백처리
+            $("#price").val(x.replace(/\B(?=(\d{3})+(?!\d))/g, ",")); // 정규식을 이용해서 3자리 마다 , 추가 
+        }
+    </script>
     `;
 }
+
+app.use(express.static('upload'));
 
 app.get('/', function(req, res) {
     var review_list = '';
@@ -72,6 +77,31 @@ app.get('/', function(req, res) {
 
 app.get('/write_review/', function(req, res) {
     res.send(review_create_template());
+})
+
+app.post('/write_review/', upload.single('photo'), function(req, res) {
+    const body = req.body;
+    const user_id = req.session.user_id;
+    const title = body.title;
+    const content = body.content;
+    const price = body.price;
+    const product_name = body.product_name;
+    const brand = body.brand;
+    const category = body.category;
+    const photo = '/upload/review_img/' + body.photo;
+
+    db.query(`INSERT INTO review (user_id, title, content, price, product_name, brand, category, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [user_id, title, content, price, product_name, brand, category, photo],
+    function(error, result) {
+        if(error) {
+            res.send(error);
+            throw error;
+        }
+        console.log(result);
+        console.log(photo);
+        console.log(req.files);
+        res.redirect('/review');
+    })
 })
 
 module.exports = app;
