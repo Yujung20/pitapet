@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt');
 // router header add
 const register_router = require('./create_animal');
 const qna_router = require('./question_and_answer');
+const review_router = require('./review');
 const information_router=require('./information');
 
 const hospital_router= require('./hospital')
@@ -166,6 +167,7 @@ app.get('/welcome',(req,res)=>{
             <a href="/register">register</a>
             <a href="/qna">QnA</a>
             <a href="/information">information</a>
+            <a href="/review">Review</a>
             <a href="/hospital">hospital</a>
         `;
         res.send(output);
@@ -184,6 +186,7 @@ app.get('/welcome',(req,res)=>{
 // router add
 app.use('/register', register_router);
 app.use('/qna', qna_router);
+app.use('/review', review_router);
 app.use('/hospital',hospital_router)
 app.use('/information',information_router);
 app.use('/signup', signup_router);
