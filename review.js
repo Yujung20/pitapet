@@ -72,7 +72,18 @@ app.use(express.static('upload'));
 
 app.get('/', function(req, res) {
     var review_list = '';
-    res.send(main_template(review_list));
+    
+    db.query(`SELECT * FROM review`,
+    function(error, reviews) {
+        if (error) {
+            res.send(error);
+            throw error;
+        }
+        for (var i = 0; i < reviews.length; i++) {
+            review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a></p>`;
+        }
+        res.send(main_template(review_list));
+    })
 })
 
 app.get('/write_review/', function(req, res) {
@@ -88,7 +99,7 @@ app.post('/write_review/', upload.single('photo'), function(req, res) {
     const product_name = body.product_name;
     const brand = body.brand;
     const category = body.category;
-    const photo = '/upload/review_img/' + body.photo;
+    const photo = req.file.path;
 
     db.query(`INSERT INTO review (user_id, title, content, price, product_name, brand, category, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [user_id, title, content, price, product_name, brand, category, photo],
@@ -98,10 +109,14 @@ app.post('/write_review/', upload.single('photo'), function(req, res) {
             throw error;
         }
         console.log(result);
-        console.log(photo);
-        console.log(req.files);
+        console.log(req.file);
         res.redirect('/review');
     })
 })
+
+// db.query(`SELECT * FROM review`, 
+//     function(error, result) {
+//         console.log(result[4].photo.toString('utf8'));
+// })
 
 module.exports = app;
