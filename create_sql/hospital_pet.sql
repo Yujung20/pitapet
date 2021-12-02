@@ -1,0 +1,72 @@
+CREATE TABLE `hospital_pet`(
+    `pet` varchar(10) NOT NULL,
+    `hospital_name` varchar(20) NOT NULL,
+    PRIMARY KEY(`pet`,`hospital_name`),
+    FOREIGN KEY(`hospital_name`) REFERENCES `hospital`(`hospital_name`)
+);
+INSERT INTO `hospital_pet` VALUES ('개', '24시 애니동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '24시 애니동물병원');
+INSERT INTO `hospital_pet` VALUES ('특수동물', '24시 애니동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', 'VIP 동물의료센터 성북점');
+INSERT INTO `hospital_pet` VALUES ('고양이', 'VIP 동물의료센터 성북점');
+INSERT INTO `hospital_pet` VALUES ('개', 'ZOO동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', 'ZOO동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '강북 24시 N 동물의료센터');
+INSERT INTO `hospital_pet` VALUES ('고양이', '강북 24시 N 동물의료센터');
+INSERT INTO `hospital_pet` VALUES ('개', '강북동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '강북동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '길음동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '길음동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '꿈의숲동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '꿈의숲동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '나래종합동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '나래종합동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '넬동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '넬동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '대학동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '대학동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '더편한동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '더편한동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '도담도담동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '도담도담동물병원');
+INSERT INTO `hospital_pet` VALUES ('소동물', '도담도담동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '드림동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '드림동물병원');
+INSERT INTO `hospital_pet` VALUES ('토끼', '드림동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '로이동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '로이동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '미소동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '미소동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '보성통증동물병원');
+INSERT INTO `hospital_pet` VALUES ('특수동물', '보성통증동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '비비펫 동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '비비펫 동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '서울종합동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '서울종합동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '성신동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '성신동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '스마트동물병원 성북길음점');
+INSERT INTO `hospital_pet` VALUES ('고양이', '스마트동물병원 성북길음점');
+INSERT INTO `hospital_pet` VALUES ('개', '쓰담쓰담 동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '쓰담쓰담 동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '앙리동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '앙리동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '우리동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '우리동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '원러브동물의료센터');
+INSERT INTO `hospital_pet` VALUES ('고양이', '원러브동물의료센터');
+INSERT INTO `hospital_pet` VALUES ('개', '카카오 N 동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '카카오 N 동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '큐동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '큐동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '퍼스트동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '퍼스트동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '포유동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '포유동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '한사랑동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '한사랑동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '행복한동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '행복한동물병원');
+INSERT INTO `hospital_pet` VALUES ('개', '호담동물병원');
+INSERT INTO `hospital_pet` VALUES ('고양이', '호담동물병원');
+
