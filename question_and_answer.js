@@ -9,7 +9,7 @@ app.use(body_parser.urlencoded({ extended: false}));
 var db = require('./db');
 const path = require('path');
 
-function main_template(question_list) {
+function main_template(question_list, search_title, search_content) {
     return `
     <!doctype html>
     <html>
@@ -19,6 +19,14 @@ function main_template(question_list) {
         </head>
         <body>
             <h1>Q&A</h1>
+            <form action="/qna/search?q_title=${search_title}" method="get">
+                <p><input type="text" name="search_title" placeholder="검색어를 입력하세요.">
+                <input type="submit" value="검색"></p>
+            </form>
+            <form action="/qna/search?a_content=${search_content}" method="get">
+                <p><input type="text" name="search_content" placeholder="답변 검색 내용을 입력하세요.">
+                <input type="submit" value="검색"></p>
+            </form>
             <a href="/qna/write_question/">질문하기</a>
             ${question_list}
         </body>
@@ -119,8 +127,12 @@ function question_update_template(question_id, question_title, question_content,
 app.get('/', function(req, res) {
     var question_list = ``;
     db.query(`SELECT * FROM question`, function(error, questions) {
-        for (var i = 0; i < Object.keys(questions).length; i++) {
-            question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+        if (Object.keys(questions).length > 0) {
+            for (var i = 0; i < Object.keys(questions).length; i++) {
+                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+            }
+        } else {
+            question_list = `아직 올라온 질문이 없습니다.`;
         }
         res.end(main_template(question_list));
     });
@@ -206,6 +218,54 @@ app.get('/question/:question_id', function(req, res) {
 
                 res.send(detail_template(question_id, question[0].title, question[0].content, question[0].user_id, formating_qdate, question[0].category, answer_list, auth_btn));
             })
+        })
+    }
+})
+
+app.get('/search/', function(req, res) {
+    const q_keyword = req.query.search_title;
+    const a_keyword = req.query.search_content;
+    var question_list = ``;
+
+    console.log(q_keyword);
+    console.log(a_keyword);
+    
+    if (q_keyword) {
+        console.log(q_keyword);
+        db.query(`SELECT * FROM question WHERE title LIKE ?`,
+        ['%' + q_keyword + '%'],
+        function(err, questions) {
+            if (err) {
+                res.send(err);
+                throw err;
+            }
+    
+            if (Object.keys(questions).length > 0) {
+                for (var i = 0; i < Object.keys(questions).length; i++) {
+                    question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+                }
+            } else {
+                question_list = `<p> 검색 결과가 없습니다. </p>`
+                
+            }
+    
+            res.send(main_template(question_list));
+        })
+    } else {
+        console.log(a_keyword);
+        db.query(`SELECT * FROM answer WHERE content LIKE ?`,
+        ['%' + a_keyword + '%'],
+        function(err, answers) {
+            if (Object.keys(answers).length > 0) {
+                for (var i = 0; i < Object.keys(answers).length; i++) {
+                    question_list += `<p><a href="/qna/question/${answers[i].question_number}">${answers[i].content}</a><p>`;
+                }
+            } else {
+                question_list = `<p> 검색 결과가 없습니다. </p>`
+                
+            }
+    
+            res.send(main_template(question_list));
         })
     }
 })
