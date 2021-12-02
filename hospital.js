@@ -69,6 +69,7 @@ app.get('/', function (req, res) {
             }`
             res.end(main_template(marker_list));
         }
+        
     });
 });
 
