@@ -11,7 +11,12 @@ const register_router = require('./create_animal');
 const qna_router = require('./question_and_answer');
 const information_router=require('./information');
 const signup_router = require('./signup_test');
+<<<<<<< HEAD
 const mypage_router=require('./mypage');
+=======
+const board_router = require('./board_and_comment');
+const hospital_router= require('./hospital')
+>>>>>>> 1d569945f51ec5b7d9ffa98aec7bf37bfd8ae411
 
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
@@ -32,7 +37,11 @@ app.use(session({
     store: new MySQLStore({
         host: 'localhost',
         user: 'root',
+<<<<<<< HEAD
         password: 'password',
+=======
+        password: '09220322',
+>>>>>>> 1d569945f51ec5b7d9ffa98aec7bf37bfd8ae411
         database: 'pit_a_pet'
       })
   }))
@@ -58,10 +67,8 @@ app.get('/login',(req,res)=> {
                     <p><input type="text" name="id"  ></p>
                     <p><input type="password" name="password" placeholder="password" ></p>
                     <p><input type="submit" value="로그인하기"></p>
-
                 </form>
-                
-
+                <a href="/find_id">아이디 찾기</a>
             </body>
         
     `;
@@ -87,7 +94,43 @@ function main_template(){
         <body>
             <a href="/login">login</a>
             <a href="/information">information</a>
+            <a href="/hospital">hospital</a>
             <a href="/signup">sign up</a>
+        </body>
+    </html>
+    `;
+}
+
+function find_id_template(){
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>Find ID</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+        <h1>아이디찾기</h1>
+            <p><input type="text" name="nickname1" placeholder="nickname" formaction="/finding_id"></p>
+            <p><input type="text" name="email1" placeholder="email" formaction="/finding_id"></p>
+            <p><input type="submit" value="확인" formaction="/finding_id"></p>
+        </body>
+    </html>
+    `;
+}
+
+function id_found_template(found_id){
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>ID found</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+        <h1>아이디찾기</h1>
+            <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
+            <a href="/login">로그인</a>
         </body>
     </html>
     `;
@@ -128,12 +171,6 @@ app.post('/login', function(req, res) {
         });
 });
 
-
-
-
-
-
-
 app.get('/welcome',(req,res)=>{
     var output="";
     if(req.session.user_id)
@@ -145,7 +182,11 @@ app.get('/welcome',(req,res)=>{
             <a href="/register">register</a>
             <a href="/qna">QnA</a>
             <a href="/information">information</a>
+<<<<<<< HEAD
             <a href="/mypage">mypage</a>
+=======
+            <a href="/board">board</a>
+>>>>>>> 1d569945f51ec5b7d9ffa98aec7bf37bfd8ae411
         `;
         res.send(output);
         console.log(req.session.user_id);
@@ -161,7 +202,12 @@ app.use('/register', register_router);
 app.use('/qna', qna_router);
 app.use('/information',information_router);
 app.use('/signup', signup_router);
+<<<<<<< HEAD
 app.use('/mypage',mypage_router);
+=======
+app.use('/board',board_router);
+app.use('/hospital',hospital_router);
+>>>>>>> 1d569945f51ec5b7d9ffa98aec7bf37bfd8ae411
 
 app.get('/logout',(req,res)=>{
     if(req.session.id){
@@ -174,6 +220,47 @@ app.get('/logout',(req,res)=>{
         res.redirect('/');
     }
 
+})
+
+app.get('/find_id', (req, res)=>{
+    res.send(find_id_template());
+})
+
+app.post('/finding_id', function(req,res) {
+    const written = req.body;
+    const nickname = written.nickname1;
+    const email = written.email1;
+
+    db.query(`SELECT * FROM user`, function(error, users) {
+        if(error) {
+            throw error;
+        }
+
+        for (var i = 0; i < Object.keys(users).length; i++) {
+            if(nickname === users[i].nickname) {
+                if(email === users[i].email) {
+                    const id = users.id;
+                    res.send(id_found_template(id));
+                }
+                else if(email === null) {
+                    confirm("email을 입력하십시오!");
+                    break;
+                }
+                else {
+                    confirm("email을 찾을 수 없거나 존재하지 않습니다. 다시 한 번 확인해주세요.");
+                    break;
+                }
+            }
+            else if(nickname === null) {
+                confirm("nickname을 입력하십시오!");
+                break;
+            }
+            else {
+                confirm("nickname을 찾을 수 없거나 존재하지 않습니다. 다시 한 번 확인해주세요.");
+                break;
+            }
+        }
+    })
 })
 
 
