@@ -8,13 +8,8 @@
     "express": "^4.17.1",
     "express-mysql-session": "^2.1.7",
     "express-session": "^1.17.2",
-<<<<<<< HEAD
     "mysql": "^2.18.1",
     "router": "^1.3.6"
-=======
-    "multer": "^1.4.3",
-    "mysql": "^2.18.1"
->>>>>>> 08faac0b69f9df6c0892a884e4cd392609e98c62
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
