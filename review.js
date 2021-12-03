@@ -55,10 +55,10 @@ function review_detail_template(review_number, title, content, date, price, prod
             <p>${content}</p>
             <hr/>
             <h3>댓글<h3>
-            <form action="review/write_comment/" method="post">
-                <input type="hidden" name="review_number" value="${review_number}>
+            <form action="/review/write_comment/" method="post">
+                <input type="hidden" name="review_number" value="${review_number}"">
                 <p><textarea name="comment"></textarea></p>
-                <p><input type="submit" value="댓글 달기"></p<
+                <p><input type="submit" value="댓글 달기"></p>
             </form>
             ${comment_list}
         </body>
@@ -139,7 +139,12 @@ app.post('/write_review/', upload.single('photo'), function(req, res) {
     const product_name = body.product_name;
     const brand = body.brand;
     const category = body.category;
-    const photo = req.file.path;
+    let photo = undefined;
+    if(req.file) {
+        photo = req.file.path;
+    } else {
+        photo = null;
+    }
 
     db.query(`INSERT INTO review (user_id, title, content, price, product_name, brand, category, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [user_id, title, content, price, product_name, brand, category, photo],
@@ -169,11 +174,34 @@ app.get('/:review_id', function(req, res) {
 
         const rdate = String(review.date).split(" ");
         var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
-        const photo = review.photo.toString('utf8')
+        
+        let photo = undefined;
+        if (review.photo !== null) {
+            photo = review.photo.toString('utf8')
+        }
+        
         console.log(photo);
 
-        res.send(review_detail_template(review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id));
+        res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id));
     })
+})
+
+app.post('/write_comment/', function(req, res) {
+    const body = req.body;
+    const review_number = body.review_number;
+    const content = body.comment;
+    const user_id = req.session.user_id;
+
+    db.query(`INSERT INTO review_comment (review_number, content, user_id) VALUES (?, ?, ?)`,
+    [review_number, content, user_id],
+    function(err, comment) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+        console.log(comment);
+        res.redirect(`/review/${review_number}`);
+    });
 })
 
 // db.query(`SELECT * FROM review`, 
