@@ -55,23 +55,17 @@ function main_template(marker_list){
 app.get('/', function (req, res) {
     var marker_list=``;
     db.query(`SELECT * FROM hospital `,
-    function(err,hospital){
+    function(err,hospitals){
         if (err) throw err;
         else{
-            for (var i=0; i<Object.keys(hospital).length-1;i++){
+            for (var i=0; i<Object.keys(hospitals).length;i++){
                 marker_list+=`{
-                    title: '${hospital[i].hospital_name}', 
-                    latlng: new kakao.maps.LatLng(${hospital[i].latitude}, ${hospital[i].longitude})
-                },`;
+                    title: '${hospitals[i].hospital_name}', 
+                    latlng: new kakao.maps.LatLng(${hospitals[i].latitude}, ${hospitals[i].longitude})
+            },`;
             }
-            var last=Object.keys(hospital).length;
-            marker_list+=`{
-                title: '${hospital[last].hospital_name}', 
-                latlng: new kakao.maps.LatLng(${hospital[last].latitude}, ${hospital[last].longitude})
-            }`;
-            res.end(main_template(marker_list));
         }
-        
+        res.end(main_template(marker_list));
     });
 });
 
