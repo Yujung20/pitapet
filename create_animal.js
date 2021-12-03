@@ -19,7 +19,7 @@ function template(animal_name, name_check_txt) {
             <h1>create animal</h1>
             <form action="/register/register_process" method="post">
                 <p>
-                    <input type="text" name="name" placeholder="name" value="${animal_name}" formaction="/name_check"> <input type="submit" value="이름 확인" formaction="/name_check">
+                    <input type="text" name="name" placeholder="name" value="${animal_name}" formaction="/register/name_check"> <input type="submit" value="이름 확인" formaction="/register/name_check">
                     <p id="name_check_txt">${name_check_txt}</p>
                 </p>
                 <p><select name="gender"> 
@@ -47,8 +47,9 @@ function template(animal_name, name_check_txt) {
 }
 
 app.get('/', function(req, res) {
-    res.end(template(".", "."));
+    res.end(template("", ""));
 });
+
 
 app.post('/register_process', function(req, res) {
     const body = req.body;
@@ -67,7 +68,7 @@ app.post('/register_process', function(req, res) {
             throw error;
         }
         console.log(result);
-        res.redirect('/register/');
+        res.redirect('/welcome/');
         res.end();
     });
 });

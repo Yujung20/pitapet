@@ -11,8 +11,9 @@ const register_router = require('./create_animal');
 const qna_router = require('./question_and_answer');
 const information_router=require('./information');
 const signup_router = require('./signup_test');
-const board_router = require('./board_and_comment');
-const hospital_router= require('./hospital')
+const mypage_router=require('./mypage');
+const hospital_router=require('./hospital');
+const board_router=require('./board_and_comment');
 
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
@@ -156,7 +157,7 @@ app.post('/login', function(req, res) {
                         }
                     });
                 } else {
-                    res.send('<script type="text/javascript">alert("id과 pwd를 입력하세요!"); document.location.href="/login";</script>');    
+                    res.send('<script type="text/javascript">alert("존재하지 않은 아이디입니다!"); document.location.href="/login";</script>');    
                     res.end();
                 }
             }
@@ -174,18 +175,16 @@ app.get('/welcome',(req,res)=>{
             <a href="/register">register</a>
             <a href="/qna">QnA</a>
             <a href="/information">information</a>
+            <a href="/mypage">mypage</a>
             <a href="/board">board</a>
+            <a href="/hospital">hospital</a>
         `;
         res.send(output);
         console.log(req.session.user_id);
         
     }
     else{
-        output+=`
-            <h1>Welcome</h1>
-            <a href="/login">login</a>
-        `;
-        res.send(output);
+        res.end(main_template());
     }
 });
 
@@ -194,6 +193,7 @@ app.use('/register', register_router);
 app.use('/qna', qna_router);
 app.use('/information',information_router);
 app.use('/signup', signup_router);
+app.use('/mypage',mypage_router)
 app.use('/board',board_router);
 app.use('/hospital',hospital_router);
 
