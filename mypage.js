@@ -39,7 +39,7 @@ function main_template(nickname) {
 
         <a href="/mypage/animal_information/"> 동물 정보 조회</a> 
 
-        <h3> 작성한 Q&A </h3>
+        <a href="/mypage/qna/"> 작성한 Q&A</a> 
         <h3> 작성한 리뷰 </h3>
 
         <a href="/mypage/resign_check/"> 회원 탈퇴</a> 
@@ -106,6 +106,82 @@ function user_information_template(user_id,user_password,user_email,user_nicknam
     `;
 }
 
+function animal_template(animal_list){
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>animal</title>
+            <meta charset="utf-8">
+        </head>
+        <body> 
+        ${animal_list}
+        </body>
+    </html>
+    `;
+}
+
+function animal_update_template(animal_name,animal_type,animal_number,animal_gender,animal_birthday,animal_special_note){
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>animal update</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+            <p>${animal_name}</p>
+            <p>${animal_type}</p>
+
+            <form action="/mypage/animal_information/update_process/?id=${animal_number}" method="post">
+            <p><select name="gender" value=${animal_gender}> 
+            <option value="여">여</option>
+            <option value="남">남</option>
+            </select></p>
+            <p><input type="date" name="birthday" min="1990-01-01" max="2022-12-31" value=${animal_birthday} ></p>
+            <p><textarea name="special_note" value=${animal_special_note}></textarea></p>
+            <p><input type="submit" value="수정"></p>
+            </form>
+        </body>
+    </html>
+    `;
+}
+
+function last_resign_template(){
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>last resign</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+        <h2>정말 탈퇴하시겠습니까?</h2>
+        <p><input type="submit" value="예" onClick="location.href='/mypage/resign'">
+        <input type="submit" value="아니오" onClick="location.href='/mypage/'"></p>
+
+        </body>
+    </html>
+    `;
+}
+
+function qna_template(question_list,answer_list){
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>Q&A</title>
+            <meta charset="utf-8">
+        </head>
+        <body> 
+        
+        <p><h3>작성한 질문</h3>${question_list}</p>
+        <p><h3>작성한 답변</h3>${answer_list}</p>
+        
+        </body>
+    </html>
+    `;
+}
 
 app.get('/', function(req, res) {
     const id=req.session.user_id;
@@ -276,20 +352,7 @@ app.post('/user_information/nickname_update/', function(req,res){
     })
 })
 
-function animal_template(animal_list){
-    return `
-    <!doctype html>
-    <html>
-        <head>
-            <title>animal</title>
-            <meta charset="utf-8">
-        </head>
-        <body> 
-        ${animal_list}
-        </body>
-    </html>
-    `;
-}
+
 
 app.get('/animal_information/',function(req,res){
     const id=req.session.user_id;
@@ -300,13 +363,11 @@ app.get('/animal_information/',function(req,res){
         else{
             for (var i=0; i<Object.keys(animals).length;i++){
                 animal_list+=`
-                <p>
-                ${animals[i].name}<br>
-                ${animals[i].type}<br>
-                ${animals[i].gender}<br>
-                ${animals[i].birthday}<br>
-                ${animals[i].special_note}
-                </p>
+                <p>${animals[i].name}</p>
+                <p>${animals[i].type}</p>
+                <p> ${animals[i].gender}</p>
+                <p> ${animals[i].birthday}</p>
+                <p> ${animals[i].special_note}</p>
                 <p><input type="submit" value="수정" onClick="location.href='/mypage/animal_information/update/?id=${animals[i].number}'">
                 <input type="submit" value="삭제" onClick="location.href='/mypage/animal_information/delete/?id=${animals[i].number}'"></p>
                                    
@@ -318,33 +379,7 @@ app.get('/animal_information/',function(req,res){
     }); 
 })
 
-function animal_update_template(animal_name,animal_type,animal_number,animal_gender,animal_birthday,animal_special_note){
-    return `
-    <!doctype html>
-    <html>
-        <head>
-            <title>animal update</title>
-            <meta charset="utf-8">
-        </head>
-        <body>
-            <p>${animal_name}</p>
-            <p>${animal_type}</p>
 
-            <form action="/mypage/animal_information/update_process/?id=${animal_number}" method="post">
-            <p><select name="gender" value=${animal_gender}> 
-            <option value="여">여</option>
-            <option value="남">남</option>
-            </select></p>
-            <p><input type="date" name="birthday" min="1990-01-01" max="2022-12-31" value=${animal_birthday} ></p>
-            <p><textarea name="special_note" value=${animal_special_note}></textarea></p>
-            <p><input type="submit" value="수정"></p>
-            </form>
-        </body>
-    </html>
-    `;
-
-
-}
 
 app.get('/animal_information/update', function(req, res) {
     const animal_number = url.parse(req.url, true).query.id;
@@ -398,6 +433,33 @@ app.get('/animal_information/delete/', function(req, res) {
     });
 });
 
+app.get('/qna/',function(req,res){
+    const id=req.session.user_id;
+    var question_list = ``;
+    var answer_list=``;
+    db.query(`SELECT * FROM question WHERE user_id=?`,[id], function(error, questions) {
+        if (Object.keys(questions).length > 0) {
+            for (var i = 0; i < Object.keys(questions).length; i++) {
+                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+            }
+        } else {
+            question_list = `작성한 질문이 없습니다.`;
+        }
+        //res.send(qna_template(question_list));                       
+
+    });
+    db.query(`SELECT * FROM answer WHERE user_id=?`,[id], function(error, answers) {
+        if (Object.keys(answers).length > 0) {
+            for (var i = 0; i < Object.keys(answers).length; i++) {
+                answer_list += `<p><a href="/qna/question/${answers[i].question_number}">${answers[i].content}</a><p>`;
+            }
+        } else {
+            answer_list = `작성한 답변이 없습니다.`;
+        }
+        res.send(qna_template(question_list,answer_list));                       
+
+    });    
+})
 
 app.get('/resign_check/', function(req,res){
     res.end(resign_check());
@@ -428,25 +490,7 @@ app.post('/resign_check/', function(req, res) {
     });
 
 });
-function last_resign_template(){
-    return `
-    <!doctype html>
-    <html>
-        <head>
-            <title>last resign</title>
-            <meta charset="utf-8">
-        </head>
-        <body>
-        <h2>정말 탈퇴하시겠습니까?</h2>
-        <p><input type="submit" value="예" onClick="location.href='/mypage/resign'">
-        <input type="submit" value="아니오" onClick="location.href='/mypage/'"></p>
 
-        </body>
-    </html>
-    `;
-
-
-}
 app.get('/last_resign/', function(req, res) {
     res.send(last_resign_template());
 })
