@@ -11,12 +11,8 @@ const register_router = require('./create_animal');
 const qna_router = require('./question_and_answer');
 const information_router=require('./information');
 const signup_router = require('./signup_test');
-<<<<<<< HEAD
 const mypage_router=require('./mypage');
-=======
-const board_router = require('./board_and_comment');
-const hospital_router= require('./hospital')
->>>>>>> 1d569945f51ec5b7d9ffa98aec7bf37bfd8ae411
+const hospital_router=require('/hospital');
 
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
@@ -37,12 +33,8 @@ app.use(session({
     store: new MySQLStore({
         host: 'localhost',
         user: 'root',
-<<<<<<< HEAD
-        password: 'password',
-=======
-        password: '09220322',
->>>>>>> 1d569945f51ec5b7d9ffa98aec7bf37bfd8ae411
-        database: 'pit_a_pet'
+        password: 'shin*7883',
+        database: 'pit_a_pet_example'
       })
   }))
 /*
@@ -182,11 +174,9 @@ app.get('/welcome',(req,res)=>{
             <a href="/register">register</a>
             <a href="/qna">QnA</a>
             <a href="/information">information</a>
-<<<<<<< HEAD
             <a href="/mypage">mypage</a>
-=======
             <a href="/board">board</a>
->>>>>>> 1d569945f51ec5b7d9ffa98aec7bf37bfd8ae411
+            <a href="/hospital">hospital</a>
         `;
         res.send(output);
         console.log(req.session.user_id);
@@ -202,12 +192,8 @@ app.use('/register', register_router);
 app.use('/qna', qna_router);
 app.use('/information',information_router);
 app.use('/signup', signup_router);
-<<<<<<< HEAD
-app.use('/mypage',mypage_router);
-=======
 app.use('/board',board_router);
 app.use('/hospital',hospital_router);
->>>>>>> 1d569945f51ec5b7d9ffa98aec7bf37bfd8ae411
 
 app.get('/logout',(req,res)=>{
     if(req.session.id){
