@@ -7,7 +7,17 @@ app.use(body_parser.urlencoded({ extended: false }));
 const db = require('./db');
 
 const multer = require('multer');
-const upload = multer({dest: './upload/review_img'});
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+        cb(null, './upload/review_img');
+        },
+        filename: function (req, file, cb) {
+        cb(null, Date.now() + "-" + file.originalname);
+        }
+    })
+});
+
 
 function main_template(review_list) {
     return `
@@ -21,6 +31,28 @@ function main_template(review_list) {
             <h1>Review</h1>
             <a href="/review/write_review/">리뷰 작성하기</a>
             ${review_list}
+        </body>
+    </html>
+    `
+}
+
+function review_detail_template(title, content, date, price, product_name, brand, category, photo, user_id) {
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>Q&A</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+            <h1>${title}</h1>
+            <p>${date}</p>
+            <p>가격: ${price}</p>
+            <p>상품명: ${product_name}</p>
+            <p>브랜드명: ${brand}</p>
+            <p>카테고리: ${category}</p>
+            <p>작성자: ${user_id}</p>
+            <p>${content}</p>
         </body>
     </html>
     `
@@ -111,6 +143,28 @@ app.post('/write_review/', upload.single('photo'), function(req, res) {
         console.log(result);
         console.log(req.file);
         res.redirect('/review');
+    })
+})
+
+app.get('/:review_id', function(req, res) {
+    const review_id = req.params.review_id;
+
+    db.query(`SELECT * FROM review WHERE review_number = ?`, 
+    [review_id],
+    function(err, result) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+
+        const review = result[0];
+
+        const rdate = String(review.date).split(" ");
+        var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
+        const photo = review.photo.toString('utf8')
+        console.log(photo);
+
+        res.send(review_detail_template(review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id));
     })
 })
 
