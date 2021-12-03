@@ -34,7 +34,7 @@ app.use(session({
     store: new MySQLStore({
         host: 'localhost',
         user: 'root',
-        password: '09220322',
+        password: 'password',
         database: 'pit_a_pet'
       })
   }))
@@ -89,24 +89,6 @@ function main_template(){
             <a href="/information">information</a>
             <a href="/hospital">hospital</a>
             <a href="/signup">sign up</a>
-        </body>
-    </html>
-    `;
-}
-
-function find_id_template(){
-    return `
-    <!doctype html>
-    <html>
-        <head>
-            <title>Find ID</title>
-            <meta charset="utf-8">
-        </head>
-        <body>
-        <h1>아이디찾기</h1>
-            <p><input type="text" name="nickname1" placeholder="nickname" formaction="/finding_id"></p>
-            <p><input type="text" name="email1" placeholder="email" formaction="/finding_id"></p>
-            <p><input type="submit" value="확인" formaction="/finding_id"></p>
         </body>
     </html>
     `;
@@ -211,13 +193,30 @@ app.get('/logout',(req,res)=>{
 })
 
 app.get('/find_id', (req, res)=>{
-    res.send(find_id_template());
+    var output = `
+    <!doctype html>
+    <html>
+        <head>
+            <title>Find ID</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+        <h1>아이디찾기</h1>
+            <form action="/find_id" method="post">
+                <p><input type="text" name="nickname" placeholder="nickname"></p>
+                <p><input type="text" name="email" placeholder="email"></p>
+                <p><input type="submit" value="확인"></p>
+            </form>
+        </body>
+    </html>
+    `;
+    res.send(output);
 })
 
-app.post('/finding_id', function(req,res) {
+app.post('/find_id', function(req,res) {
     const written = req.body;
-    const nickname = written.nickname1;
-    const email = written.email1;
+    const nickname = written.nickname;
+    const email = written.email;
 
     db.query(`SELECT * FROM user`, function(error, users) {
         if(error) {
@@ -227,25 +226,30 @@ app.post('/finding_id', function(req,res) {
         for (var i = 0; i < Object.keys(users).length; i++) {
             if(nickname === users[i].nickname) {
                 if(email === users[i].email) {
-                    const id = users.id;
+                    const id = users[i].id;
                     res.send(id_found_template(id));
                 }
-                else if(email === null) {
-                    confirm("email을 입력하십시오!");
+                else if(email !== users[i].email) {
+                    res.write("<script>alert('Cannot find the email or the email does not exist. Please try again.');location.href='/find_id';</script>");
                     break;
                 }
-                else {
-                    confirm("email을 찾을 수 없거나 존재하지 않습니다. 다시 한 번 확인해주세요.");
+                else if(email.length < 1) {
+                    res.write("<script>alert('Please input email.');location.href='/find_id';</script>");
                     break;
                 }
             }
-            else if(nickname === null) {
-                confirm("nickname을 입력하십시오!");
+            else if(nickname.length < 1) {
+                res.write("<script>alert('Please input nickname.');location.href='/find_id';</script>");
                 break;
             }
-            else {
-                confirm("nickname을 찾을 수 없거나 존재하지 않습니다. 다시 한 번 확인해주세요.");
+            else if(nickname !== users[i].nickname) {
+                res.write("<script>alert('Cannot find the nickname or the nickname does not exist. Please try again.');location.href='/find_id';</script>");
                 break;
+            }
+            
+            else if(nickname !== users[i].nickname && email !== users[i].email) {
+                    res.write("<script>alert('Both nickname and email cannot find or does not exist. Please try again.');location.href='/find_id';</script>");
+                    break;
             }
         }
     })

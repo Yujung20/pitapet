@@ -48,7 +48,7 @@ function main_template(boardlist,search_title){
               ${auth_btn}
               <hr/>
               <h3>댓글</h3>
-              <form action="/board/write_comment/" method="post">
+              <form action="/write_comment" method="post">
                   <input type="hidden" name="board_id" value="${board_id}">
                   <p><textarea name="content"></textarea></p>
                   <p><input type="submit" value="등록"></p>
@@ -229,14 +229,14 @@ function main_template(boardlist,search_title){
             })
   });
   
-  app.post('/write_comment/', function(req, res) {
+  app.post('/write_comment', function(req, res) {
       const body = req.body;
       const board_id = body.board_id;
-      const content = body.content;
-      const user = req.session.user_id;
+      const content1 = body.content;
+      const user1 = req.session.user_id;
   
-      db.query(`INSERT INTO board_comment (content, user_id, comment_number) VALUES (?, ?, ?)`,
-      [content, user, board_id],
+      db.query(`INSERT INTO board_comment (user_id, contest, comment_number) VALUES (?, ?, ?)`,
+      [user1, content1, board_id],
       function(error, comment) {
           if (error) {
               res.send(error);

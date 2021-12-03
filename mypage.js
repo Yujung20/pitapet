@@ -20,7 +20,7 @@ app.use(session({
     store: new MySQLStore({
         host: 'localhost',
         user: 'root',
-        password: '09220322',
+        password: 'password',
         database: 'pit_a_pet'
       })
   }))
