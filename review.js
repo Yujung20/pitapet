@@ -36,7 +36,7 @@ function main_template(review_list) {
     `
 }
 
-function review_detail_template(title, content, date, price, product_name, brand, category, photo, user_id) {
+function review_detail_template(review_number, title, content, date, price, product_name, brand, category, photo, user_id, comment_list) {
     return `
     <!doctype html>
     <html>
@@ -53,6 +53,14 @@ function review_detail_template(title, content, date, price, product_name, brand
             <p>카테고리: ${category}</p>
             <p>작성자: ${user_id}</p>
             <p>${content}</p>
+            <hr/>
+            <h3>댓글</h3>
+            <form action="/review/write_comment/" method="post">
+                <input type="hidden" name="review_number" value="${review_number}"">
+                <p><textarea name="comment"></textarea></p>
+                <p><input type="submit" value="댓글 달기"></p>
+            </form>
+            ${comment_list}
         </body>
     </html>
     `
@@ -131,7 +139,12 @@ app.post('/write_review/', upload.single('photo'), function(req, res) {
     const product_name = body.product_name;
     const brand = body.brand;
     const category = body.category;
-    const photo = req.file.path;
+    let photo = undefined;
+    if(req.file) {
+        photo = req.file.path;
+    } else {
+        photo = null;
+    }
 
     db.query(`INSERT INTO review (user_id, title, content, price, product_name, brand, category, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [user_id, title, content, price, product_name, brand, category, photo],
@@ -148,6 +161,7 @@ app.post('/write_review/', upload.single('photo'), function(req, res) {
 
 app.get('/:review_id', function(req, res) {
     const review_id = req.params.review_id;
+    let comment_list = ``;
 
     db.query(`SELECT * FROM review WHERE review_number = ?`, 
     [review_id],
@@ -156,16 +170,58 @@ app.get('/:review_id', function(req, res) {
             res.send(err);
             throw err;
         }
+        db.query(`SELECT * FROM review_comment WHERE review_number = ?`,
+        [review_id],
+        function(err2, comments) {
+            if (err2) {
+                res.send(err2);
+                throw err2;
+            }
+            const review = result[0];
 
-        const review = result[0];
+            const rdate = String(review.date).split(" ");
+            var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
+            
+            let photo = undefined;
+            if (review.photo !== null) {
+                photo = review.photo.toString('utf8')
+            }
+            
+            console.log(photo);
+            console.log(comments);
 
-        const rdate = String(review.date).split(" ");
-        var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
-        const photo = review.photo.toString('utf8')
-        console.log(photo);
+            for(var i = 0; i < comments.length; i++) {
+                const cdate = String(comments[i].date).split(" ");
+                var formating_cdate = cdate[3] + "-" + cdate[1] + "-" + cdate[2] + "-" + cdate[4];
 
-        res.send(review_detail_template(review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id));
+                comment_list += `
+                    <p>${comments[i].content}</p>
+                    <p>${comments[i].user_id}</p>
+                    <p>${formating_cdate}</p>
+                `
+            }
+
+            res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list));
+        });
     })
+})
+
+app.post('/write_comment/', function(req, res) {
+    const body = req.body;
+    const review_number = body.review_number;
+    const content = body.comment;
+    const user_id = req.session.user_id;
+
+    db.query(`INSERT INTO review_comment (review_number, content, user_id) VALUES (?, ?, ?)`,
+    [review_number, content, user_id],
+    function(err, comment) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+        console.log(comment);
+        res.redirect(`/review/${review_number}`);
+    });
 })
 
 // db.query(`SELECT * FROM review`, 
