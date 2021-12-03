@@ -36,7 +36,7 @@ function main_template(review_list) {
     `
 }
 
-function review_detail_template(title, content, date, price, product_name, brand, category, photo, user_id) {
+function review_detail_template(review_number, title, content, date, price, product_name, brand, category, photo, user_id, comment_list) {
     return `
     <!doctype html>
     <html>
@@ -53,6 +53,14 @@ function review_detail_template(title, content, date, price, product_name, brand
             <p>카테고리: ${category}</p>
             <p>작성자: ${user_id}</p>
             <p>${content}</p>
+            <hr/>
+            <h3>댓글<h3>
+            <form action="review/write_comment/" method="post">
+                <input type="hidden" name="review_number" value="${review_number}>
+                <p><textarea name="comment"></textarea></p>
+                <p><input type="submit" value="댓글 달기"></p<
+            </form>
+            ${comment_list}
         </body>
     </html>
     `
