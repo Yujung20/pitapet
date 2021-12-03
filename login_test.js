@@ -14,6 +14,7 @@ const information_router=require('./information');
 const signup_router = require('./signup_test');
 const mypage_router=require('./mypage');
 const hospital_router=require('./hospital');
+const store_router=require('./store');
 const board_router=require('./board_and_comment');
 
 const session = require('express-session');
@@ -89,6 +90,7 @@ function main_template(){
             <a href="/login">login</a>
             <a href="/information">information</a>
             <a href="/hospital">hospital</a>
+            <a href="/store">store</a>
             <a href="/signup">sign up</a>
         </body>
     </html>
@@ -161,6 +163,7 @@ app.get('/welcome',(req,res)=>{
             <a href="/mypage">mypage</a>
             <a href="/board">board</a>
             <a href="/hospital">hospital</a>
+            <a href="/store">store</a>
             <a href="/review">review</a>
         `;
         res.send(output);
@@ -181,7 +184,7 @@ app.use('/signup', signup_router);
 app.use('/mypage',mypage_router)
 app.use('/board',board_router);
 app.use('/hospital',hospital_router);
-
+app.use('/store',store_router);
 app.get('/logout',(req,res)=>{
     if(req.session.id){
         req.session.destroy(function(err){
