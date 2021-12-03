@@ -40,7 +40,8 @@ function main_template(nickname) {
         <a href="/mypage/animal_information/"> 동물 정보 조회</a> 
 
         <a href="/mypage/qna/"> 작성한 Q&A</a> 
-        <h3> 작성한 리뷰 </h3>
+        <a href="/mypage/review/"> 작성한 리뷰</a> 
+
 
         <a href="/mypage/resign_check/"> 회원 탈퇴</a> 
             
@@ -176,7 +177,25 @@ function qna_template(question_list,answer_list){
         <body> 
         
         <p><h3>작성한 질문</h3>${question_list}</p>
-        <p><h3>작성한 답변</h3>${answer_list}</p>
+        <p><h3>작성한 댓글</h3>${answer_list}</p>
+        
+        </body>
+    </html>
+    `;
+}
+
+function review_template(review_list,comment_list){
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>Q&A</title>
+            <meta charset="utf-8">
+        </head>
+        <body> 
+        
+        <p><h3>작성한 리뷰</h3>${review_list}</p>
+        <p><h3>작성한 답변</h3>${comment_list}</p>
         
         </body>
     </html>
