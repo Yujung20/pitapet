@@ -1,11 +1,13 @@
 const response = require('express');
 const express = require('express');
 const app = express.Router();
+const url=require('url');
 
 const body_parser = require('body-parser');
 app.use(body_parser.urlencoded({ extended: false}));
 
 var db = require('./db');
+const path=require('path')
 
 function main_template(marker_list){
     //지도(마커 전체)
@@ -56,13 +58,13 @@ app.get('/', function (req, res) {
     function(err,hospital){
         if (err) throw err;
         else{
-            for (var i=0; i<Object.values(hospital).length-1;i++){
+            for (var i=0; i<Object.keys(hospital).length-1;i++){
                 marker_list+=`{
                     title: '${hospital[i].hospital_name}', 
                     latlng: new kakao.maps.LatLng(${hospital[i].latitude}, ${hospital[i].longitude})
                 },`
             }
-            var last=Object.values(hospital).length;
+            var last=Object.keys(hospital).length;
             marker_list+=`{
                 title: '${hospital[last].hospital_name}', 
                 latlng: new kakao.maps.LatLng(${hospital[last].latitude}, ${hospital[last].longitude})
