@@ -54,7 +54,7 @@ function review_detail_template(review_number, title, content, date, price, prod
             <p>작성자: ${user_id}</p>
             <p>${content}</p>
             <hr/>
-            <h3>댓글<h3>
+            <h3>댓글</h3>
             <form action="/review/write_comment/" method="post">
                 <input type="hidden" name="review_number" value="${review_number}"">
                 <p><textarea name="comment"></textarea></p>
@@ -161,6 +161,7 @@ app.post('/write_review/', upload.single('photo'), function(req, res) {
 
 app.get('/:review_id', function(req, res) {
     const review_id = req.params.review_id;
+    let comment_list = ``;
 
     db.query(`SELECT * FROM review WHERE review_number = ?`, 
     [review_id],
@@ -169,20 +170,39 @@ app.get('/:review_id', function(req, res) {
             res.send(err);
             throw err;
         }
+        db.query(`SELECT * FROM review_comment WHERE review_number = ?`,
+        [review_id],
+        function(err2, comments) {
+            if (err2) {
+                res.send(err2);
+                throw err2;
+            }
+            const review = result[0];
 
-        const review = result[0];
+            const rdate = String(review.date).split(" ");
+            var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
+            
+            let photo = undefined;
+            if (review.photo !== null) {
+                photo = review.photo.toString('utf8')
+            }
+            
+            console.log(photo);
+            console.log(comments);
 
-        const rdate = String(review.date).split(" ");
-        var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
-        
-        let photo = undefined;
-        if (review.photo !== null) {
-            photo = review.photo.toString('utf8')
-        }
-        
-        console.log(photo);
+            for(var i = 0; i < comments.length; i++) {
+                const cdate = String(comments[i].date).split(" ");
+                var formating_cdate = cdate[3] + "-" + cdate[1] + "-" + cdate[2] + "-" + cdate[4];
 
-        res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id));
+                comment_list += `
+                    <p>${comments[i].content}</p>
+                    <p>${comments[i].user_id}</p>
+                    <p>${formating_cdate}</p>
+                `
+            }
+
+            res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list));
+        });
     })
 })
 
