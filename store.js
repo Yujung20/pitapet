@@ -123,10 +123,10 @@ app.get('/search/', function (req, res) {
     const keyword=req.query.search_name;
     var marker_list=``;
     console.log(keyword);
-    db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name WHERE hospital.hospital_name LIKE ?`,['%'+keyword+'%'],
+    db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name WHERE store.store_name LIKE ?`,['%'+keyword+'%'],
     function(err,stores){
         if (err) throw err;
-        if(Object.keys(hospitals).length>0){
+        if(Object.keys(stores).length>0){
             var H=" ";
             var P=" ";
             var D=" ";
@@ -170,6 +170,10 @@ app.get('/search/', function (req, res) {
             marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                 `;
             console.log(marker_list);
+            res.end(main_template(marker_list));
+        }
+        else {
+            marker_list=``
             res.end(main_template(marker_list));
         }
         

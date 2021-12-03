@@ -194,6 +194,10 @@ app.get('/search/',function(req,res){
             console.log(marker_list);
             res.end(main_template(marker_list));
         }
+        else {
+            marker_list=``
+            res.end(main_template(marker_list));
+        }
     })
 });
 module.exports = app;
