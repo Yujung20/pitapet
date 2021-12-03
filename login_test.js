@@ -12,7 +12,8 @@ const qna_router = require('./question_and_answer');
 const information_router=require('./information');
 const signup_router = require('./signup_test');
 const mypage_router=require('./mypage');
-const hospital_router=require('/hospital');
+const hospital_router=require('./hospital');
+const board_router=require('./board_and_comment');
 
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
@@ -33,8 +34,8 @@ app.use(session({
     store: new MySQLStore({
         host: 'localhost',
         user: 'root',
-        password: 'shin*7883',
-        database: 'pit_a_pet_example'
+        password: 'password',
+        database: 'pit_a_pet'
       })
   }))
 /*
@@ -192,6 +193,7 @@ app.use('/register', register_router);
 app.use('/qna', qna_router);
 app.use('/information',information_router);
 app.use('/signup', signup_router);
+app.use('/mypage',mypage_router)
 app.use('/board',board_router);
 app.use('/hospital',hospital_router);
 
