@@ -53,6 +53,7 @@ function review_detail_template(review_number, title, content, date, price, prod
             <p>카테고리: ${category}</p>
             <p>작성자: ${user_id}</p>
             <p>${content}</p>
+            <p><img src="${photo}"></p>
             <hr/>
             <h3>댓글</h3>
             <form action="/review/write_comment/" method="post">
@@ -183,6 +184,7 @@ app.get('/:review_id', function(req, res) {
             let photo = undefined;
             if (review.photo !== null) {
                 photo = review.photo.toString('utf8')
+                photo = photo.replace('upload/', '/')
             }
             
             console.log(photo);
