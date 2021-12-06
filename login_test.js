@@ -17,6 +17,8 @@ const hospital_router=require('./hospital');
 const store_router=require('./store');
 const board_router=require('./board_and_comment');
 
+app.use(express.static('upload'));
+
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 
@@ -35,8 +37,8 @@ app.use(session({
     saveUninitialized: true,
     store: new MySQLStore({
         host: 'localhost',
-        user: 'root',
-        password: 'password',
+        user: 'dldms',
+        password: 'password!',
         database: 'pit_a_pet'
       })
   }))

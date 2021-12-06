@@ -108,8 +108,6 @@ function review_create_template() {
     `;
 }
 
-app.use(express.static('upload'));
-
 app.get('/', function(req, res) {
     var review_list = '';
     
