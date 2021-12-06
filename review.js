@@ -67,6 +67,36 @@ function review_detail_template(review_number, title, content, date, price, prod
     `
 }
 
+function review_detail_no_photo_template(review_number, title, content, date, price, product_name, brand, category, user_id, comment_list) {
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>Q&A</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+            <h1>${title}</h1>
+            <p>${date}</p>
+            <p>가격: ${price}</p>
+            <p>상품명: ${product_name}</p>
+            <p>브랜드명: ${brand}</p>
+            <p>카테고리: ${category}</p>
+            <p>작성자: ${user_id}</p>
+            <p>${content}</p>
+            <hr/>
+            <h3>댓글</h3>
+            <form action="/review/write_comment/" method="post">
+                <input type="hidden" name="review_number" value="${review_number}"">
+                <p><textarea name="comment"></textarea></p>
+                <p><input type="submit" value="댓글 달기"></p>
+            </form>
+            ${comment_list}
+        </body>
+    </html>
+    `
+}
+
 function review_create_template() {
     return `
     <!doctype html>
@@ -180,15 +210,6 @@ app.get('/:review_id', function(req, res) {
 
             const rdate = String(review.date).split(" ");
             var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
-            
-            let photo = undefined;
-            if (review.photo !== null) {
-                photo = review.photo.toString('utf8')
-                photo = photo.replace('upload/', '/')
-            }
-            
-            console.log(photo);
-            console.log(comments);
 
             for(var i = 0; i < comments.length; i++) {
                 const cdate = String(comments[i].date).split(" ");
@@ -200,8 +221,14 @@ app.get('/:review_id', function(req, res) {
                     <p>${formating_cdate}</p>
                 `
             }
-
-            res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list));
+            
+            if (review.photo !== null) {
+                let photo = review.photo.toString('utf8')
+                photo = photo.replace('upload/', '/')
+                res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list));
+            } else {
+                res.send(review_detail_no_photo_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, review.user_id, comment_list));
+            }
         });
     })
 })
