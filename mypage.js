@@ -213,8 +213,8 @@ function board_template(board_list,comment_list){
         </head>
         <body> 
         
-        <p><h3>작성한 리뷰</h3>${board_list}</p>
-        <p><h3>작성한 답변</h3>${comment_list}</p>
+        <p><h3>작성한 커뮤니티</h3>${board_list}</p>
+        <p><h3>작성한 댓글</h3>${comment_list}</p>
         
         </body>
     </html>
@@ -508,7 +508,7 @@ app.get('/review/',function(req,res){
                 review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a><p>`;
             }
         } else {
-            review_list = `작성한 질문이 없습니다.`;
+            review_list = `작성한 리뷰가 없습니다.`;
         }
 
     });
@@ -535,17 +535,17 @@ app.get('/board/',function(req,res){
                 board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}</a><p>`;
             }
         } else {
-            board_list = `작성한 질문이 없습니다.`;
+            board_list = `작성한 커뮤니티가 없습니다.`;
         }
 
     });
     db.query(`SELECT * FROM board_comment WHERE user_id=?`,[id], function(error, comments) {
         if (Object.keys(comments).length > 0) {
             for (var i = 0; i < Object.keys(comments).length; i++) {
-                comment_list += `<p><a href="/board.written/${comments[i].board_number}">${comments[i].content}</a><p>`;
+                comment_list += `<p><a href="/board/written/${comments[i].board_number}">${comments[i].content}</a><p>`;
             }
         } else {
-            comment_list = `작성한 답변이 없습니다.`;
+            comment_list = `작성한 댓글이 없습니다.`;
         }
         res.send(board_template(board_list,comment_list));                       
 
