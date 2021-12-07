@@ -36,7 +36,7 @@ function main_template(review_list) {
     `
 }
 
-function review_detail_template(review_number, title, content, date, price, product_name, brand, category, photo, user_id, comment_list) {
+function review_detail_template(review_number, title, content, date, price, product_name, brand, category, photo, user_id, comment_list, auth_btn) {
     return `
     <!doctype html>
     <html>
@@ -54,6 +54,7 @@ function review_detail_template(review_number, title, content, date, price, prod
             <p>작성자: ${user_id}</p>
             <p>${content}</p>
             <p><img src="${photo}"></p>
+            ${auth_btn}
             <hr/>
             <h3>댓글</h3>
             <form action="/review/write_comment/" method="post">
@@ -67,7 +68,7 @@ function review_detail_template(review_number, title, content, date, price, prod
     `
 }
 
-function review_detail_no_photo_template(review_number, title, content, date, price, product_name, brand, category, user_id, comment_list) {
+function review_detail_no_photo_template(review_number, title, content, date, price, product_name, brand, category, user_id, comment_list, auth_btn) {
     return `
     <!doctype html>
     <html>
@@ -84,6 +85,7 @@ function review_detail_no_photo_template(review_number, title, content, date, pr
             <p>카테고리: ${category}</p>
             <p>작성자: ${user_id}</p>
             <p>${content}</p>
+            ${auth_btn}
             <hr/>
             <h3>댓글</h3>
             <form action="/review/write_comment/" method="post">
@@ -222,12 +224,20 @@ app.get('/:review_id', function(req, res) {
                 `
             }
             
+            let auth_btn = ``;
+            if (req.session.user_id === review.user_id) {
+                auth_btn += `
+                    <p><input type="submit" value="수정" onClick.href='review/${review_id}/update/'"></p>
+                    <p><input type="submit" value="삭제" onClick.href='review/${review_id}/delete/'"></p>
+                `
+            }
+
             if (review.photo !== null) {
                 let photo = review.photo.toString('utf8')
                 photo = photo.replace('upload/', '/')
-                res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list));
+                res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list, auth_btn));
             } else {
-                res.send(review_detail_no_photo_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, review.user_id, comment_list));
+                res.send(review_detail_no_photo_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, review.user_id, comment_list, auth_btn));
             }
         });
     })
