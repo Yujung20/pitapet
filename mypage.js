@@ -179,7 +179,7 @@ function qna_template(question_list,answer_list){
         <body> 
         
         <p><h3>작성한 질문</h3>${question_list}</p>
-        <p><h3>작성한 댓글</h3>${answer_list}</p>
+        <p><h3>작성한 대답</h3>${answer_list}</p>
         
         </body>
     </html>
@@ -197,7 +197,7 @@ function review_template(review_list,comment_list){
         <body> 
         
         <p><h3>작성한 리뷰</h3>${review_list}</p>
-        <p><h3>작성한 답변</h3>${comment_list}</p>
+        <p><h3>작성한 댓글</h3>${comment_list}</p>
         
         </body>
     </html>
@@ -214,7 +214,7 @@ function board_template(board_list,comment_list){
         <body> 
         
         <p><h3>작성한 커뮤니티</h3>${board_list}</p>
-        <p><h3>작성한 댓글</h3>${comment_list}</p>
+        <p><h3>작성한 답변</h3>${comment_list}</p>
         
         </body>
     </html>
@@ -491,7 +491,7 @@ app.get('/qna/',function(req,res){
                 answer_list += `<p><a href="/qna/question/${answers[i].question_number}">${answers[i].content}</a><p>`;
             }
         } else {
-            answer_list = `작성한 답변이 없습니다.`;
+            answer_list = `작성한 대답이 없습니다.`;
         }
         res.send(qna_template(question_list,answer_list));                       
 
@@ -518,7 +518,7 @@ app.get('/review/',function(req,res){
                 comment_list += `<p><a href="/review/${comments[i].review_number}">${comments[i].content}</a><p>`;
             }
         } else {
-            comment_list = `작성한 답변이 없습니다.`;
+            comment_list = `작성한 댓글이 없습니다.`;
         }
         res.send(review_template(review_list,comment_list));                       
 
@@ -545,7 +545,7 @@ app.get('/board/',function(req,res){
                 comment_list += `<p><a href="/board/written/${comments[i].board_number}">${comments[i].content}</a><p>`;
             }
         } else {
-            comment_list = `작성한 댓글이 없습니다.`;
+            comment_list = `작성한 답변이 없습니다.`;
         }
         res.send(board_template(board_list,comment_list));                       
 
