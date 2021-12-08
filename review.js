@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express.Router();
+const fs = require('fs');
 
 const body_parser = require('body-parser');
 app.use(body_parser.urlencoded({ extended: false }));
@@ -36,7 +37,7 @@ function main_template(review_list) {
     `
 }
 
-function review_detail_template(review_number, title, content, date, price, product_name, brand, category, photo, user_id, comment_list) {
+function review_detail_template(review_number, title, content, date, price, product_name, brand, category, photo, user_id, comment_list, auth_btn) {
     return `
     <!doctype html>
     <html>
@@ -54,6 +55,7 @@ function review_detail_template(review_number, title, content, date, price, prod
             <p>작성자: ${user_id}</p>
             <p>${content}</p>
             <p><img src="${photo}"></p>
+            ${auth_btn}
             <hr/>
             <h3>댓글</h3>
             <form action="/review/write_comment/" method="post">
@@ -67,7 +69,7 @@ function review_detail_template(review_number, title, content, date, price, prod
     `
 }
 
-function review_detail_no_photo_template(review_number, title, content, date, price, product_name, brand, category, user_id, comment_list) {
+function review_detail_no_photo_template(review_number, title, content, date, price, product_name, brand, category, user_id, comment_list, auth_btn) {
     return `
     <!doctype html>
     <html>
@@ -84,6 +86,7 @@ function review_detail_no_photo_template(review_number, title, content, date, pr
             <p>카테고리: ${category}</p>
             <p>작성자: ${user_id}</p>
             <p>${content}</p>
+            ${auth_btn}
             <hr/>
             <h3>댓글</h3>
             <form action="/review/write_comment/" method="post">
@@ -129,13 +132,108 @@ function review_create_template() {
             </form>
         </body>
     </html>
-    <script>
-        function numberWithCommas(x) {
-            x = x.replace(/[^0-9]/g,'');   // 입력값이 숫자가 아니면 공백
-            x = x.replace(/,/g,'');          // ,값 공백처리
-            $("#price").val(x.replace(/\B(?=(\d{3})+(?!\d))/g, ",")); // 정규식을 이용해서 3자리 마다 , 추가 
-        }
-    </script>
+    `;
+}
+
+function review_update_template(review_id, title, category, content, price, product_name, brand, photo) {
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>리뷰 작성하기</title>
+            <meta charset="utf-8">
+            <script>
+                function remove_img() {
+                    var photo = document.getElementById('photo');
+                    photo_src = photo.src;
+
+                    var input = document.createElement('input');
+                    input.setAttribute("type", "hidden");
+                    input.setAttribute("name", "photo_delete");
+                    input.setAttribute("value", photo_src);
+
+                    document.getElementById('update_review').appendChild(input);
+                    photo.remove();
+                }
+
+                function photo_src() {
+                    var photo = document.getElementById('photo');
+                    photo = photo.src;
+
+                    var photo_src = document.createElement('input');
+                    photo_src.setAttribute("type", "hidden");
+                    photo_src.setAttribute("name", "img_src");
+                    photo_src.setAttribute("value", photo);
+
+                    document.getElementById('update_review').appendChild(photo_src);
+                }
+            </script>
+        </head>
+        <body>
+            <h1>리뷰 작성하기</h1>
+            <form action="/review/${review_id}/update_process/" method="post" enctype="multipart/form-data" id="update_review" onclick="photo_src()">
+                <p><input type"text" name="title" value="${title}"></p>
+                <p>
+                ${category}
+                <select name="category">
+                    <option value="개">개</option>
+                    <option value="고양이">고양이</option>
+                    <option value="토끼">토끼</option>
+                    <option value="햄스터">햄스터</option>
+                    <option value="앵무새">앵무새</option>
+                    <option value="기니피그">기니피그</option>
+                    <option value="페럿">페럿</option>
+                    <option value="고슴도치">고슴도치</option>
+                    <option value="기타">기타</option>
+                </select></p>
+                <p><textarea name="content">${content}</textarea></p>
+                <p><input type="text" name="price" value="${price}"></p>
+                <p><input type="text" name="product_name" value="${product_name}"></p>
+                <p><input type="text" name="brand" value="${brand}"></p>
+                <p><img src="${photo}" id="photo"></p>
+                <p><button type="button" onclick="remove_img()">사진 지우기</button></p>
+                <p><input type="file" name="photo"></p>
+                <p><input type="submit" value="리뷰 수정하기"></p>
+            </form>
+        </body>
+    </html>
+    `;
+}
+
+function review_update_no_photo_template(review_id, title, category, content, price, product_name, brand) {
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>리뷰 작성하기</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+            <h1>리뷰 작성하기</h1>
+            <form action="/review/${review_id}/update_process/" method="post" enctype="multipart/form-data">
+                <p><input type"text" name="title" value="${title}"></p>
+                <p>
+                ${category}
+                <select name="category">
+                    <option value="개">개</option>
+                    <option value="고양이">고양이</option>
+                    <option value="토끼">토끼</option>
+                    <option value="햄스터">햄스터</option>
+                    <option value="앵무새">앵무새</option>
+                    <option value="기니피그">기니피그</option>
+                    <option value="페럿">페럿</option>
+                    <option value="고슴도치">고슴도치</option>
+                    <option value="기타">기타</option>
+                </select></p>
+                <p><textarea name="content">${content}</textarea></p>
+                <p><input type="text" name="price" value="${price}"></p>
+                <p><input type="text" name="product_name" value="${product_name}"></p>
+                <p><input type="text" name="brand" value="${brand}"></p>
+                <p><input type="file" name="photo"></p>
+                <p><input type="submit" value="리뷰 수정하기"></p>
+            </form>
+        </body>
+    </html>
     `;
 }
 
@@ -175,6 +273,8 @@ app.post('/write_review/', upload.single('photo'), function(req, res) {
         photo = null;
     }
 
+    console.log(body);
+
     db.query(`INSERT INTO review (user_id, title, content, price, product_name, brand, category, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [user_id, title, content, price, product_name, brand, category, photo],
     function(error, result) {
@@ -184,7 +284,91 @@ app.post('/write_review/', upload.single('photo'), function(req, res) {
         }
         console.log(result);
         console.log(req.file);
-        res.redirect('/review');
+        res.redirect(`/review/${result.insertId}`);
+    })
+})
+
+app.get('/update/:review_id/', function(req, res) {
+    const review_id = req.params.review_id;
+
+    db.query(`SELECT * FROM review WHERE review_number = ?`,
+    [review_id],
+    function (err, result) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+        
+        const review = result[0];
+
+        if (review.photo) {
+            let photo = review.photo.toString('utf8')
+            photo = photo.replace('upload/', '/')
+            res.send(review_update_template(review_id, review.title, review.category, review.content, review.price, review.product_name, review.brand, photo))
+        } else {
+            res.send(review_update_no_photo_template(review_id, review.title, review.category, review.content, review.price, review.product_name, review.brand))
+        }
+    })
+})
+
+app.post('/:review_id/update_process', upload.single('photo'), function(req, res) {
+    const review_id = req.params.review_id;
+    const body = req.body;
+    const title = body.title;
+    const category = body.category;
+    const content = body.content;
+    const price = body.price;
+    const product_name = body.product_name;
+    const brand = body.brand;
+    let photo = undefined;
+
+    if(body.photo_delete) {
+        photo_path = body.photo_delete;
+        if (Array.isArray(photo_path)) photo_path = photo_path[0];
+        console.log(photo_path);
+        photo_path = photo_path.split('/');
+        photo_path = './upload/' + photo_path[photo_path.length - 2] + '/' + photo_path[photo_path.length - 1];
+        console.log(photo_path);
+        fs.unlinkSync(decodeURI(photo_path));
+
+        if(req.file) {
+            photo = req.file.path;
+        } else {
+            photo = null;
+        }
+    } else {
+        if (req.file) {
+            if (!body.photo_delete) {
+                res.send("<script>alert('사진을 먼저 지워주세요.');</script>")
+            }
+            photo = req.file.path;
+        } else {
+            photo = body.img_src;
+            if (Array.isArray(photo)) photo = photo[0];
+            console.log(photo);
+            photo = photo.split('/');
+            photo = '/upload/' + photo[photo.length - 2] + '/' + photo[photo.length - 1];
+            console.log(photo);
+        }
+    }
+
+    console.log(body);
+
+    // let photo_path = body.img_src;
+    // console.log(photo_path);
+    // photo_path = photo_path.split('/');
+    // photo_path = './upload/' + photo_path[photo_path.length - 2] + '/' + photo_path[photo_path.length - 1];
+    // console.log(photo_path);
+
+    db.query(`UPDATE review SET title=?, category=?, content=?, price=?, product_name=?, brand=?, photo=? WHERE review_number=?`,
+    [title, category, content, price, product_name, brand, photo, review_id],
+    function(err, result) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+        console.log(result);
+        res.redirect(`/review/${review_id}`);
     })
 })
 
@@ -222,12 +406,20 @@ app.get('/:review_id', function(req, res) {
                 `
             }
             
+            let auth_btn = ``;
+            if (req.session.user_id === review.user_id) {
+                auth_btn += `
+                <p><input type="submit" value="수정" onClick="location.href='/review/update/${review_id}/'"></p>
+                <p><input type="submit" value="삭제" onClick="location.href='/review/delete/${review_id}/'"></p>    
+                `
+            }
+
             if (review.photo !== null) {
                 let photo = review.photo.toString('utf8')
                 photo = photo.replace('upload/', '/')
-                res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list));
+                res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list, auth_btn));
             } else {
-                res.send(review_detail_no_photo_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, review.user_id, comment_list));
+                res.send(review_detail_no_photo_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, review.user_id, comment_list, auth_btn));
             }
         });
     })
