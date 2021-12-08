@@ -22,8 +22,9 @@ app.use(session({
         user: 'root',
         password: 'password',
         database: 'pit_a_pet'
-      })
-  }))
+    })
+}))
+
 
 function main_template(nickname) {
     return `
