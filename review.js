@@ -145,12 +145,12 @@ function review_update_template(review_id, title, category, content, price, prod
             <script>
                 function remove_img() {
                     var photo = document.getElementById('photo');
-                    photo = photo.src;
+                    photo_src = photo.src;
 
                     var input = document.createElement('input');
                     input.setAttribute("type", "hidden");
                     input.setAttribute("name", "photo_delete");
-                    input.setAttribute("value", photo);
+                    input.setAttribute("value", photo_src);
 
                     document.getElementById('update_review').appendChild(input);
                     photo.remove();
@@ -332,16 +332,16 @@ app.post('/:review_id/update_process', upload.single('photo'), function(req, res
         fs.unlinkSync(decodeURI(photo_path));
 
         if(req.file) {
-            if (!body.photo_delete) {
-                res.send("<script>alert('사진을 먼저 지워주세요.');</script>")
-            }
             photo = req.file.path;
         } else {
             photo = null;
         }
     } else {
         if (req.file) {
-            photo =req.file.path;
+            if (!body.photo_delete) {
+                res.send("<script>alert('사진을 먼저 지워주세요.');</script>")
+            }
+            photo = req.file.path;
         } else {
             photo = body.img_src;
             if (Array.isArray(photo)) photo = photo[0];
