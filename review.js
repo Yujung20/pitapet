@@ -458,6 +458,7 @@ app.get('/:review_id', function(req, res) {
                         </form>
                         <form action="/review/comment_delete/" method="post">
                             <input type="hidden" name="comment_number" value="${comments[i].review_comment_number}">
+                            <input type="hidden" name="review_number" value="${review_id}">
                             <p><input type="submit" value="삭제"></p>
                         </form>
                     `;
@@ -597,6 +598,22 @@ app.post('/comment_update_process', function(req, res) {
 
     db.query(`UPDATE review_comment SET content=? WHERE review_comment_number=?`,
     [content, comment_number],
+    function(err, result) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+        res.redirect(`/review/${review_number}`);
+    })
+})
+
+app.post('/comment_delete', function(req, res){
+    const body = req.body;
+    const comment_number = body.comment_number;
+    const review_number = body.review_number;
+
+    db.query(`DELETE FROM review_comment WHERE review_comment_number=?`,
+    [comment_number],
     function(err, result) {
         if (err) {
             res.send(err);
