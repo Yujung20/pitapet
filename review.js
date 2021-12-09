@@ -20,7 +20,7 @@ const upload = multer({
 });
 
 
-function main_template(review_list) {
+function main_template(review_list, search_title) {
     return `
     <!doctype html>
     <html>
@@ -31,6 +31,10 @@ function main_template(review_list) {
         <body>
             <h1>Review</h1>
             <a href="/review/write_review/">리뷰 작성하기</a>
+            <form action="/review/search?title=${search_title}">
+                <p><input type="text" name="search_title" placeholder="검색어를 입력하세요.">
+                <input type="submit" value="검색">
+            </form>
             ${review_list}
         </body>
     </html>
@@ -253,6 +257,30 @@ app.get('/', function(req, res) {
     })
 })
 
+app.get('/search', function(req, res) {
+    const keyword = req.query.search_title;
+    var review_list = ``;
+
+    db.query(`SELECT * FROM review WHERE title LIKE ?`,
+    ['%' + keyword + '%'],
+    function(err, reviews) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+
+        if (reviews.length > 0) {
+            for (var i = 0; i < reviews.length; i++) {
+                review_list = `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a></p>`;
+            }
+        } else {
+            reivew_list = `<p> 검색 결과가 없습니다. </p>`;
+        }
+
+        res.send(main_template(review_list));
+    })
+})
+
 app.get('/write_review/', function(req, res) {
     res.send(review_create_template());
 })
@@ -304,6 +332,7 @@ app.get('/update/:review_id/', function(req, res) {
         if (review.photo) {
             let photo = review.photo.toString('utf8')
             photo = photo.replace('upload/', '/')
+            console.log(photo);
             res.send(review_update_template(review_id, review.title, review.category, review.content, review.price, review.product_name, review.brand, photo))
         } else {
             res.send(review_update_no_photo_template(review_id, review.title, review.category, review.content, review.price, review.product_name, review.brand))
@@ -338,17 +367,34 @@ app.post('/:review_id/update_process', upload.single('photo'), function(req, res
         }
     } else {
         if (req.file) {
-            if (!body.photo_delete) {
+            if (!body.photo_delete && body.img_src) {
                 res.send("<script>alert('사진을 먼저 지워주세요.');</script>")
             }
             photo = req.file.path;
         } else {
-            photo = body.img_src;
-            if (Array.isArray(photo)) photo = photo[0];
-            console.log(photo);
-            photo = photo.split('/');
-            photo = '/upload/' + photo[photo.length - 2] + '/' + photo[photo.length - 1];
-            console.log(photo);
+            db.query(`UPDATE review SET title=?, category=?, content=?, price=?, product_name=?, brand=? WHERE review_number=?`,
+            [title, category, content, price, product_name, brand, review_id],
+            function(err, result) {
+                if (err) {
+                    res.send(err);
+                    throw err;
+                }
+                console.log(result);
+                res.redirect(`/review/${review_id}`);
+            })
+            return;
+
+            // if (body.img_src) {
+            //     photo = body.img_src;
+            //     if (Array.isArray(photo)) photo = photo[0];
+            //     console.log(photo);
+            //     photo = photo.split('/');
+            //     photo = '/upload/' + photo[photo.length - 2] + '/' + photo[photo.length - 1];
+            //     console.log(photo);
+            // } else {
+            //     photo = null;
+            // }
+            
         }
     }
 
@@ -366,9 +412,39 @@ app.post('/:review_id/update_process', upload.single('photo'), function(req, res
         if (err) {
             res.send(err);
             throw err;
-        }
+            }
         console.log(result);
         res.redirect(`/review/${review_id}`);
+    })
+})
+
+app.post('/delete', function(req, res) {
+    const body = req.body;
+    const review_id = body.review_number;
+
+    db.query(`SELECT photo FROM review WHERE review_number=?`,
+    [review_id],
+    function(err, result) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+
+        const photo = result[0].photo;
+        console.log(photo);
+
+        db.query(`DELETE FROM review WHERE review_number=?`,
+        [review_id],
+        function(err2, result) {
+            if (err2) {
+                res.send(err2);
+                throw err2;
+            }
+            if (photo) {
+                fs.unlinkSync('./' + photo);
+            }
+            res.redirect('/review');
+        })
     })
 })
 
@@ -399,18 +475,39 @@ app.get('/:review_id', function(req, res) {
                 const cdate = String(comments[i].date).split(" ");
                 var formating_cdate = cdate[3] + "-" + cdate[1] + "-" + cdate[2] + "-" + cdate[4];
 
-                comment_list += `
-                    <p>${comments[i].content}</p>
-                    <p>${comments[i].user_id}</p>
-                    <p>${formating_cdate}</p>
-                `
+                if (req.session.user_id === comments[i].user_id) {
+                    comment_list += `
+                        <p>${comments[i].content}</p>
+                        <p>${comments[i].user_id}</p>
+                        <p>${formating_cdate}</p>
+                        <form action="/review/comment_update/${comments[i].review_comment_number}" method="post">
+                            <input type="hidden" name="review_number" value="${review_id}">
+                            <p><input type="submit" value="수정"></p>
+                        </form>
+                        <form action="/review/comment_delete/" method="post">
+                            <input type="hidden" name="comment_number" value="${comments[i].review_comment_number}">
+                            <input type="hidden" name="review_number" value="${review_id}">
+                            <p><input type="submit" value="삭제"></p>
+                        </form>
+                    `;
+                } else {
+                    comment_list += `
+                        <p>${comments[i].content}</p>
+                        <p>${comments[i].user_id}</p>
+                        <p>${formating_cdate}</p>
+                    `;
+                }
+                
             }
             
             let auth_btn = ``;
             if (req.session.user_id === review.user_id) {
                 auth_btn += `
                 <p><input type="submit" value="수정" onClick="location.href='/review/update/${review_id}/'"></p>
-                <p><input type="submit" value="삭제" onClick="location.href='/review/delete/${review_id}/'"></p>    
+                <form action="/review/delete/" method="post">
+                    <input type="hidden" name="review_number" value="${review_id}">
+                    <p><input type="submit" value="삭제"></p>    
+                </form>
                 `
             }
 
@@ -441,6 +538,117 @@ app.post('/write_comment/', function(req, res) {
         console.log(comment);
         res.redirect(`/review/${review_number}`);
     });
+})
+
+app.post('/comment_update/:comment_number', function(req, res) {
+    const comment_number = req.params.comment_number;
+    const body = req.body;
+    const review_id = body.review_number;
+
+    let comment_list = ``;
+
+    db.query(`SELECT * FROM review WHERE review_number = ?`, 
+    [review_id],
+    function(err, result) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+        db.query(`SELECT * FROM review_comment WHERE review_number = ?`,
+        [review_id],
+        function(err2, comments) {
+            if (err2) {
+                res.send(err2);
+                throw err2;
+            }
+            const review = result[0];
+
+            const rdate = String(review.date).split(" ");
+            var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
+
+            for(var i = 0; i < comments.length; i++) {
+                const cdate = String(comments[i].date).split(" ");
+                var formating_cdate = cdate[3] + "-" + cdate[1] + "-" + cdate[2] + "-" + cdate[4];
+
+                if (req.session.user_id === comments[i].user_id) {
+                    if (comment_number == comments[i].review_comment_number) {
+                        comment_list += `
+                            <form action="/review/comment_update_process" method="post">
+                                <input type="hidden" name="comment_number" value="${comment_number}">
+                                <input type="hidden" name="review_number" value="${review_id}">
+                                <p><textarea name="content">${comments[i].content}</textarea></p>
+                                <p><input type="submit" value="수정완료"></p>
+                            </form>
+                        `;
+                    } else {
+                        comment_list += `
+                        <p>${comments[i].content}</p>
+                        <p>${comments[i].user_id}</p>
+                        <p>${formating_cdate}</p>\
+                        `;
+                    }
+                } else {
+                    comment_list += `
+                        <p>${comments[i].content}</p>
+                        <p>${comments[i].user_id}</p>
+                        <p>${formating_cdate}</p>
+                    `;
+                }
+            }
+            
+            // let auth_btn = ``;
+            // if (req.session.user_id === review.user_id) {
+            //     auth_btn += `
+            //     <p><input type="submit" value="수정" onClick="location.href='/review/update/${review_id}/'"></p>
+            //     <form action="/review/delete/" method="post">
+            //         <input type="hidden" name="review_number" value="${review_id}">
+            //         <p><input type="submit" value="삭제"></p>    
+            //     </form>
+            //     `
+            // }
+
+            if (review.photo !== null) {
+                let photo = review.photo.toString('utf8')
+                photo = photo.replace('upload/', '/')
+                res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list, ``));
+            } else {
+                res.send(review_detail_no_photo_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, review.user_id, comment_list, ``));
+            }
+        });
+    })
+})
+
+app.post('/comment_update_process', function(req, res) {
+    const body = req.body;
+    const comment_number = body.comment_number;
+    const review_number = body.review_number;
+    const content = body.content;
+
+    db.query(`UPDATE review_comment SET content=? WHERE review_comment_number=?`,
+    [content, comment_number],
+    function(err, result) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+        res.redirect(`/review/${review_number}`);
+    })
+})
+
+app.post('/comment_delete', function(req, res){
+    const body = req.body;
+    const comment_number = body.comment_number;
+    const review_number = body.review_number;
+
+    db.query(`DELETE FROM review_comment WHERE review_comment_number=?`,
+    [comment_number],
+    function(err, result) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+        res.redirect(`/review/${review_number}`);
+    })
 })
 
 // db.query(`SELECT * FROM review`, 
