@@ -49,6 +49,7 @@ function main_template(marker_list,search_name){
             kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
             kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
         }
+
         function makeOverListener(map, marker, infowindow) {
             return function() {
                 infowindow.open(map, marker);
@@ -67,12 +68,11 @@ function main_template(marker_list,search_name){
 }
 app.get('/', function (req, res) {
     var marker_list=``;
-    db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name; `,
+    db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name ORDER BY store.store_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일');`,
     function(err,stores){
         if (err) throw err;
         else{
             var H=" ";
-            var P=" ";
             var D=" ";
             var pet_list=``;
             var day_list=``;
@@ -86,19 +86,18 @@ app.get('/', function (req, res) {
                     pet_list+=`${stores[i].pet},`;
                     day_list+=`${stores[i].day}: ${stores[i].start_time}~${stores[i].end_time} <br>`;
                     H=stores[i].store_name;
-                    P=stores[i].pet;
                     D=stores[i].day;
                 }
                 else{
-                    if(P!=stores[i].pet){
-                        pet_list+=`${stores[i].pet}, `
-                        P=stores[i].pet;
-                    }
-                    if(D!=stores[i].day && count==0){
-                        day_list+=`${stores[i].day}: ${stores[i].start_time}~${stores[i].end_time} <br>`;
+                    if(D==stores[i].day){
+                        if(count==0){
+                            pet_list+=`${stores[i].pet}, `
+                        }
                     }
                     else{
+                        day_list+=`${stores[i].day}: ${stores[i].start_time}~${stores[i].end_time} <br>`;
                         count++;
+                        D=stores[i].day;
                     }
                 }
                 if(H!=stores[i+1].store_name){
@@ -123,12 +122,11 @@ app.get('/search/', function (req, res) {
     const keyword=req.query.search_name;
     var marker_list=``;
     console.log(keyword);
-    db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name WHERE store.store_name LIKE ?`,['%'+keyword+'%'],
+    db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name WHERE store.store_name LIKE ? ORDER BY store.store_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일')`,['%'+keyword+'%'],
     function(err,stores){
         if (err) throw err;
         if(Object.keys(stores).length>0){
             var H=" ";
-            var P=" ";
             var D=" ";
             var pet_list=``;
             var day_list=``;
@@ -142,19 +140,18 @@ app.get('/search/', function (req, res) {
                     pet_list+=`${stores[i].pet},`;
                     day_list+=`${stores[i].day}: ${stores[i].start_time}~${stores[i].end_time} <br>`;
                     H=stores[i].store_name;
-                    P=stores[i].pet;
                     D=stores[i].day;
                 }
                 else{
-                    if(P!=stores[i].pet){
-                        pet_list+=`${stores[i].pet}, `
-                        P=stores[i].pet;
-                    }
-                    if(D!=stores[i].day && count==0){
-                        day_list+=`${stores[i].day}: ${stores[i].start_time}~${stores[i].end_time} <br>`;
+                    if(D==stores[i].day){
+                        if(count==0){
+                            pet_list+=`${stores[i].pet}, `
+                        }
                     }
                     else{
+                        day_list+=`${stores[i].day}: ${stores[i].start_time}~${stores[i].end_time} <br>`;
                         count++;
+                        D=stores[i].day;
                     }
                 }
                 if(H!=stores[i+1].store_name){
