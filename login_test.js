@@ -16,6 +16,7 @@ const mypage_router=require('./mypage');
 const hospital_router=require('./hospital');
 const store_router=require('./store');
 const board_router=require('./board_and_comment');
+const care_service_router = require('./create_care_service');
 
 app.use(express.static('upload'));
 
@@ -156,6 +157,7 @@ app.get('/welcome',(req,res)=>{
             <a href="/hospital">hospital</a>
             <a href="/store">store</a>
             <a href="/review">review</a>
+            <a href="/create_care_service">care service</a>
         `;
         res.send(output);
         console.log(req.session.user_id);
@@ -176,6 +178,8 @@ app.use('/mypage',mypage_router)
 app.use('/board',board_router);
 app.use('/hospital',hospital_router);
 app.use('/store',store_router);
+app.use('/create_care_service',care_service_router);
+
 app.get('/logout',(req,res)=>{
     if(req.session.id){
         req.session.destroy(function(err){
