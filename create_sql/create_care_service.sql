@@ -1,6 +1,7 @@
 CREATE TABLE `care_service` (
-    `mail_number` INT NOT NULL,
+    `mail_number` INT AUTO_INCREMENT,
     `owner_id` varchar(15) NOT NULL,
+    `name` varchar(10) NOT NULL,
     `mail_category` varchar(20) NOT NULL,
     `account` varchar(20),
     PRIMARY KEY(`mail_number`, `owner_id`),

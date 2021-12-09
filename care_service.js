@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const smtpTransport = require('nodemailer-smtp-transport');
+const smtpTransport = require('nodemailer-smtp-pool');
 //const cron = require('node-cron');
 
 var mysql = require('mysql');
@@ -52,7 +52,7 @@ var query2 = 'SELECT email FROM user WHERE id IN (SELECT owner_id FROM care_serv
     if (error) throw error;
     else {
       for(var i = 0; i < rows1.length; i++){
-        a[i] = rows1[i].owner_id;
+        a[i] = rows1[i].name;
         b[i] = rows1[i].mail_category;
       }
     }
