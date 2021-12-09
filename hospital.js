@@ -87,12 +87,11 @@ function main_template(marker_list,search_name){
 }
 app.get('/', function (req, res) {
     var marker_list=``;
-    db.query(`SELECT * FROM hospital LEFT JOIN hospital_pet ON hospital.hospital_name=hospital_pet.hospital_name LEFT JOIN hospital_time ON hospital.hospital_name=hospital_time.hospital_name; `,
+    db.query(`SELECT * FROM hospital LEFT JOIN hospital_pet ON hospital.hospital_name=hospital_pet.hospital_name LEFT JOIN hospital_time ON hospital.hospital_name=hospital_time.hospital_name ORDER BY hospital.hospital_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일'); `,
     function(err,hospitals){
         if (err) throw err;
         else{
             var H=" ";
-            var P=" ";
             var D=" ";
             var pet_list=``;
             var day_list=``;
@@ -107,19 +106,18 @@ app.get('/', function (req, res) {
                     pet_list+=`${hospitals[i].pet},`;
                     day_list+=`${hospitals[i].day}: ${hospitals[i].start_time}~${hospitals[i].end_time} <br>`;
                     H=hospitals[i].hospital_name;
-                    P=hospitals[i].pet;
                     D=hospitals[i].day;
                 }
                 else{
-                    if(P!=hospitals[i].pet){
-                        pet_list+=`${hospitals[i].pet}, `
-                        P=hospitals[i].pet;
-                    }
-                    if(D!=hospitals[i].day && count==0){
-                        day_list+=`${hospitals[i].day}: ${hospitals[i].start_time}~${hospitals[i].end_time} <br>`;
+                    if(D==hospitals[i].day){
+                        if(count==0){
+                            pet_list+=`${hospitals[i].pet}, `
+                        }
                     }
                     else{
+                        day_list+=`${hospitals[i].day}: ${hospitals[i].start_time}~${hospitals[i].end_time} <br>`;
                         count++;
+                        D=hospitals[i].day;
                     }
                 }
                 if(H!=hospitals[i+1].hospital_name){
@@ -144,11 +142,10 @@ app.get('/search/',function(req,res){
     const keyword=req.query.search_name;
     var marker_list=``;
     console.log(keyword);
-    db.query(`SELECT * FROM hospital LEFT JOIN hospital_pet ON hospital.hospital_name=hospital_pet.hospital_name LEFT JOIN hospital_time ON hospital.hospital_name=hospital_time.hospital_name WHERE hospital.hospital_name LIKE ?`,['%'+keyword+'%'],function(err,hospitals){
+    db.query(`SELECT * FROM hospital LEFT JOIN hospital_pet ON hospital.hospital_name=hospital_pet.hospital_name LEFT JOIN hospital_time ON hospital.hospital_name=hospital_time.hospital_name WHERE hospital.hospital_name LIKE ? ORDER BY hospital.hospital_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일')`,['%'+keyword+'%'],function(err,hospitals){
         if(err)throw err;
         if(Object.keys(hospitals).length>0){
             var H=" ";
-            var P=" ";
             var D=" ";
             var pet_list=``;
             var day_list=``;
@@ -163,20 +160,19 @@ app.get('/search/',function(req,res){
                     pet_list+=`${hospitals[i].pet},`;
                     day_list+=`${hospitals[i].day}: ${hospitals[i].start_time}~${hospitals[i].end_time} <br>`;
                     H=hospitals[i].hospital_name;
-                    P=hospitals[i].pet;
                     D=hospitals[i].day;
                 }
                 else{
-                    if(P!=hospitals[i].pet){
-                        pet_list+=`${hospitals[i].pet}, `
-                        P=hospitals[i].pet;
-                    }
-                    if(D!=hospitals[i].day && count==0){
-                        day_list+=`${hospitals[i].day}: ${hospitals[i].start_time}~${hospitals[i].end_time} <br>`;
+                    if(D==hospitals[i].day){
+                        if(count==0){
+                            pet_list+=`${hospitals[i].pet}, `
+                        }
                     }
                     else{
+                        day_list+=`${hospitals[i].day}: ${hospitals[i].start_time}~${hospitals[i].end_time} <br>`;
                         count++;
-                    }
+                        D=hospitals[i].day;
+                    }     
                 }
                 if(H!=hospitals[i+1].hospital_name){
                     marker_list+=`content:'<div><h6>${hospitals[i].hospital_name}<br>${pet_list}<br>${day_list}</h6></div>'},
