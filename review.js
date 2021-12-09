@@ -390,6 +390,36 @@ app.post('/:review_id/update_process', upload.single('photo'), function(req, res
     })
 })
 
+app.post('/delete', function(req, res) {
+    const body = req.body;
+    const review_id = body.review_number;
+
+    db.query(`SELECT photo FROM review WHERE review_number=?`,
+    [review_id],
+    function(err, result) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+
+        const photo = result[0].photo;
+        console.log(photo);
+
+        db.query(`DELETE FROM review WHERE review_number=?`,
+        [review_id],
+        function(err2, result) {
+            if (err2) {
+                res.send(err2);
+                throw err2;
+            }
+            if (photo) {
+                fs.unlinkSync('./' + photo);
+            }
+            res.redirect('/review');
+        })
+    })
+})
+
 app.get('/:review_id', function(req, res) {
     const review_id = req.params.review_id;
     let comment_list = ``;
@@ -428,7 +458,10 @@ app.get('/:review_id', function(req, res) {
             if (req.session.user_id === review.user_id) {
                 auth_btn += `
                 <p><input type="submit" value="수정" onClick="location.href='/review/update/${review_id}/'"></p>
-                <p><input type="submit" value="삭제" onClick="location.href='/review/delete/${review_id}/'"></p>    
+                <form action="/review/delete/" method="post">
+                    <input type="hidden" name="review_number" value="${review_id}">
+                    <p><input type="submit" value="삭제"></p>    
+                </form>
                 `
             }
 
