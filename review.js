@@ -20,7 +20,7 @@ const upload = multer({
 });
 
 
-function main_template(review_list) {
+function main_template(review_list, search_title) {
     return `
     <!doctype html>
     <html>
@@ -31,6 +31,10 @@ function main_template(review_list) {
         <body>
             <h1>Review</h1>
             <a href="/review/write_review/">리뷰 작성하기</a>
+            <form action="/review/search?title=${search_title}">
+                <p><input type="text" name="search_title" placeholder="검색어를 입력하세요.">
+                <input type="submit" value="검색">
+            </form>
             ${review_list}
         </body>
     </html>
@@ -249,6 +253,30 @@ app.get('/', function(req, res) {
         for (var i = 0; i < reviews.length; i++) {
             review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a></p>`;
         }
+        res.send(main_template(review_list));
+    })
+})
+
+app.get('/search', function(req, res) {
+    const keyword = req.query.search_title;
+    var review_list = ``;
+
+    db.query(`SELECT * FROM review WHERE title LIKE ?`,
+    ['%' + keyword + '%'],
+    function(err, reviews) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+
+        if (reviews.length > 0) {
+            for (var i = 0; i < reviews.length; i++) {
+                review_list = `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a></p>`;
+            }
+        } else {
+            reivew_list = `<p> 검색 결과가 없습니다. </p>`;
+        }
+
         res.send(main_template(review_list));
     })
 })
