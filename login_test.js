@@ -17,16 +17,13 @@ const hospital_router=require('./hospital');
 const store_router=require('./store');
 const board_router=require('./board_and_comment');
 
+app.use(express.static('upload'));
+
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 
 var db = require('./db');
-/*
-var dbOptions= require('./dbOptions');
 
-const connection = mysql.createConnection(dbOptions);
-const sessionStore=new MySQLStore({},connection);
-*/
 
 app.use(session({
     key: 'LoginSession',
@@ -38,17 +35,11 @@ app.use(session({
         user: 'root',
         password: 'password',
         database: 'pit_a_pet'
-      })
-  }))
-/*
+    })
+}))
 
-app.use(session({
-    key: 'LoginSession',
-    secret: 'Secret',
-    resave: false,
-    saveUninitialized: true,
-    store: sessionStore }));
-*/
+
+
 app.get('/login',(req,res)=> { 
     var output=`
         
