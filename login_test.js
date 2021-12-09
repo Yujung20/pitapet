@@ -32,8 +32,8 @@ app.use(session({
     saveUninitialized: true,
     store: new MySQLStore({
         host: 'localhost',
-        user: 'dldms',
-        password: 'password!',
+        user: 'root',
+        password: 'password',
         database: 'pit_a_pet'
     })
 }))
@@ -226,7 +226,7 @@ app.post('/find_id', function(req,res) {
                     const id = users[i].id;
                     res.send(id_found_template(id));
                 }
-                else if(email !== users[i].email) {
+                else if(email.length >=1 && email !== users[i].email) {
                     res.write("<script>alert('Cannot find the email or the email does not exist. Please try again.');location.href='/find_id';</script>");
                     break;
                 }
@@ -235,18 +235,13 @@ app.post('/find_id', function(req,res) {
                     break;
                 }
             }
-            else if(nickname.length < 1) {
-                res.write("<script>alert('Please input nickname.');location.href='/find_id';</script>");
-                break;
-            }
-            else if(nickname !== users[i].nickname) {
+            else if(nickname.length >= 1 && nickname !== users[i].nickname) {
                 res.write("<script>alert('Cannot find the nickname or the nickname does not exist. Please try again.');location.href='/find_id';</script>");
                 break;
             }
-            
-            else if(nickname !== users[i].nickname && email !== users[i].email) {
-                    res.write("<script>alert('Both nickname and email cannot find or does not exist. Please try again.');location.href='/find_id';</script>");
-                    break;
+            else if(nickname.length < 1) {
+                res.write("<script>alert('Please input nickname.');location.href='/find_id';</script>");
+                break;
             }
         }
     })
