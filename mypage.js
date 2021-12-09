@@ -22,8 +22,9 @@ app.use(session({
         user: 'root',
         password: 'password',
         database: 'pit_a_pet'
-      })
-  }))
+    })
+}))
+
 
 function main_template(nickname) {
     return `
@@ -41,6 +42,8 @@ function main_template(nickname) {
 
         <a href="/mypage/qna/"> 작성한 Q&A</a> 
         <a href="/mypage/review/"> 작성한 리뷰</a> 
+        <a href="/mypage/board/"> 작성한 커뮤니티</a> 
+
 
 
         <a href="/mypage/resign_check/"> 회원 탈퇴</a> 
@@ -177,7 +180,7 @@ function qna_template(question_list,answer_list){
         <body> 
         
         <p><h3>작성한 질문</h3>${question_list}</p>
-        <p><h3>작성한 댓글</h3>${answer_list}</p>
+        <p><h3>작성한 대답</h3>${answer_list}</p>
         
         </body>
     </html>
@@ -195,6 +198,23 @@ function review_template(review_list,comment_list){
         <body> 
         
         <p><h3>작성한 리뷰</h3>${review_list}</p>
+        <p><h3>작성한 댓글</h3>${comment_list}</p>
+        
+        </body>
+    </html>
+    `;
+}
+function board_template(board_list,comment_list){
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>Q&A</title>
+            <meta charset="utf-8">
+        </head>
+        <body> 
+        
+        <p><h3>작성한 커뮤니티</h3>${board_list}</p>
         <p><h3>작성한 답변</h3>${comment_list}</p>
         
         </body>
@@ -448,7 +468,7 @@ app.get('/animal_information/delete/', function(req, res) {
             throw err;
         }
  
-        res.redirect('/mypage/animal_information/');
+        res.redirect('/mypage/');
     });
 });
 
@@ -464,7 +484,6 @@ app.get('/qna/',function(req,res){
         } else {
             question_list = `작성한 질문이 없습니다.`;
         }
-        //res.send(qna_template(question_list));                       
 
     });
     db.query(`SELECT * FROM answer WHERE user_id=?`,[id], function(error, answers) {
@@ -473,12 +492,67 @@ app.get('/qna/',function(req,res){
                 answer_list += `<p><a href="/qna/question/${answers[i].question_number}">${answers[i].content}</a><p>`;
             }
         } else {
-            answer_list = `작성한 답변이 없습니다.`;
+            answer_list = `작성한 대답이 없습니다.`;
         }
         res.send(qna_template(question_list,answer_list));                       
 
     });    
 })
+
+app.get('/review/',function(req,res){
+    const id=req.session.user_id;
+    var review_list = ``;
+    var comment_list=``;
+    db.query(`SELECT * FROM review WHERE user_id=?`,[id], function(error, reviews) {
+        if (Object.keys(reviews).length > 0) {
+            for (var i = 0; i < Object.keys(reviews).length; i++) {
+                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a><p>`;
+            }
+        } else {
+            review_list = `작성한 리뷰가 없습니다.`;
+        }
+
+    });
+    db.query(`SELECT * FROM review_comment WHERE user_id=?`,[id], function(error, comments) {
+        if (Object.keys(comments).length > 0) {
+            for (var i = 0; i < Object.keys(comments).length; i++) {
+                comment_list += `<p><a href="/review/${comments[i].review_number}">${comments[i].content}</a><p>`;
+            }
+        } else {
+            comment_list = `작성한 댓글이 없습니다.`;
+        }
+        res.send(review_template(review_list,comment_list));                       
+
+    });    
+})
+
+app.get('/board/',function(req,res){
+    const id=req.session.user_id;
+    var board_list = ``;
+    var comment_list=``;
+    db.query(`SELECT * FROM board WHERE user_id=?`,[id], function(error, boards) {
+        if (Object.keys(boards).length > 0) {
+            for (var i = 0; i < Object.keys(boards).length; i++) {
+                board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}</a><p>`;
+            }
+        } else {
+            board_list = `작성한 커뮤니티가 없습니다.`;
+        }
+
+    });
+    db.query(`SELECT * FROM board_comment WHERE user_id=?`,[id], function(error, comments) {
+        if (Object.keys(comments).length > 0) {
+            for (var i = 0; i < Object.keys(comments).length; i++) {
+                comment_list += `<p><a href="/board/written/${comments[i].board_number}">${comments[i].content}</a><p>`;
+            }
+        } else {
+            comment_list = `작성한 답변이 없습니다.`;
+        }
+        res.send(board_template(board_list,comment_list));                       
+
+    });    
+})
+
 
 app.get('/resign_check/', function(req,res){
     res.end(resign_check());
@@ -528,9 +602,5 @@ app.get('/resign/', function(req, res) {
         res.redirect('/');
     });
 });
-
-
-
-
 
 module.exports = app;
