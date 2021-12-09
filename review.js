@@ -304,6 +304,7 @@ app.get('/update/:review_id/', function(req, res) {
         if (review.photo) {
             let photo = review.photo.toString('utf8')
             photo = photo.replace('upload/', '/')
+            console.log(photo);
             res.send(review_update_template(review_id, review.title, review.category, review.content, review.price, review.product_name, review.brand, photo))
         } else {
             res.send(review_update_no_photo_template(review_id, review.title, review.category, review.content, review.price, review.product_name, review.brand))
@@ -338,17 +339,34 @@ app.post('/:review_id/update_process', upload.single('photo'), function(req, res
         }
     } else {
         if (req.file) {
-            if (!body.photo_delete) {
+            if (!body.photo_delete && body.img_src) {
                 res.send("<script>alert('사진을 먼저 지워주세요.');</script>")
             }
             photo = req.file.path;
         } else {
-            photo = body.img_src;
-            if (Array.isArray(photo)) photo = photo[0];
-            console.log(photo);
-            photo = photo.split('/');
-            photo = '/upload/' + photo[photo.length - 2] + '/' + photo[photo.length - 1];
-            console.log(photo);
+            db.query(`UPDATE review SET title=?, category=?, content=?, price=?, product_name=?, brand=? WHERE review_number=?`,
+            [title, category, content, price, product_name, brand, review_id],
+            function(err, result) {
+                if (err) {
+                    res.send(err);
+                    throw err;
+                }
+                console.log(result);
+                res.redirect(`/review/${review_id}`);
+            })
+            return;
+
+            // if (body.img_src) {
+            //     photo = body.img_src;
+            //     if (Array.isArray(photo)) photo = photo[0];
+            //     console.log(photo);
+            //     photo = photo.split('/');
+            //     photo = '/upload/' + photo[photo.length - 2] + '/' + photo[photo.length - 1];
+            //     console.log(photo);
+            // } else {
+            //     photo = null;
+            // }
+            
         }
     }
 
@@ -366,7 +384,7 @@ app.post('/:review_id/update_process', upload.single('photo'), function(req, res
         if (err) {
             res.send(err);
             throw err;
-        }
+            }
         console.log(result);
         res.redirect(`/review/${review_id}`);
     })
