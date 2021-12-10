@@ -9,7 +9,7 @@ app.use(body_parser.urlencoded({ extended: false}));
 var db = require('./db');
 const path=require('path')
 
-function main_template(marker_list,search_name){
+function main_template(marker_list,info_list,search_name){
     return `
     <!doctype html>
     <html>
@@ -80,13 +80,31 @@ function main_template(marker_list,search_name){
             };
         }
 	</script>
+    <h6>
+    ${info_list}</h6>
         </body>
     </html>
     `;
     
 }
+function detail_template(detail_list){
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>detail info</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+        <h5>${detail_list}</h5>
+        <br>
+        </body>
+        </html>
+        `;
+}
 app.get('/', function (req, res) {
     var marker_list=``;
+    var info_list=``;
     db.query(`SELECT * FROM hospital LEFT JOIN hospital_pet ON hospital.hospital_name=hospital_pet.hospital_name LEFT JOIN hospital_time ON hospital.hospital_name=hospital_time.hospital_name ORDER BY hospital.hospital_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일'); `,
     function(err,hospitals){
         if (err) throw err;
@@ -123,6 +141,7 @@ app.get('/', function (req, res) {
                 if(H!=hospitals[i+1].hospital_name){
                     marker_list+=`content:'<div><h6>${hospitals[i].hospital_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                     `;
+                    info_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a><p>`;
                 if(i+1!=(hospitals).length){
                     pet_list=` `;
                     day_list=` `;
@@ -132,8 +151,8 @@ app.get('/', function (req, res) {
             }
             marker_list+=`content:'<div><h6>${hospitals[i].hospital_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                 `;
-            
-            res.end(main_template(marker_list));
+                info_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a><p>`;
+            res.end(main_template(marker_list,info_list));
         }
         
     });
@@ -141,6 +160,7 @@ app.get('/', function (req, res) {
 app.get('/search/',function(req,res){
     const keyword=req.query.search_name;
     var marker_list=``;
+    var info_list=``;
     console.log(keyword);
     db.query(`SELECT * FROM hospital LEFT JOIN hospital_pet ON hospital.hospital_name=hospital_pet.hospital_name LEFT JOIN hospital_time ON hospital.hospital_name=hospital_time.hospital_name WHERE hospital.hospital_name LIKE ? ORDER BY hospital.hospital_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일')`,['%'+keyword+'%'],function(err,hospitals){
         if(err)throw err;
@@ -177,6 +197,7 @@ app.get('/search/',function(req,res){
                 if(H!=hospitals[i+1].hospital_name){
                     marker_list+=`content:'<div><h6>${hospitals[i].hospital_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                     `;
+                    info_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a><p>`;
                 if(i+1!=(hospitals).length){
                     pet_list=` `;
                     day_list=` `;
@@ -186,14 +207,64 @@ app.get('/search/',function(req,res){
             }
             marker_list+=`content:'<div><h6>${hospitals[i].hospital_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                 `;
-            
+                info_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a><p>`;
             console.log(marker_list);
-            res.end(main_template(marker_list));
+            res.end(main_template(marker_list,info_list));
         }
         else {
             marker_list=``
-            res.end(main_template(marker_list));
+            info_list=``
+            res.end(main_template(marker_list,info_list));
         }
     })
+});
+app.get('/info/',function(req,res){
+    const info_id = url.parse(req.url, true).query.id;
+    console.log(info_id);
+    var detail_list=``;
+    if(info_id){
+        db.query(`SELECT * FROM hospital LEFT JOIN hospital_pet ON hospital.hospital_name=hospital_pet.hospital_name LEFT JOIN hospital_time ON hospital.hospital_name=hospital_time.hospital_name WHERE hospital.hospital_name = ? ORDER BY hospital.hospital_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일')`,[info_id],
+        function(error, hospitals){
+            if(error){
+                throw error;
+            }
+            var H=" ";
+            var D=" ";
+            var pet_list=``;
+            var day_list=``;
+            var count=0;
+            for (var i=0; i<Object.keys(hospitals).length-1;i++){
+                if(H!=hospitals[i].hospital_name){
+                    pet_list+=`${hospitals[i].pet},`;
+                    day_list+=`${hospitals[i].day}: ${hospitals[i].start_time}~${hospitals[i].end_time} <br>`;
+                    H=hospitals[i].hospital_name;
+                    D=hospitals[i].day;
+                }
+                else{
+                    if(D==hospitals[i].day){
+                        if(count==0){
+                            pet_list+=`${hospitals[i].pet}, `
+                        }
+                    }
+                    else{
+                        day_list+=`${hospitals[i].day}: ${hospitals[i].start_time}~${hospitals[i].end_time} <br>`;
+                        count++;
+                        D=hospitals[i].day;
+                    }
+                }
+                if(H!=hospitals[i+1].hospital_name){
+                    detail_list+=`<div><h6>${hospitals[i].hospital_name}<br>${pet_list}<br>${day_list}</h6></div>`;
+                if(i+1!=(hospitals).length){
+                    pet_list=` `;
+                    day_list=` `;
+                    count=0;
+                }
+                }
+            }
+            detail_list+=`<div><h6>${hospitals[i].hospital_name}<br>${pet_list}<br>${day_list}</h6></div>`;
+            console.log(hospitals);
+            res.send(detail_template(detail_list));
+        })
+    }
 });
 module.exports = app;

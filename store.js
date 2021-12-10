@@ -189,7 +189,7 @@ app.get('/search/', function (req, res) {
                 `;
             info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
             console.log(marker_list);
-            res.end(main_template(marker_list));
+            res.end(main_template(marker_list,info_list));
         }
         else {
             marker_list=``
@@ -247,5 +247,5 @@ app.get('/info/',function(req,res){
             res.send(detail_template(detail_list));
         })
     }
-})
+});
 module.exports=app;
