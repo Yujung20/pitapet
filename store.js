@@ -121,7 +121,7 @@ app.get('/', function (req, res) {
                 if(H!=stores[i+1].store_name){
                     marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                     `;
-                    info_list+=`<p><a href="/hospital/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
+                    info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
                 if(i+1!=(stores).length){
                     pet_list=` `;
                     day_list=` `;
@@ -131,7 +131,7 @@ app.get('/', function (req, res) {
             }
             marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                 `;
-            info_list+=`<p><a href="/hospital/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
+            info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
             res.end(main_template(marker_list,info_list));
         }
         
@@ -177,7 +177,7 @@ app.get('/search/', function (req, res) {
                 if(H!=stores[i+1].store_name){
                     marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                     `;
-                    info_list+=`<p><a href="/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
+                    info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
                 if(i+1!=(stores).length){
                     pet_list=` `;
                     day_list=` `;
@@ -187,7 +187,7 @@ app.get('/search/', function (req, res) {
             }
             marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                 `;
-            info_list+=`<p><a href="/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
+            info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
             console.log(marker_list);
             res.end(main_template(marker_list));
         }
