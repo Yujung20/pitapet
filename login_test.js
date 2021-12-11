@@ -211,50 +211,43 @@ app.get('/find_id', (req, res)=>{
 })
 
 app.post('/find_id', function(req,res) {
-    var written = req.body;
-    var nickname = written.nickname;
-    var email = written.email;
-
-    db.query(`SELECT * FROM user WHERE email = ? `,[email],
-    function(error, users) {
+    const written = req.body;
+    const nickname = written.nickname;
+    const email = written.email;
+    db.query(`SELECT * FROM user WHERE nickname = ? AND email = ? `,[nickname, email], function(error, users) {
         if(error) {
             throw error;
         }
-        
-        else {
-        for (var i = 0; i < Object.keys(users).length; i++) {
-            if(nickname === users[i].nickname) {
-                if(email === users[i].email) {
-                    const id = users[i].id;
-                    res.send(id_found_template(id));
+        else if (users.length > 0) {
+            for (var i = 0; i < Object.keys(users).length; i++) {
+                if(nickname === users[i].nickname) {
+                    if(email === users[i].email) {
+                        const id = users[i].id;
+                        res.send(id_found_template(id));
+                    }
+                }
+                else if(email.length >=1 && email !== users[i].email && nickname.length >= 1) {
+                    res.write("<script>alert('Cannot find the email or the email does not exist. Please try again.');location.href='/find_id';</script>");
+                    break;
+                }
+
+                else if(nickname.length >= 1 && nickname !== users[i].nickname && email.length >=1) {
+                    res.write("<script>alert('Cannot find the nickname or the nickname does not exist. Please try again.');location.href='/find_id';</script>");
+                    break;
                 }
             }
-
-            if(email.length >=1 && email !== users[i].email) {
-                res.write("<script>alert('Cannot find the email or the email does not exist. Please try again.');location.href='/find_id';</script>");
-                break;
-            }
-
-            if(email.length < 1 && email !== users[i].email) {
-                res.write("<script>alert('Please input email.');location.href='/find_id';</script>");
-                break;
-            }
-
-            if(nickname.length >= 1 && nickname !== users[i].nickname) {
-                res.write("<script>alert('Cannot find the nickname or the nickname does not exist. Please try again.');location.href='/find_id';</script>");
-                break;
-            }
-
-            if(nickname.length < 1 && nickname !== users[i].nickname) {
-                res.write("<script>alert('Please input nickname.');location.href='/find_id';</script>");
-                break;
-            }
         }
-    }
+        else {
+            if(email.length < 1) {
+                res.write("<script>alert('Please input email.');location.href='/find_id';</script>");
+            }
+
+            if(nickname.length < 1) {
+                res.write("<script>alert('Please input nickname.');location.href='/find_id';</script>");
+            }
+        }     
     })
 })
-
-
 
 db.query(`SELECT * FROM user`, function(error, users) {
     console.log(users);
