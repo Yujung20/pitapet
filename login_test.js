@@ -282,7 +282,6 @@ app.post('/find_password', async (req, res, next) => {
     const email = written.email;
 
     var find_password_user_email;
-    var token;
 
     db.query(`SELECT * FROM user`, function(error, rows) {
         if (error) throw error;
@@ -292,15 +291,6 @@ app.post('/find_password', async (req, res, next) => {
                 find_password_user_email = rows[i].email;
             }
           }
-        }
-
-        console.log(find_password_user_email);
-        
-        if (find_password_user_email) {
-            console.log("True");
-        }
-        else {
-            console.log("False");
         }
 
         if (find_password_user_email) {
