@@ -128,7 +128,7 @@ function review_create_template() {
                     <option value="기타">기타</option>
                 </select></p>
                 <p><textarea name="content" placeholder="내용"></textarea></p>
-                <p><input type="text" name="price" placeholder="가격" onkeyup="numberWithCommas(this.vale)"></p>
+                <p><input type="number" min="0" step="1" name="price" placeholder="가격" onkeyup="numberWithCommas(this.vale)"></p>
                 <p><input type="text" name="product_name" placeholder="제품명"></p>
                 <p><input type="text" name="brand" placeholder="브랜드명"></p>
                 <p><input type="file" name="photo"></p>
