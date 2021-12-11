@@ -7,7 +7,6 @@ CREATE TABLE `store_pet`(
 INSERT INTO `store_pet` VALUES ('개', '피알디');
 INSERT INTO `store_pet` VALUES ('개', '모블러');
 INSERT INTO `store_pet` VALUES ('개', '강아지카페 카페개네');
-INSERT INTO `store_pet` VALUES ('개', '멍박스24 애견셀프목욕 & 무인카페');
 INSERT INTO `store_pet` VALUES ('개', '카페 평행선');
 INSERT INTO `store_pet` VALUES ('개', '행복하게키울고양');
 INSERT INTO `store_pet` VALUES ('개', 'GODOG');
@@ -20,7 +19,6 @@ INSERT INTO `store_pet` VALUES ('기니피그', '시절인연');
 INSERT INTO `store_pet` VALUES ('패럿', '시절인연');
 INSERT INTO `store_pet` VALUES ('고슴도치', '시절인연');
 INSERT INTO `store_pet` VALUES ('개', '빌라드코스테스');
-INSERT INTO `store_pet` VALUES ('개', '문화식당 성신여대점');
 INSERT INTO `store_pet` VALUES ('개', '카레');
 INSERT INTO `store_pet` VALUES ('개', '문화식당 성북동점');
 INSERT INTO `store_pet` VALUES ('개', '그루밍솔');
