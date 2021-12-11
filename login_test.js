@@ -81,15 +81,137 @@ function main_template(){
             <meta charset="utf-8">
         </head>
         <body>
-            <a href="/login">login</a>
-            <a href="/information">information</a>
-            <a href="/hospital">hospital</a>
-            <a href="/store">store</a>
-            <a href="/signup">sign up</a>
+                <div class="section">
+                <div class="logo">
+                    <a href="/"> Pit-a_Pet</a>
+                </div>
+                <div class="nav">
+                    <ul>
+                        <li> <a href="/login">Q&A</a> </li>
+                        <li> <a href="/login">리뷰</a> </li>
+                        <li> <a href="/information">기본 정보</a> </li>
+                        <li> <a href="/hospital">동반 정보</a> 
+                        <ul>
+                            <li> <a href="/hospital">병원</a> </li>
+                            <li> <a href="/store">매장</a> </li>
+                        </ul>
+                        <li> <a href="/login">커뮤니티</a> </li>
+                    </ul>
+                </div>
+                <div class="profile">
+                    <ul>
+                        <li> <a href="/login">login</a> </li>
+                        <li> <a href="/signup">sign up</a> </li>
+                    </ul>
+                </div>
+            </div>
+            <h1>------------------</h1>
+            <div class="container">
+                <div class="home_qna">
+                    <a href="/login">Q&A</a>
+                    <h6> 로그인을 해주세요.</h6>
+                    <h1>------------------</h1>
+                </div>
+
+                <div class="home_review">
+                    <a href="/login">리뷰</a>
+                    <h6> 로그인을 해주세요.</h6>
+                    <h1>-------------------</h1>
+                </div>
+
+                <div class="home_comunity">
+                    <a href="/login">커뮤니티</a>
+                    <h6> 로그인을 해주세요.</h6>
+                    <h1>-------------------</h1>
+                </div>
+
+                <div class="home_hospital">
+                    <a href="/hospital">병원</a>
+                    ${H_info_list}
+                    <h1>---------------------</h1>
+                </div>
+
+                <div class="home_store">
+                    <a href="/store">매장</a>
+                    ${S_info_list}
+                </div>
+            </div>
         </body>
     </html>
     `;
 }
+
+function log_main_template(Q_info_list,R_info_list,C_info_list,H_info_list,S_info_list){
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>main</title>
+            <meta charset="utf-8">
+            <link rel="stylesheet" href="navigation.css"/>
+            <style>
+            
+            </style>
+        </head>
+        <body>
+        <div class="section">
+                    <div class="logo">
+                        <a href="/"> Pit-a_Pet</a>
+                    </div>
+                    <div class="nav">
+                        <ul>
+                            <li> <a href="/qna">Q&A</a> </li>
+                            <li> <a href="/review">리뷰</a> </li>
+                            <li> <a href="/information">기본 정보</a> </li>
+                            <li> <a href="/hospital">동반 정보</a> 
+                            <ul>
+                                <li> <a href="/hospital">병원</a> </li>
+                                <li> <a href="/store">매장</a> </li>
+                            </ul>
+                            <li> <a href="/board">커뮤니티</a> </li>
+                        </ul>
+                    </div>
+                    <div class="profile">
+                        <ul>
+                            <li> <a href="/logout">로그아웃</a> </li>
+                            <li> <a href="/mypage">마이페이지</a> </li>
+                        </ul>
+                    </div>
+                </div>
+                <h1>------------------</h1>
+                <div class="container">
+                    <div class="home_qna">
+                        <a href="/qna">Q&A</a>
+                        ${Q_info_list}
+                        <h1>------------------</h1>
+                    </div>
+
+                    <div class="home_review">
+                        <a href="/review">리뷰</a>
+                        ${R_info_list}
+                        <h1>-------------------</h1>
+                    </div>
+
+                    <div class="home_comunity">
+                        <a href="/board">커뮤니티</a>
+                        ${C_info_list}
+                        <h1>-------------------</h1>
+                    </div>
+
+                    <div class="home_hospital">
+                        <a href="/hospital">병원</a>
+                        ${H_info_list}
+                        <h1>---------------------</h1>
+                    </div>
+
+                    <div class="home_store">
+                        <a href="/store">매장</a>
+                        ${S_info_list}
+                    </div>
+                </div>
+        </body>
+        `;
+    }
 
 function id_found_template(found_id){
     return `
@@ -109,7 +231,87 @@ function id_found_template(found_id){
 }
 
 app.get('/', function (req, res, next) {
-    res.end(main_template());
+
+    var H_info_list=``;
+    db.query(`SELECT * FROM hospital LEFT JOIN hospital_pet ON hospital.hospital_name=hospital_pet.hospital_name LEFT JOIN hospital_time ON hospital.hospital_name=hospital_time.hospital_name ORDER BY hospital.hospital_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일'); `,
+    function(err,hospitals){
+        if (err) throw err;
+        else{
+            var H_H=" ";
+            var H_D=" ";
+            var H_pet_list=``;
+            var H_count=0;
+            var H_num1=0;
+            for (var i=0; H_num1<4;i++){
+                if(H_H!=hospitals[i].hospital_name){
+                    H_pet_list+=`${hospitals[i].pet},`;
+                    H_H=hospitals[i].hospital_name;
+                    H_D=hospitals[i].day;
+                }
+                else{
+                    if(H_D==hospitals[i].day){
+                        if(H_count==0){
+                            H_pet_list+=`${hospitals[i].pet}, `
+                        }
+                    }
+                    else{
+                        H_count++;
+                        H_D=hospitals[i].day;
+                    }
+                }
+                if(H_H!=hospitals[i+1].hospital_name){
+                    H_info_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}----------${H_pet_list}</a><p>`;
+                    H_num1++;
+                if(i+1!=(hospitals).length){
+                    H_pet_list=` `;
+                    H_day_list=` `;
+                    H_count=0;
+                }
+                }
+            }
+            H_info_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}----------${H_pet_list}</a><p>`;
+        }
+    });
+    var S_info_list=``;
+    db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name ORDER BY store.store_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일'); `,
+    function(err,stores){
+        if (err) throw err;
+        else{
+            var S_H=" ";
+            var S_D=" ";
+            var S_pet_list=``;
+            var S_count=0;
+            var S_num1=0;
+            for (var i=0; S_num1<4;i++){
+                if(S_H!=stores[i].store_name){
+                    S_pet_list+=`${stores[i].pet},`;
+                    S_H=stores[i].store_name;
+                    S_D=stores[i].day;
+                }
+                else{
+                    if(S_D==stores[i].day){
+                        if(S_count==0){
+                            S_pet_list+=`${stores[i].pet}, `
+                        }
+                    }
+                    else{
+                        S_count++;
+                        S_D=stores[i].day;
+                    }
+                }
+                if(S_H!=stores[i+1].store_name){
+                    S_info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}----------${S_pet_list}</a><p>`;
+                    S_num1++;
+                if(i+1!=(stores).length){
+                    S_pet_list=` `;
+                    S_day_list=` `;
+                    S_count=0;
+                }
+                }
+            }
+            S_info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}----------${S_pet_list}</a><p>`;
+        }res.end(main_template(H_info_list,S_info_list));
+    });
 });
 
 
@@ -143,25 +345,101 @@ app.post('/login', function(req, res) {
         });
 });
 
-app.get('/welcome',(req,res)=>{
-    var output="";
+app.get('/welcome',function(req,res){
     if(req.session.user_id)
     {   
-        // button add
-        output+=`
-            <h1>Welcome</h1>
-            <a href="/logout">logout</a>
-            <a href="/register">register</a>
-            <a href="/qna">QnA</a>
-            <a href="/information">information</a>
-            <a href="/mypage">mypage</a>
-            <a href="/board">board</a>
-            <a href="/hospital">hospital</a>
-            <a href="/store">store</a>
-            <a href="/review">review</a>
-            <a href="/create_care_service">care service</a>
-        `;
-        res.send(output);
+    var Q_info_list=``;
+    // db.query(`SELECT * FROM question`, function(error, questions) {
+    //     if (Object.keys(questions).length > 0) {
+    //         for (var i = 0; i < 5; i++) {
+    //             Q_info_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+    //         }
+    //     } else {
+    //         Q_info_list = `아직 올라온 질문이 없습니다.`;
+    //     }
+    // });
+    var R_info_list=``;
+    var C_info_list=``;
+    var H_info_list=``;
+    db.query(`SELECT * FROM hospital LEFT JOIN hospital_pet ON hospital.hospital_name=hospital_pet.hospital_name LEFT JOIN hospital_time ON hospital.hospital_name=hospital_time.hospital_name ORDER BY hospital.hospital_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일'); `,
+    function(err,hospitals){
+        if (err) throw err;
+        else{
+            var H_H=" ";
+            var H_D=" ";
+            var H_pet_list=``;
+            var H_count=0;
+            var H_num1=0;
+            for (var i=0; H_num1<4;i++){
+                if(H_H!=hospitals[i].hospital_name){
+                    H_pet_list+=`${hospitals[i].pet},`;
+                    H_H=hospitals[i].hospital_name;
+                    H_D=hospitals[i].day;
+                }
+                else{
+                    if(H_D==hospitals[i].day){
+                        if(H_count==0){
+                            H_pet_list+=`${hospitals[i].pet}, `
+                        }
+                    }
+                    else{
+                        H_count++;
+                        H_D=hospitals[i].day;
+                    }
+                }
+                if(H_H!=hospitals[i+1].hospital_name){
+                    H_info_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}             </a><p>`;
+                    H_num1++;
+                if(i+1!=(hospitals).length){
+                    H_pet_list=` `;
+                    H_day_list=` `;
+                    H_count=0;
+                }
+                }
+            }
+            H_info_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a><p>`;
+        }
+    });
+    var S_info_list=``;
+    db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name ORDER BY store.store_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일'); `,
+    function(err,stores){
+        if (err) throw err;
+        else{
+            var S_H=" ";
+            var S_D=" ";
+            var S_pet_list=``;
+            var S_count=0;
+            var S_num1=0;
+            for (var i=0; S_num1<4;i++){
+                if(S_H!=stores[i].store_name){
+                    S_pet_list+=`${stores[i].pet},`;
+                    S_H=stores[i].store_name;
+                    S_D=stores[i].day;
+                }
+                else{
+                    if(S_D==stores[i].day){
+                        if(S_count==0){
+                            S_pet_list+=`${stores[i].pet}, `
+                        }
+                    }
+                    else{
+                        S_count++;
+                        S_D=stores[i].day;
+                    }
+                }
+                if(S_H!=stores[i+1].store_name){
+                    S_info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}----------${S_pet_list}</a><p>`;
+                    S_num1++;
+                if(i+1!=(stores).length){
+                    S_pet_list=` `;
+                    S_day_list=` `;
+                    S_count=0;
+                }
+                }
+            }
+            S_info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}----------${S_pet_list}</a><p>`;
+        }res.send(log_main_template(Q_info_list,R_info_list,C_info_list,H_info_list,S_info_list));
+    });
         console.log(req.session.user_id);
         
     }
