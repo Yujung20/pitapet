@@ -110,6 +110,47 @@ function user_information_template(user_id,user_password,user_email,user_nicknam
     `;
 }
 
+function email_template(email_check_txt, check_email){
+    return `
+        <!doctype html>
+        <html>
+        <head>
+        <title>email update</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <form action="/mypage/user_information/email_update/" method="post">
+        <p><input type="text" name="email" placeholder="email" value="${check_email}" formaction="/mypage/user_information/email_check"> <input type="submit" value="이메일 확인" formaction="/mypage/user_information/email_check">
+        <p id="email_check_txt">${email_check_txt}</p>
+        </p> 
+        
+        <p><input type="submit" value="변경하기"></p>
+        </form>
+    </body>       
+        </html>
+    `;
+}
+function nickname_template(nickname_check_txt, check_nickname){
+    return `
+        <!doctype html>
+        <html>
+        <head>
+        <title>nickname update</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <form action="/mypage/user_information/nickname_update/" method="post">
+        <p><input type="text" name="nickname" placeholder="nickname" value="${check_nickname}" formaction="/mypage/user_information/nickname_check"> <input type="submit" value="닉네임 확인" formaction="/mypage/user_information/nickname_check">
+        <p id="nickname_check_txt">${nickname_check_txt}</p>
+        </p> 
+        
+        <p><input type="submit" value="변경하기"></p>
+        </form>
+    </body>       
+        </html>
+    `;
+}
+
 function animal_template(animal_list){
     return `
     <!doctype html>
@@ -325,26 +366,36 @@ app.post('/user_information/password_update/', function(req,res){
     } 
 })
 
-app.get('/user_information/email/',function(req,res){
-    var output=`
-    <head>
-        <title>email update</title>
-        <meta charset="utf-8">
-    </head>
-    <body>
-        <form action="/mypage/user_information/email_update/" method="post">
-        <p><input type="text" name="email" placeholder="email"></p>   
-        
-        <p><input type="submit" value="변경하기"></p>
-        </form>
-    </body>       
-    `;
-    res.send(output);
-});
+
 
 app.get('/user_information/email/',function(req,res){
-    res.end(email_template(''));
+    res.end(email_template("이메일 중복을 확인하세요.", ''));
 });
+
+
+app.post('/user_information/email_check', function(request, response) {
+    const post = request.body;
+    const email = post.email;
+    console.log(email);
+
+    var email_check_txt = "사용할 수 있는  이메일입니다."
+    db.query(`SELECT * FROM user`, function(error, users) {
+        if(error) {
+            throw error;
+        }
+
+        for (var i = 0; i < Object.keys(users).length; i++) {
+            if (email === users[i].email) {
+                email_check_txt = "사용할 수 없는 이메일입니다."
+                break;
+            }
+        }
+        response.send(email_template(email_check_txt, email));
+    })
+});
+
+
+
 app.post('/user_information/email_update/', function(req,res){
     const email=req.body.email;
     const id=req.session.user_id;
@@ -359,22 +410,32 @@ app.post('/user_information/email_update/', function(req,res){
         res.redirect(`/mypage/user_information/`);
     })
 })
-
 app.get('/user_information/nickname/',function(req,res){
-    var output=`
-    <head>
-        <title>nickname update</title>
-        <meta charset="utf-8">
-    </head>
-    <body>
-        <form action="/mypage/user_information/nickname_update/" method="post">
-        <p><input type="text" name="nickname" placeholder="nickname"></p>   
-        <p><input type="submit" value="변경하기"></p>
-        </form>
-    </body>       
-    `;
-    res.send(output);
+    res.end(nickname_template("닉네임 중복을 확인하세요.", ''));
 });
+
+
+app.post('/user_information/nickname_check', function(request, response) {
+    const post = request.body;
+    const nickname = post.nickname;
+    console.log(nickname);
+
+    var nickname_check_txt = "사용할 수 있는  닉네임입니다."
+    db.query(`SELECT * FROM user`, function(error, users) {
+        if(error) {
+            throw error;
+        }
+
+        for (var i = 0; i < Object.keys(users).length; i++) {
+            if (nickname === users[i].nickname) {
+                nickname_check_txt = "사용할 수 없는 닉네임입니다."
+                break;
+            }
+        }
+        response.send(nickname_template(nickname_check_txt, nickname));
+    })
+});
+
 
 app.post('/user_information/nickname_update/', function(req,res){
     const nickname=req.body.nickname;

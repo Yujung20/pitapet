@@ -27,13 +27,6 @@ INSERT INTO `store_time` VALUES ('목요일', '강아지카페 카페개네', '1
 INSERT INTO `store_time` VALUES ('금요일', '강아지카페 카페개네', '14:00:00','21:30:00');
 INSERT INTO `store_time` VALUES ('토요일', '강아지카페 카페개네', '12:00:00','21:30:00');
 INSERT INTO `store_time` VALUES ('일요일', '강아지카페 카페개네', '12:00:00','21:30:00');
-INSERT INTO `store_time` VALUES ('월요일', '멍박스24 애견셀프목욕 & 무인카페', '00:00:00','00:00:00');
-INSERT INTO `store_time` VALUES ('화요일', '멍박스24 애견셀프목욕 & 무인카페', '00:00:00','00:00:00');
-INSERT INTO `store_time` VALUES ('수요일', '멍박스24 애견셀프목욕 & 무인카페', '00:00:00','00:00:00');
-INSERT INTO `store_time` VALUES ('목요일', '멍박스24 애견셀프목욕 & 무인카페', '00:00:00','00:00:00');
-INSERT INTO `store_time` VALUES ('금요일', '멍박스24 애견셀프목욕 & 무인카페', '00:00:00','00:00:00');
-INSERT INTO `store_time` VALUES ('토요일', '멍박스24 애견셀프목욕 & 무인카페', '00:00:00','00:00:00');
-INSERT INTO `store_time` VALUES ('일요일', '멍박스24 애견셀프목욕 & 무인카페', '00:00:00','00:00:00');
 INSERT INTO `store_time` VALUES ('월요일', '카페 평행선', '12:00:00','21:00:00');
 INSERT INTO `store_time` VALUES ('수요일', '카페 평행선', '12:00:00','21:00:00');
 INSERT INTO `store_time` VALUES ('목요일', '카페 평행선', '12:00:00','21:00:00');
@@ -68,13 +61,6 @@ INSERT INTO `store_time` VALUES ('목요일', '빌라드코스테스', '10:00:00
 INSERT INTO `store_time` VALUES ('금요일', '빌라드코스테스', '10:00:00','22:00:00');
 INSERT INTO `store_time` VALUES ('토요일', '빌라드코스테스', '11:00:00','22:00:00');
 INSERT INTO `store_time` VALUES ('일요일', '빌라드코스테스', '11:00:00','22:00:00');
-INSERT INTO `store_time` VALUES ('월요일', '문화식당', '11:30:00','00:00:00');
-INSERT INTO `store_time` VALUES ('화요일', '문화식당', '11:30:00','00:00:00');
-INSERT INTO `store_time` VALUES ('수요일', '문화식당', '11:30:00','00:00:00');
-INSERT INTO `store_time` VALUES ('목요일', '문화식당', '11:30:00','00:00:00');
-INSERT INTO `store_time` VALUES ('금요일', '문화식당', '11:30:00','00:00:00');
-INSERT INTO `store_time` VALUES ('토요일', '문화식당', '11:30:00','00:00:00');
-INSERT INTO `store_time` VALUES ('일요일', '문화식당', '12:00:00','23:00:00');
 INSERT INTO `store_time` VALUES ('화요일', '카레', '12:00:00','20:00:00');
 INSERT INTO `store_time` VALUES ('수요일', '카레', '12:00:00','20:00:00');
 INSERT INTO `store_time` VALUES ('목요일', '카레', '12:00:00','20:00:00');
