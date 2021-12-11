@@ -4,6 +4,7 @@ const app = express();
 const body_parser = require('body-parser');
 app.use(body_parser.urlencoded({ extended: false}));
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 
 
 // router header add
@@ -56,6 +57,7 @@ app.get('/login',(req,res)=> {
                     <p><input type="submit" value="로그인하기"></p>
                 </form>
                 <a href="/find_id">아이디 찾기</a>
+                <a href="/find_password">비밀번호 찾기</a>
             </body>
         
     `;
@@ -252,6 +254,118 @@ app.post('/find_id', function(req,res) {
         }     
     })
 })
+
+app.get('/find_password', (req, res)=>{
+    var output = `
+    <!doctype html>
+    <html>
+        <head>
+            <title>Find Password</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+        <h1>비밀번호 찾기</h1>
+            <form action="/find_password" method="post">
+                <p><input type="text" name="id" placeholder="id"></p>
+                <p><input type="text" name="email" placeholder="email"></p>
+                <p><input type="submit" value="확인"></p>
+            </form>
+        </body>
+    </html>
+    `;
+    res.send(output);
+})
+
+app.post('/find_password', async (req, res, next) => {
+    const written = req.body;
+    const id = written.id;
+    const email = written.email;
+
+    var find_password_user_email;
+    var token;
+
+    db.query(`SELECT * FROM user`, function(error, rows) {
+        if (error) throw error;
+        else {
+          for(let i = 0; i < rows.length; i++) {
+            if (rows[i].id == id && rows[i].email == email) {
+                find_password_user_email = rows[i].email;
+            }
+          }
+        }
+
+        console.log(find_password_user_email);
+        
+        if (find_password_user_email) {
+            console.log("True");
+        }
+        else {
+            console.log("False");
+        }
+
+        if (find_password_user_email) {
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                port: 465,
+                secure: true, // true for 465, false for other ports
+                auth: {
+                    user: '20171641@sungshin.ac.kr',
+                    pass: 'pitapet!'
+                },
+            });
+            
+            var variable = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z".split(",");
+            var randomPassword = createRandomPassword(variable, 8);
+
+            function createRandomPassword(variable, passwordLength) {
+                var randomString = "";
+                for (var j=0; j<passwordLength; j++)
+                    randomString += variable[Math.floor(Math.random()*variable.length)];
+                return randomString
+            }
+
+            bcrypt.hash(randomPassword, 10, function(error, hash) {
+                db.query(`UPDATE user SET password=? WHERE id = ?`,
+                [hash, id], 
+                function(err, result) {
+                    if (err) {
+                        res.send(err);
+                        throw err;
+                    }
+                    else{
+                        console.log(result);
+                        req.session.destroy(function(err){
+                            if (err) throw err;
+                            res.redirect('/');
+                        });
+                    }                
+                });
+            });
+
+            const mailOptions = {
+                from: '20171641@sungshin.ac.kr',
+                to: find_password_user_email,
+                subject: 'PitaPet에서 임시 비밀번호를 알려드립니다!',
+                html:
+                "<h1>PitaPet에서 새로운 비밀번호를 알려드립니다.</h1> <h2> 임시 비밀번호 : " + randomPassword
+                + "</h2>" +'<h3 style="color: crimson;">임시 비밀번호로 로그인 하신 후, 반드시 비밀번호를 수정해 주세요!</h3>',
+            };
+          
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error);
+                } 
+                else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+        
+            }
+        else {
+            return res.status(403).send('존재하지 않는 회원입니다. 아이디 또는 이메일을 확인해주세요.');
+        }
+    })
+});
 
 db.query(`SELECT * FROM user`, function(error, users) {
     console.log(users);
