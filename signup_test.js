@@ -21,6 +21,7 @@ function template(id_check_txt, check_id) {
                 <form action="/signup/signup_process" method="post">
                     <p><input type="text" name="id" placeholder="id" value="${check_id}" formaction="/signup/id_check"> <input type="submit" value="아이디 확인" formaction="/signup/id_check">
                     <p id="id_check_txt">${id_check_txt}</p>
+                    <input type="hidden" name="id_check_txt" value="${id_check_txt}">
                     </p>
                     <p><input type="password" name="pwd" placeholder="password"></p>
                     <p><input type="password" name="pwd2" placeholder="password check"></p>
@@ -69,29 +70,35 @@ app.post('/signup_process', function(request, response) {
     const nickname = post.nickname;
     const license = post.license;
     const certificate = post.certificate;
+    const id_check_txt = post.id_check_txt;
+    console.log(id_check_txt);
 
-    if (pwd !== pwd2) {
-        response.send(`<script>alert('password not match')</script>`);
+    if (id_check_txt === "사용할 수 없는 아이디입니다.") {
+        response.send('<script type="text/javascript">alert("중복된 아이디입니다."); document.location.href="/signup";</script>');
+    }
+    else if (id === '' || pwd === '' || pwd2 === '' || email === '' || nickname === '') {
+        response.send('<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/signup";</script>');
+    }
+    else if (pwd !== pwd2) {
+        response.send('<script type="text/javascript">alert("비밀번호가 일치하지 않습니다."); document.location.href="/signup";</script>');
     } else {
         bcrypt.hash(pwd, 10, function(error, hash) {
             db.query(`INSERT INTO user (id, password, email, nickname, license, certificate) VALUES(?, ?, ?, ?, ?, ?)`,
             [id, hash, email, nickname, license, certificate], 
             function(error, result) {
                 if (error) {
-                    response.send(error);
                     throw error;
                 }
                 console.log(result);
                 response.redirect('/');
-                response.end();
             });
         });
         
     }
 });
 
-db.query(`SELECT * FROM user`, function(error, users) {
-    console.log(users);
-})
+// db.query(`SELECT * FROM user`, function(error, users) {
+//     console.log(users);
+// })
 
 module.exports = app;
