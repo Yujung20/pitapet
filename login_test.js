@@ -72,7 +72,7 @@ app.get('/index',function(req,res){
     res.render('index');
 });
 
-function main_template(){
+function main_template(H_info_list ,S_info_list ){
     return `
     <!doctype html>
     <html>
