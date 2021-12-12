@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 
 var db = require('./db');
 
-function template(id_check_txt, check_id) { 
+function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) { 
     return `
         <!doctype html>
         <html>
@@ -23,7 +23,6 @@ function template(id_check_txt, check_id) {
                     }
 
                     function saveValue(e) {
-                        e.style.backgroundColor = 'yellow';
                         var id = e.id;
                         var val = e.value;
                         sessionStorage.setItem(id, val);
@@ -37,14 +36,18 @@ function template(id_check_txt, check_id) {
             <body>
                 <h1>sign up</h1>
                 <form action="/signup/signup_process" method="post">
-                    <p><input type="text" name="id" placeholder="id" value="${check_id}" id="id_save" oninput='saveValue(this)' formaction="/signup/id_check"> <input type="submit" value="아이디 확인" formaction="/signup/id_check"></p>
+                    <p><input type="text" name="id" placeholder="id" value="${check_id}" id="id_save" oninput='saveValue(this)' formaction="/signup/id_check" formaction="/signup/email_check"> <input type="submit" value="아이디 확인" formaction="/signup/id_check"></p>
                     <p id="id_check_txt">${id_check_txt}</p>
-                    <input type="hidden" name="id_check_txt" value="${id_check_txt}">
+                    <input type="hidden" name="id_check_txt" value="${id_check_txt}" formaction="/signup/email_check" formaction="/signup/nickname_check">
                     </p>
                     <p><input type="password" name="pwd" placeholder="password"></p>
                     <p><input type="password" name="pwd2" placeholder="password check"></p>
-                    <p><input type="text" name="email" placeholder="email" id="email_save" oninput='saveValue(this)' autocomplete="off"></p>
-                    <p><input type="text" name="nickname" placeholder="nickname" id="nickname_save" oninput='saveValue(this)' autocomplete="off"></p>
+                    <p><input type="text" name="email" placeholder="email" id="email_save" oninput='saveValue(this)' formaction="/signup/email_check"> <input type="submit" value="이메일 확인" formaction="/signup/email_check"></p>
+                    <p id="email_check">${email_check_txt}</p>
+                    <input type="hidden" name="email_check_txt" value="${email_check_txt}" formaction="/signup/id_check" formaction="/signup/nickname_check">
+                    <p><input type="text" name="nickname" placeholder="nickname" id="nickname_save" oninput='saveValue(this)'> <input type="submit" value="닉네임 확인" formaction="/signup/nickname_check"></p>
+                    <p>${nickname_check_txt}</p>
+                    <input type="hidden" name="nickname_check_txt" value="${nickname_check_txt}" formaction="/signup/id_check" formaction="/signup/email_check">
                     <p><input type="file" name="license"></p>
                     <p><input type="file" name="certificate"></p>
                     <p><input type="submit" value="가입하기"></p>
@@ -55,12 +58,14 @@ function template(id_check_txt, check_id) {
 }
 
 app.get('/', function(request, response) {
-    response.end(template("아이디 중복을 확인하세요.", ''));
+    response.end(template("아이디 중복을 확인하세요.", '', "이메일 중복을 확인하세요.", "닉네임 중복을 확인하세요."));
 });
 
 app.post('/id_check', function(request, response) {
     const post = request.body;
     const id = post.id;
+    const email_check_txt = post.email_check_txt;
+    const nickname_check_txt = post.nickname_check_txt;
     console.log(id);
 
     var id_check_txt = "사용할 수 있는 아이디입니다."
@@ -75,9 +80,55 @@ app.post('/id_check', function(request, response) {
                 break;
             }
         }
-        response.send(template(id_check_txt, id));
+        response.send(template(id_check_txt, id, email_check_txt, nickname_check_txt));
     })
 });
+
+app.post('/email_check', function(req, res) {
+    const body = req.body;
+    const id_check_txt = body.id_check_txt;
+    const nickname_check_txt = body.nickname_check_txt;
+    const email = body.email;
+    const id = body.id;
+
+    var email_check_txt = "사용할 수 있는 이메일입니다."
+    db.query(`SELECT * FROM user`, function(err, result) {
+        if (err) {
+            throw err;
+        }
+
+        for (var i = 0; i < result.length; i++) {
+            if (email === result[i].email) {
+                email_check_txt = "사용할 수 없는 이메일입니다."
+                break;
+            }
+        }
+        res.send(template(id_check_txt, id, email_check_txt, nickname_check_txt));
+    })
+})
+
+app.post('/nickname_check', function(req, res) {
+    const body = req.body;
+    const id_check_txt = body.id_check_txt;
+    const email_check_txt = body.email_check_txt;
+    const nickname = body.nickname;
+    const id = body.id;
+
+    var nickname_check_txt = "사용할 수 있는 닉네임입니다."
+    db.query(`SELECT * FROM user`, function(err, result) {
+        if (err) {
+            throw err;
+        }
+
+        for (var i = 0; i < result.length; i++) {
+            if (nickname === result[i].nickname) {
+                nickname_check_txt = "사용할 수 없는 닉네임입니다."
+                break;
+            }
+        }
+        res.send(template(id_check_txt, id, email_check_txt, nickname_check_txt));
+    })
+})
 
 app.post('/signup_process', function(request, response) {
     const post = request.body;
@@ -89,12 +140,21 @@ app.post('/signup_process', function(request, response) {
     const license = post.license;
     const certificate = post.certificate;
     const id_check_txt = post.id_check_txt;
-    console.log(id_check_txt);
+    const email_check_txt = post.email_check_txt;
+    const nickname_check_txt = post.nickname_check_txt;
 
     if (id_check_txt === "사용할 수 없는 아이디입니다.") {
         response.send('<script type="text/javascript">alert("중복된 아이디입니다."); document.location.href="/signup";</script>');
     } else if (id_check_txt === "아이디 중복을 확인하세요.") {
         response.send('<script type="text/javascript">alert("아이디 중복을 먼저 확인해주세요."); document.location.href="/signup";</script>');
+    } else if (nickname_check_txt === "사용할 수 없는 닉네임입니다.") {
+        response.send('<script type="text/javascript">alert("중복된 닉네임입니다."); document.location.href="/signup";</script>');
+    } else if (nickname_check_txt === "닉네임 중복을 확인하세요.") {
+        response.send('<script type="text/javascript">alert("닉네임 중복을 먼저 확인해주세요."); document.location.href="/signup";</script>');
+    } else if (email_check_txt === "사용할 수 없는 이메일입니다.") {
+        response.send('<script type="text/javascript">alert("중복된 이메일입니다."); document.location.href="/signup";</script>');
+    }else if (nickname_check_txt === "이메일 중복을 확인하세요.") {
+        response.send('<script type="text/javascript">alert("이메일 중복을 먼저 확인해주세요."); document.location.href="/signup";</script>');
     }
     else if (id === '' || pwd === '' || pwd2 === '' || email === '' || nickname === '') {
         response.send('<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/signup";</script>');
