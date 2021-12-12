@@ -75,6 +75,8 @@ app.post('/signup_process', function(request, response) {
 
     if (id_check_txt === "사용할 수 없는 아이디입니다.") {
         response.send('<script type="text/javascript">alert("중복된 아이디입니다."); document.location.href="/signup";</script>');
+    } else if (id_check_txt === "아이디 중복을 확인하세요.") {
+        response.send('<script type="text/javascript">alert("아이디 중복을 먼저 확인해주세요."); document.location.href="/signup";</script>');
     }
     else if (id === '' || pwd === '' || pwd2 === '' || email === '' || nickname === '') {
         response.send('<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/signup";</script>');
