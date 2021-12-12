@@ -95,7 +95,7 @@ function main_template(current,question_list,review_list,board_list,hospital_lis
                             <li> <a href="/hospital">병원</a> </li>
                             <li> <a href="/store">매장</a> </li>
                         </ul>
-                        <li> <a href="/login">커뮤니티</a> </li>
+                        <li> <a href="/board">커뮤니티</a> </li>
                     </ul>
                 </div>
                 <div class="profile">
@@ -160,9 +160,11 @@ function id_found_template(found_id){
 app.get('/', function (req, res, next) {
 
     var current=``;
-    current=`<li> <a href="/login">로그인</a> </li>
-    <li> <a href="/signup">회원가입</a> </li>`
     var question_list = ``;
+    var review_list=``;
+    var board_list=``;
+    var hospital_list=``;
+    var store_list=``;
     db.query(`SELECT * FROM question ORDER BY date DESC`, function(error, questions) {
         if (Object.keys(questions).length > 0) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
@@ -172,10 +174,8 @@ app.get('/', function (req, res, next) {
         } else {
             question_list = `작성한 질문이 없습니다.`;
         }
-
+        console.log("qna 쿼리")
     });
-
-    var review_list=``;
     db.query(`SELECT * FROM review ORDER BY date DESC`, function(error, reviews) {
         if (Object.keys(reviews).length > 0) {
             for (var i = 0; i < Object.keys(reviews).length; i++) {
@@ -187,8 +187,6 @@ app.get('/', function (req, res, next) {
         }
     });
 
-    var board_list=`로그인을 해주세요.`;
-    var hospital_list=``;
     db.query(`SELECT * FROM hospital LEFT JOIN hospital_pet ON hospital.hospital_name=hospital_pet.hospital_name LEFT JOIN hospital_time ON hospital.hospital_name=hospital_time.hospital_name ORDER BY hospital.hospital_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일'); `,
     function(err,hospitals){
         if (err) throw err;
@@ -228,7 +226,7 @@ app.get('/', function (req, res, next) {
             hospital_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a><p>`;
         }
     });
-    var store_list=``;
+    
     db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name ORDER BY store.store_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일'); `,
     function(err,stores){
         if (err) throw err;
@@ -266,8 +264,40 @@ app.get('/', function (req, res, next) {
                 }
             }
             store_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}----------${S_pet_list}</a><p>`;
-        }res.end(main_template(current,question_list,review_list,board_list,hospital_list,store_list));
+        }
     });
+    if(req.session.user_id)//로그인 한 경우
+    {
+       var id=req.session.user_id;
+
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${id}---마이페이지</a> </li>`
+
+        db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
+            if (Object.keys(boards).length > 0) {
+                for (var i = 0; i < Object.keys(boards).length; i++) {
+                    board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}</a><p>`;
+                    if(i==4){break;}
+                }
+            } else {
+                board_list = `작성한 커뮤니티가 없습니다.`;
+            }console.log(id);
+        res.end(main_template(current,question_list,review_list,board_list,hospital_list,store_list));
+        });
+        
+    }else{//로그인 안한 경우
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+        console.log("로그인 안한 상태");
+        db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
+            if (Object.keys(boards).length > 0) {
+
+            } else{
+
+            }res.end(main_template(current,question_list,review_list,board_list,hospital_list,store_list));
+        });
+        
+    }
 });
 
 
@@ -286,7 +316,7 @@ app.post('/login', function(req, res) {
                             req.session.loggedin = true;
                             req.session.user_id = id;
                             req.session.save(function() {
-                                res.redirect('/welcome');
+                                res.redirect('/');
                             });
                         }else{
                             res.send('<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); document.location.href="/login";</script>');    
@@ -299,137 +329,6 @@ app.post('/login', function(req, res) {
                 }
             }
         });
-});
-
-app.get('/welcome',function(req,res){
-    if(req.session.user_id)
-    {   
-    var id=req.session.user_id;
-    var current=``;
-    current=`<li> <a href="/logout">로그아웃</a> </li>
-    <li> <a href="/mypage">${id}---마이페이지</a> </li>`
-    var question_list = ``;
-    db.query(`SELECT * FROM question ORDER BY date DESC`, function(error, questions) {
-        if (Object.keys(questions).length > 0) {
-            for (var i = 0; i < Object.keys(questions).length; i++) {
-                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
-                if(i==4){break;}
-            }
-        } else {
-            question_list = `작성한 질문이 없습니다.`;
-        }
-
-    });
-
-    var review_list=``;
-    db.query(`SELECT * FROM review ORDER BY date DESC`, function(error, reviews) {
-        if (Object.keys(reviews).length > 0) {
-            for (var i = 0; i < Object.keys(reviews).length; i++) {
-                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a><p>`;
-                if(i==4){break;}
-            }
-        } else {
-            review_list = `작성한 리뷰가 없습니다.`;
-        }
-    });
-
-    var board_list=``;
-    db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
-        if (Object.keys(boards).length > 0) {
-            for (var i = 0; i < Object.keys(boards).length; i++) {
-                board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}</a><p>`;
-                if(i==4){break;}
-            }
-        } else {
-            board_list = `작성한 커뮤니티가 없습니다.`;
-        }
-    });
-    var hospital_list=``;
-    db.query(`SELECT * FROM hospital LEFT JOIN hospital_pet ON hospital.hospital_name=hospital_pet.hospital_name LEFT JOIN hospital_time ON hospital.hospital_name=hospital_time.hospital_name ORDER BY hospital.hospital_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일'); `,
-    function(err,hospitals){
-        if (err) throw err;
-        else{
-            var H_H=" ";
-            var H_D=" ";
-            var H_pet_list=``;
-            var H_count=0;
-            var H_num1=0;
-            for (var i=0; H_num1<4;i++){
-                if(H_H!=hospitals[i].hospital_name){
-                    H_pet_list+=`${hospitals[i].pet},`;
-                    H_H=hospitals[i].hospital_name;
-                    H_D=hospitals[i].day;
-                }
-                else{
-                    if(H_D==hospitals[i].day){
-                        if(H_count==0){
-                            H_pet_list+=`${hospitals[i].pet}, `
-                        }
-                    }
-                    else{
-                        H_count++;
-                        H_D=hospitals[i].day;
-                    }
-                }
-                if(H_H!=hospitals[i+1].hospital_name){
-                    hospital_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}             </a><p>`;
-                    H_num1++;
-                if(i+1!=(hospitals).length){
-                    H_pet_list=` `;
-                    H_day_list=` `;
-                    H_count=0;
-                }
-                }
-            }
-            hospital_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a><p>`;
-        }
-    });
-    var store_list=``;
-    db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name ORDER BY store.store_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일'); `,
-    function(err,stores){
-        if (err) throw err;
-        else{
-            var S_H=" ";
-            var S_D=" ";
-            var S_pet_list=``;
-            var S_count=0;
-            var S_num1=0;
-            for (var i=0; S_num1<4;i++){
-                if(S_H!=stores[i].store_name){
-                    S_pet_list+=`${stores[i].pet},`;
-                    S_H=stores[i].store_name;
-                    S_D=stores[i].day;
-                }
-                else{
-                    if(S_D==stores[i].day){
-                        if(S_count==0){
-                            S_pet_list+=`${stores[i].pet}, `
-                        }
-                    }
-                    else{
-                        S_count++;
-                        S_D=stores[i].day;
-                    }
-                }
-                if(S_H!=stores[i+1].store_name){
-                    store_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}----------${S_pet_list}</a><p>`;
-                    S_num1++;
-                if(i+1!=(stores).length){
-                    S_pet_list=` `;
-                    S_day_list=` `;
-                    S_count=0;
-                }
-                }
-            }
-            store_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}----------${S_pet_list}</a><p>`;
-        }res.send(main_template(current,question_list,review_list,board_list,hospital_list,store_list));
-    });
-        console.log(req.session.user_id);
-        
-    }
-    else{
-        res.end(main_template());
-    }
 });
 
 // router add
