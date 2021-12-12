@@ -33,6 +33,10 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                     function getSavedValue(v) {
                         return sessionStorage.getItem(v);
                     }
+
+                    function clearStorage() {
+                        sessionStorage.clear();
+                    }
                 </script>
             </head>
             <body>
@@ -44,7 +48,7 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                     </p>
                     <p><input type="password" name="pwd" placeholder="password" id="password_save" oninput='saveValue(this)'></p>
                     <p><input type="password" name="pwd2" placeholder="password check" id="password_check_save" oninput='saveValue(this)'></p>
-                    <p><input type="text" name="email" placeholder="email" id="email_save" oninput='saveValue(this)' formaction="/signup/email_check"> <input type="submit" value="이메일 확인" formaction="/signup/email_check"></p>
+                    <p><input type="email" name="email" placeholder="email" id="email_save" oninput='saveValue(this)' formaction="/signup/email_check"> <input type="submit" value="이메일 확인" formaction="/signup/email_check"></p>
                     <p id="email_check">${email_check_txt}</p>
                     <input type="hidden" name="email_check_txt" value="${email_check_txt}" formaction="/signup/id_check" formaction="/signup/nickname_check">
                     <p><input type="text" name="nickname" placeholder="nickname" id="nickname_save" oninput='saveValue(this)'> <input type="submit" value="닉네임 확인" formaction="/signup/nickname_check"></p>
@@ -52,7 +56,7 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                     <input type="hidden" name="nickname_check_txt" value="${nickname_check_txt}" formaction="/signup/id_check" formaction="/signup/email_check">
                     <p><input type="file" name="license"></p>
                     <p><input type="file" name="certificate"></p>
-                    <p><input type="submit" value="가입하기"></p>
+                    <p><input type="submit" onclick="clearStorage()" value="가입하기"></p>
                 </form>
             </body>
         </html>

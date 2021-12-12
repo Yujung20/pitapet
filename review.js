@@ -128,7 +128,7 @@ function review_create_template() {
                     <option value="기타">기타</option>
                 </select></p>
                 <p><textarea name="content" placeholder="내용"></textarea></p>
-                <p><input type="number" min="0" step="1" name="price" placeholder="가격" onkeyup="numberWithCommas(this.vale)"></p>
+                <p><input type="text" oninput="this.value=this.value.replace(/[^0-9]/g,'');" name="price" placeholder="가격" onkeyup="numberWithCommas(this.vale)"></p>
                 <p><input type="text" name="product_name" placeholder="제품명"></p>
                 <p><input type="text" name="brand" placeholder="브랜드명"></p>
                 <p><input type="file" name="photo"></p>
@@ -191,7 +191,7 @@ function review_update_template(review_id, title, category, content, price, prod
                     <option value="기타">기타</option>
                 </select></p>
                 <p><textarea name="content">${content}</textarea></p>
-                <p><input type="text" name="price" value="${price}"></p>
+                <p><input type="text" oninput="this.value=this.value.replace(/[^0-9]/g,'');" name="price" value="${price}"></p>
                 <p><input type="text" name="product_name" value="${product_name}"></p>
                 <p><input type="text" name="brand" value="${brand}"></p>
                 <p><img src="${photo}" id="photo"></p>
@@ -230,7 +230,7 @@ function review_update_no_photo_template(review_id, title, category, content, pr
                     <option value="기타">기타</option>
                 </select></p>
                 <p><textarea name="content">${content}</textarea></p>
-                <p><input type="text" name="price" value="${price}"></p>
+                <p><input type="text" oninput="this.value=this.value.replace(/[^0-9]/g,'');" name="price" value="${price}"></p>
                 <p><input type="text" name="product_name" value="${product_name}"></p>
                 <p><input type="text" name="brand" value="${brand}"></p>
                 <p><input type="file" name="photo"></p>
