@@ -4,7 +4,6 @@ const app = express();
 const body_parser = require('body-parser');
 app.use(body_parser.urlencoded({ extended: false}));
 const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
 
 
 // router header add
@@ -17,7 +16,6 @@ const mypage_router=require('./mypage');
 const hospital_router=require('./hospital');
 const store_router=require('./store');
 const board_router=require('./board_and_comment');
-const care_service_router = require('./create_care_service');
 
 app.use(express.static('upload'));
 
@@ -57,7 +55,6 @@ app.get('/login',(req,res)=> {
                     <p><input type="submit" value="로그인하기"></p>
                 </form>
                 <a href="/find_id">아이디 찾기</a>
-                <a href="/find_password">비밀번호 찾기</a>
             </body>
         
     `;
