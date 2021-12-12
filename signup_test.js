@@ -140,12 +140,21 @@ app.post('/signup_process', function(request, response) {
     const license = post.license;
     const certificate = post.certificate;
     const id_check_txt = post.id_check_txt;
-    console.log(id_check_txt);
+    const email_check_txt = post.email_check_txt;
+    const nickname_check_txt = post.nickname_check_txt;
 
     if (id_check_txt === "사용할 수 없는 아이디입니다.") {
         response.send('<script type="text/javascript">alert("중복된 아이디입니다."); document.location.href="/signup";</script>');
     } else if (id_check_txt === "아이디 중복을 확인하세요.") {
         response.send('<script type="text/javascript">alert("아이디 중복을 먼저 확인해주세요."); document.location.href="/signup";</script>');
+    } else if (nickname_check_txt === "사용할 수 없는 닉네임입니다.") {
+        response.send('<script type="text/javascript">alert("중복된 닉네임입니다."); document.location.href="/signup";</script>');
+    } else if (nickname_check_txt === "닉네임 중복을 확인하세요.") {
+        response.send('<script type="text/javascript">alert("닉네임 중복을 먼저 확인해주세요."); document.location.href="/signup";</script>');
+    } else if (email_check_txt === "사용할 수 없는 이메일입니다.") {
+        response.send('<script type="text/javascript">alert("중복된 이메일입니다."); document.location.href="/signup";</script>');
+    }else if (nickname_check_txt === "이메일 중복을 확인하세요.") {
+        response.send('<script type="text/javascript">alert("이메일 중복을 먼저 확인해주세요."); document.location.href="/signup";</script>');
     }
     else if (id === '' || pwd === '' || pwd2 === '' || email === '' || nickname === '') {
         response.send('<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/signup";</script>');
