@@ -18,6 +18,8 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                 <script>
                     window.onload = function() {
                         document.getElementById("id_save").value = getSavedValue("id_save");
+                        document.getElementById("password_save").value = getSavedValue("password_save");
+                        document.getElementById("password_check_save").value = getSavedValue("password_check_save");
                         document.getElementById("email_save").value = getSavedValue("email_save");
                         document.getElementById("nickname_save").value = getSavedValue("nickname_save");
                     }
@@ -40,8 +42,8 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                     <p id="id_check_txt">${id_check_txt}</p>
                     <input type="hidden" name="id_check_txt" value="${id_check_txt}" formaction="/signup/email_check" formaction="/signup/nickname_check">
                     </p>
-                    <p><input type="password" name="pwd" placeholder="password"></p>
-                    <p><input type="password" name="pwd2" placeholder="password check"></p>
+                    <p><input type="password" name="pwd" placeholder="password" id="password_save" oninput='saveValue(this)'></p>
+                    <p><input type="password" name="pwd2" placeholder="password check" id="password_check_save" oninput='saveValue(this)'></p>
                     <p><input type="text" name="email" placeholder="email" id="email_save" oninput='saveValue(this)' formaction="/signup/email_check"> <input type="submit" value="이메일 확인" formaction="/signup/email_check"></p>
                     <p id="email_check">${email_check_txt}</p>
                     <input type="hidden" name="email_check_txt" value="${email_check_txt}" formaction="/signup/id_check" formaction="/signup/nickname_check">
