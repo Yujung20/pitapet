@@ -244,7 +244,7 @@ function review_update_no_photo_template(review_id, title, category, content, pr
 app.get('/', function(req, res) {
     var review_list = '';
     
-    db.query(`SELECT * FROM review`,
+    db.query(`SELECT * FROM review ORDER BY date DESC`,
     function(error, reviews) {
         if (error) {
             res.send(error);
@@ -261,7 +261,7 @@ app.get('/search', function(req, res) {
     const keyword = req.query.search_title;
     var review_list = ``;
 
-    db.query(`SELECT * FROM review WHERE title LIKE ?`,
+    db.query(`SELECT * FROM review WHERE title LIKE ? ORDER BY date DESC`,
     ['%' + keyword + '%'],
     function(err, reviews) {
         if (err) {
@@ -271,7 +271,7 @@ app.get('/search', function(req, res) {
 
         if (reviews.length > 0) {
             for (var i = 0; i < reviews.length; i++) {
-                review_list = `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a></p>`;
+                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a></p>`;
             }
         } else {
             reivew_list = `<p> 검색 결과가 없습니다. </p>`;
