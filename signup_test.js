@@ -15,18 +15,36 @@ function template(id_check_txt, check_id) {
             <head>
                 <title>test</title>
                 <meta charset="utf-8">
+                <script>
+                    window.onload = function() {
+                        document.getElementById("id_save").value = getSavedValue("id_save");
+                        document.getElementById("email_save").value = getSavedValue("email_save");
+                        document.getElementById("nickname_save").value = getSavedValue("nickname_save");
+                    }
+
+                    function saveValue(e) {
+                        e.style.backgroundColor = 'yellow';
+                        var id = e.id;
+                        var val = e.value;
+                        sessionStorage.setItem(id, val);
+                    }
+
+                    function getSavedValue(v) {
+                        return sessionStorage.getItem(v);
+                    }
+                </script>
             </head>
             <body>
                 <h1>sign up</h1>
                 <form action="/signup/signup_process" method="post">
-                    <p><input type="text" name="id" placeholder="id" value="${check_id}" formaction="/signup/id_check"> <input type="submit" value="아이디 확인" formaction="/signup/id_check">
+                    <p><input type="text" name="id" placeholder="id" value="${check_id}" id="id_save" oninput='saveValue(this)' formaction="/signup/id_check"> <input type="submit" value="아이디 확인" formaction="/signup/id_check"></p>
                     <p id="id_check_txt">${id_check_txt}</p>
                     <input type="hidden" name="id_check_txt" value="${id_check_txt}">
                     </p>
                     <p><input type="password" name="pwd" placeholder="password"></p>
                     <p><input type="password" name="pwd2" placeholder="password check"></p>
-                    <p><input type="text" name="email" placeholder="email"></p>
-                    <p><input type="text" name="nickname" placeholder="nickname"></p>
+                    <p><input type="text" name="email" placeholder="email" id="email_save" oninput='saveValue(this)' autocomplete="off"></p>
+                    <p><input type="text" name="nickname" placeholder="nickname" id="nickname_save" oninput='saveValue(this)' autocomplete="off"></p>
                     <p><input type="file" name="license"></p>
                     <p><input type="file" name="certificate"></p>
                     <p><input type="submit" value="가입하기"></p>
