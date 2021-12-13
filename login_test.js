@@ -27,7 +27,7 @@ const MySQLStore = require('express-mysql-session')(session);
 var db = require('./db');
 
 
-app.use(session({
+/*app.use(session({
     key: 'LoginSession',
     secret: 'Secret',
     resave: false,
@@ -38,7 +38,7 @@ app.use(session({
         password: 'password',
         database: 'pit_a_pet'
     })
-}))
+}))*/
 
 
 
