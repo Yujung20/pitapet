@@ -649,19 +649,30 @@ app.get('/last_resign/', function(req, res) {
     res.send(last_resign_template());
 })
 
+
+
 app.get('/resign/', function(req, res) {
     const id=req.session.user_id;
-
-    db.query(`DELETE FROM user WHERE id = ?`,
-    [id],
-    function(err, result) {
-        if (err) {
-            res.send(err);
-            throw err;
-        }
- 
+    if(req.session.id){
+        req.session.destroy(function(err){
+            if (err) throw err;
+            db.query(`DELETE FROM user WHERE id = ?`,
+            [id],
+            function(err, result) {
+                if (err) {
+                    res.send(err);
+                    throw err;
+                }
+        
+                res.redirect('/');
+            });
+            
+        });
+    }
+    else{
         res.redirect('/');
-    });
+    }
+    
 });
 
 module.exports = app;

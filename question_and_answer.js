@@ -126,11 +126,7 @@ function question_update_template(question_id, question_title, question_content,
 
 app.get('/', function(req, res) {
     var question_list = ``;
-<<<<<<< HEAD
-    db.query(`SELECT * FROM question`, function(error, questions) {
-=======
     db.query(`SELECT * FROM question ORDER BY date DESC`, function(error, questions) {
->>>>>>> 1ed020da8f2cef4186cfd4a539c2ab0b870dadc2
         if (Object.keys(questions).length > 0) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
                 question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
@@ -169,11 +165,7 @@ app.get('/question/:question_id', function(req, res) {
     var answer_list = ``;
 
     if (question_id) {
-<<<<<<< HEAD
-        db.query(`SELECT * FROM question WHERE question_number = ?`, 
-=======
         db.query(`SELECT * FROM question WHERE question_number = ? ORDER BY date DESC`, 
->>>>>>> 1ed020da8f2cef4186cfd4a539c2ab0b870dadc2
         [question_id],
         function(err1, question) {
             if (err1) {
@@ -181,11 +173,7 @@ app.get('/question/:question_id', function(req, res) {
                 throw err1;
             }
 
-<<<<<<< HEAD
-            db.query(`SELECT * FROM answer WHERE question_number = ?`,
-=======
             db.query(`SELECT * FROM answer WHERE question_number = ? ORDER BY date DESC`,
->>>>>>> 1ed020da8f2cef4186cfd4a539c2ab0b870dadc2
             [question_id],
             function(err2, answers) {
                 if (err2) {
@@ -244,11 +232,7 @@ app.get('/search/', function(req, res) {
     
     if (q_keyword) {
         console.log(q_keyword);
-<<<<<<< HEAD
-        db.query(`SELECT * FROM question WHERE title LIKE ?`,
-=======
         db.query(`SELECT * FROM question WHERE title LIKE ? ORDER BY date DESC`,
->>>>>>> 1ed020da8f2cef4186cfd4a539c2ab0b870dadc2
         ['%' + q_keyword + '%'],
         function(err, questions) {
             if (err) {
@@ -269,11 +253,7 @@ app.get('/search/', function(req, res) {
         })
     } else {
         console.log(a_keyword);
-<<<<<<< HEAD
-        db.query(`SELECT * FROM answer WHERE content LIKE ?`,
-=======
         db.query(`SELECT * FROM answer WHERE content LIKE ? ORDER BY date DESC`,
->>>>>>> 1ed020da8f2cef4186cfd4a539c2ab0b870dadc2
         ['%' + a_keyword + '%'],
         function(err, answers) {
             if (Object.keys(answers).length > 0) {
