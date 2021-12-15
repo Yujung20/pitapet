@@ -37,12 +37,16 @@ function main_template(nickname) {
         <body> 
         <h3>닉네임: ${nickname}</h3>
         <a href="/mypage/user_check/"> 회원 정보 조회</a> 
+        <a href="/register/"> 반려동물등록</a> 
 
         <a href="/mypage/animal_information/"> 동물 정보 조회</a> 
 
         <a href="/mypage/qna/"> 작성한 Q&A</a> 
         <a href="/mypage/review/"> 작성한 리뷰</a> 
-        <a href="/mypage/board/"> 작성한 커뮤니티</a> 
+        <a href="/mypage/board/"> 작성한 커뮤니티</a>
+        <a href="/create_care_service/"> 케어서비스 등록</a> 
+
+ 
 
 
 

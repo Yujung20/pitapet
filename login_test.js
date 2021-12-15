@@ -41,7 +41,7 @@ app.use(session({
 }))
 
 
-
+/*
 app.get('/login',(req,res)=> { 
     var output=`
         
@@ -62,7 +62,166 @@ app.get('/login',(req,res)=> {
         
     `;
     res.send(output);
-});
+});*/
+
+app.get('/login',(req,res)=> { 
+    var output=`
+        
+        <head>
+        <title>login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+        <style>
+            form {
+            border: 3px
+            backgroung-color:#C4D6F238;
+            border-radius: 10px;
+            position: absolute;
+            width: 400px;
+            height: 500px;
+            left: 800px;
+            top: 353px;
+            
+        }
+
+            input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 15px;
+            }
+
+            button {
+            background-color: #0066FF;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 15px;
+            }
+
+            button:hover {
+            opacity: 0.8;
+            }
+
+            
+            .imgcontainer {
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            left: 500px;
+            top: 350px;
+            
+            }
+
+            img.avatar {
+                border-radius: 70%;
+                width: 100%;
+
+
+            }
+
+            .container {
+            padding: 45px;
+            border:45px;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            box-shadow:5px 5px  rgba(0, 0, 0, 0.17);
+
+            }
+
+            .container2 {
+            padding: 15px;
+            border-bottom-right-radius: 15px;
+            border-bottom-left-radius: 15px;
+            box-shadow: 5px 5px  rgba(0, 0, 0, 0.17);
+
+
+            }
+
+            .text{
+                position: absolute;
+                width: 255px;
+                height: 56px;
+                              
+                font-weight: bold;
+                font-size: 35px;
+                
+                
+                color: #0066FF;
+                
+            }
+            hr.one{
+            width:300px;
+            color:black;
+            text-align:center;
+            }
+
+            span.id {
+            float:left;
+            padding-top: 10px;
+            }
+
+            span.psw {
+            float: right;
+            padding-top: 10px;
+            }
+
+            .signup{
+            text-align:center;
+            padding-top: 10px;
+
+            }
+            /* Change styles for span and cancel button on extra small screens */
+            @media screen and (max-width: 300px) {
+            span.psw {
+                display: block;
+                float: none;
+            }
+            
+            }
+            </style>
+        </head>
+        <body>
+            
+            <div class="imgcontainer">
+                <img src="https://s3.ap-northeast-2.amazonaws.com/elasticbeanstalk-ap-northeast-2-176213403491/media/magazine_img/magazine_262/%EC%8D%B8%EB%84%A4%EC%9D%BC.jpg" alt="Avatar" class="avatar">
+                <div class="text"> Pit-a-Pet Login </div>
+                </div>
+            <form action="/login" method="post">
+                
+                <div class="container" style="background-color:#C4D6F2">
+                    <label for="id"><b>ID</b></label>
+                    <input type="text" name="id" placeholder="id"  >
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" name="password" placeholder="password" >
+                    
+                    <button type="submit" >로그인</button>
+               
+                    <span class="id"> <a href="/find_id">아이디 찾기</a></span>
+                    <span class="psw"> <a href="/find_password">비밀번호 찾기</a></span>
+                
+                </div>
+
+                <div class = "container2" style="background-color:#C4D6F2">
+                <hr class="one">
+
+                    <div class="signup">회원이 아니신가요? <a href="/signup"> 회원가입 하러가기</a></div>
+                </div>
+
+            </form>
+            
+        </body>
+        
+    `;
+    res.send(output);
+})
+
+
 
 app.get('/index',function(req,res){
     if(!req.session.login){

@@ -193,7 +193,7 @@ app.post('/signup_process', function(request, response) {
         response.send('<script type="text/javascript">alert("닉네임 중복을 먼저 확인해주세요."); document.location.href="/signup";</script>');
     } else if (email_check_txt === "사용할 수 없는 이메일입니다.") {
         response.send('<script type="text/javascript">alert("중복된 이메일입니다."); document.location.href="/signup";</script>');
-    }else if (nickname_check_txt === "이메일 중복을 확인하세요.") {
+    }else if (email_check_txt === "이메일 중복을 확인하세요.") {
         response.send('<script type="text/javascript">alert("이메일 중복을 먼저 확인해주세요."); document.location.href="/signup";</script>');
     }
     else if (id === '' || pwd === '' || pwd2 === '' || email === '' || nickname === '') {
