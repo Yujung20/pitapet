@@ -71,7 +71,7 @@ app.post('/create_mail', function(req, res) {
                 throw error;
             }
             console.log(result);
-            res.redirect('/welcome/');
+            res.redirect('/mypage/');
             res.end();
         });
     });
