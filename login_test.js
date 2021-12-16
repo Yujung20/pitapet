@@ -6,7 +6,6 @@ app.use(body_parser.urlencoded({ extended: false}));
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 
-    
 // router header add
 const register_router = require('./create_animal');
 const qna_router = require('./question_and_answer');
@@ -231,60 +230,141 @@ function main_template(current,question_list,review_list,board_list,hospital_lis
         <head>
             <title>main</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 60px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+            
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+
+
+            .container {
+                display: grid;
+                grid: '. .';
+                gap: 30px; /* ⬅️ */
+                /* row-gap: 16px; */
+                /* column-gap: 16px; */
+              }
+              .item { 
+                padding: 0 30px;
+                background: lightgray; 
+                margin: 20px;
+              }
+              .title{
+                border-bottom: 3px solid blue;
+              }
+            </style>
         </head>
         <body>
-            <div class="section">
-                <div class="logo">
-                    <a href="/"> Pit-a_Pet</a>
-                </div>
-                <div class="nav">
-                    <ul>
-                        <li> <a href="/qna">Q&A</a> </li>
-                        <li> <a href="/review">리뷰</a> </li>
-                        <li> <a href="/information">기본 정보</a> </li>
-                        <li> <a href="/hospital">동반 정보</a> 
-                        <ul>
-                            <li> <a href="/hospital">병원</a> </li>
-                            <li> <a href="/store">매장</a> </li>
-                        </ul>
-                        <li> <a href="/board">커뮤니티</a> </li>
-                    </ul>
-                </div>
-                <div class="profile">
-                    <ul>
-                        ${current}
-                    </ul>
-                </div>
-            </div>
-            <h1>------------------</h1>
+        <nav class="navbar">
+        <div class="navbar_logo">
+            <a href="/"><i class="fas fa-paw"></i></a>
+            <a href="/">pit-a-pet</a>
+        </div>
+
+        <ul class="navbar_menu">
+            <li> <a href="/qna">Q&A</a> </li>
+            <li> <a href="/review">리뷰</a> </li>
+            <li> <a href="/information">기본 정보</a> </li>
+            <li> <a href="/hospital">동반 정보</a>
+                <ul class="sub">
+                    <li> <a href="/hospital">병원</a> </li>
+                    <li> <a href="/store">매장</a> </li>
+                </ul>
+            </li>
+            <li> <a href="/board">커뮤니티</a> </li>
+        </ul>
+
+        <ul class ="navbar_icons">
+            ${current}
+        </ul>
+    </nav>
+        </div>
             <div class="container">
-                <div class="home_qna">
-                    <a href="/login">Q&A</a>
-                    <h6> ${question_list}</h6>
-                    <h1>------------------</h1>
+                <div class="item">
+                    <h2><a href="/login" class="title">Q&A</a></h2>
+                    <h4 class="contents"> ${question_list}</h4>
                 </div>
 
-                <div class="home_review">
-                    <a href="/login">리뷰</a>
-                    <h6> ${review_list}</h6>
-                    <h1>-------------------</h1>
+                <div class="item">
+                    <h2><a href="/login" class="title">리뷰</a></h2>
+                    <h4 class="contents"> ${review_list}</h4>
                 </div>
 
-                <div class="home_comunity">
-                    <a href="/login">커뮤니티</a>
-                    <h6> ${board_list}</h6>
-                    <h1>-------------------</h1>
+                <div class="item">
+                    <h2><a href="/login" class="title">커뮤니티</a></h2>
+                    <h4 class="contents"> ${board_list}</h4>
                 </div>
 
-                <div class="home_hospital">
-                    <a href="/hospital">병원</a>
-                    ${hospital_list}
-                    <h1>---------------------</h1>
+                <div class="item">
+                    <h2><a href="/hospital" class="title">병원</a></h2>
+                    <h4 class="contents">${hospital_list}</h4>
                 </div>
 
-                <div class="home_store">
-                    <a href="/store">매장</a>
-                    ${store_list}
+                <div class="item">
+                    <h2><a href="/store" class="title">매장</a></h2>
+                    <h4 class="contents">${store_list}</h4>
                 </div>
             </div>
         </body>
@@ -320,7 +400,7 @@ app.get('/', function (req, res, next) {
     db.query(`SELECT * FROM question ORDER BY date DESC`, function(error, questions) {
         if (Object.keys(questions).length > 0) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
-                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}----,${questions[i].date}</a><p>`;
                 if(i==4){break;}
             }
         } else {
