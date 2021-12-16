@@ -37,25 +37,18 @@ function main_template(nickname) {
         <body> 
         <h3>닉네임: ${nickname}</h3>
         <a href="/mypage/user_check/"> 회원 정보 조회</a> 
-        <a href="/register/"> 반려동물등록</a> 
-
+        <a href="/register/"> 반려동물 등록</a> 
         <a href="/mypage/animal_information/"> 동물 정보 조회</a> 
-
         <a href="/mypage/qna/"> 작성한 Q&A</a> 
         <a href="/mypage/review/"> 작성한 리뷰</a> 
         <a href="/mypage/board/"> 작성한 커뮤니티</a>
         <a href="/create_care_service/"> 케어서비스 등록</a> 
-
- 
-
-
-
-        <a href="/mypage/resign_check/"> 회원 탈퇴</a> 
-            
+        <a href="/mypage/resign_check/"> 회원 탈퇴</a>             
         </body>
     </html>
     `;
 }
+
 function user_check() {
     return `
     <!doctype html>
@@ -66,7 +59,6 @@ function user_check() {
         </head>
         <body> 
         <form action="/mypage/user_check" method="post">
-
             <p><input type="password" name="password" placeholder="password" ></p>   
             <p><input type="submit" value="확인"></p>         
         </form>
@@ -85,18 +77,15 @@ function resign_check(){
         </head>
         <body> 
         <form action="/mypage/resign_check" method="post">
-
             <p><input type="password" name="password" placeholder="password" ></p>   
             <p><input type="submit" value="확인"></p>         
         </form>
         </body>
     </html>
     `;
-
 }
 
-
-function user_information_template(user_id,user_password,user_email,user_nickname){
+function user_information_template(user_id, user_password, user_email, user_nickname) {
     return `
     <!doctype html>
     <html>
@@ -114,7 +103,7 @@ function user_information_template(user_id,user_password,user_email,user_nicknam
     `;
 }
 
-function email_template(email_check_txt, check_email){
+function email_template(email_check_txt, check_email) {
     return `
         <!doctype html>
         <html>
@@ -138,7 +127,8 @@ function email_template(email_check_txt, check_email){
         </html>
     `;
 }
-function nickname_template(nickname_check_txt, check_nickname){
+
+function nickname_template(nickname_check_txt, check_nickname) {
     return `
         <!doctype html>
         <html>
@@ -163,7 +153,7 @@ function nickname_template(nickname_check_txt, check_nickname){
     `;
 }
 
-function animal_template(animal_list){
+function animal_template(animal_list) {
     return `
     <!doctype html>
     <html>
@@ -204,7 +194,50 @@ function animal_update_template(animal_name,animal_type,animal_number,animal_gen
     `;
 }
 
-function last_resign_template(){
+function care_service_template(care_service_list) {
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>care service</title>
+            <meta charset="utf-8">
+        </head>
+        <body> 
+        ${care_service_list}
+        </body>
+    </html>
+    `;
+}
+
+function care_service_update_template(care_service_name, care_service_category, care_service_number, date_list, care_service_account){
+    
+    for (var i; i < date_list.length; i++)
+    {
+        
+    }
+    
+    return `
+    <!doctype html>
+    <html>
+        <head>
+            <title>care service update</title>
+            <meta charset="utf-8">
+        </head>
+        <body>
+            <p>${care_service_name}</p>
+            <p>${care_service_category}</p>
+
+            <form action="/mypage/animal_information/update_process/?id=${care_service_number}" method="post">
+            <p><input type="date" name="mail_date" min="1990-01-01" max="2022-12-31" value=${care_service_date_date_list}></p>
+            <p><textarea name="note" value=${care_service_account}></textarea></p>
+            <p><input type="submit" value="수정"></p>
+            </form>
+        </body>
+    </html>
+    `;
+}
+
+function last_resign_template() {
     return `
     <!doctype html>
     <html>
@@ -222,7 +255,7 @@ function last_resign_template(){
     `;
 }
 
-function qna_template(question_list,answer_list){
+function qna_template(question_list, answer_list) {
     return `
     <!doctype html>
     <html>
@@ -257,7 +290,8 @@ function review_template(review_list,comment_list){
     </html>
     `;
 }
-function board_template(board_list,comment_list){
+
+function board_template(board_list, comment_list) {
     return `
     <!doctype html>
     <html>
@@ -315,7 +349,6 @@ app.post('/user_check/', function(req, res) {
             }
         }
     });
-
 });
 
 app.get('/user_information/', function(req, res) {
@@ -378,12 +411,9 @@ app.post('/user_information/password_update/', function(req,res){
     } 
 })
 
-
-
 app.get('/user_information/email/',function(req,res){
     res.end(email_template("이메일 중복을 확인하세요.", ''));
 });
-
 
 app.post('/user_information/email_check', function(request, response) {
     const post = request.body;
@@ -406,46 +436,24 @@ app.post('/user_information/email_check', function(request, response) {
     })
 });
 
-
-
-app.post('/user_information/email_update/', function(request, response) {
-    const post = request.body;
-    const email = post.email;
-    const email_check_txt = post.email_check_txt;
-    const id=request.session.user_id;
-
-
-    if (email_check_txt == "사용할 수 없는 이메일입니다.") {
-        response.send('<script type="text/javascript">alert("중복된 이메일입니다."); document.location.href="/mypage/user_information/email/";</script>');
-    }else if (email_check_txt == "이메일 중복을 확인하세요.") {
-        response.send('<script type="text/javascript">alert("이메일 중복을 먼저 확인해주세요."); document.location.href="/mypage/user_information/email/";</script>');
-    }
-    else if (email === '' ) {
-        response.send('<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/mypage/user_information/email/";</script>');
-    }
-     else {
-        db.query(`UPDATE user SET email=? WHERE id=?`,
-        [email, id],
-        function(error, result) {
-            if (error) {
-                response.send(error);
-                throw error;                
-                
-
-            }
-            console.log(result);
-            response.redirect('/mypage/user_information/');
-        });
-        
-    }
-});
-
-
+app.post('/user_information/email_update/', function(req,res){
+    const email=req.body.email;
+    const id=req.session.user_id;
+    db.query(`UPDATE user SET email=? WHERE id=?`,
+    [email, id],
+    function(err, result) {
+        if(err) {
+            res.send(err);
+            throw err;
+        }
+        console.log(result);
+        res.redirect(`/mypage/user_information/`);
+    })
+})
 
 app.get('/user_information/nickname/',function(req,res){
     res.end(nickname_template("닉네임 중복을 확인하세요.", ''));
 });
-
 
 app.post('/user_information/nickname_check', function(request, response) {
     const post = request.body;
@@ -501,8 +509,6 @@ app.post('/user_information/nickname_update/', function(request,response){
     }
 })
 
-
-
 app.get('/animal_information/',function(req,res){
     const id=req.session.user_id;
     var animal_list=``;
@@ -527,8 +533,6 @@ app.get('/animal_information/',function(req,res){
         }        
     }); 
 })
-
-
 
 app.get('/animal_information/update', function(req, res) {
     const animal_number = url.parse(req.url, true).query.id;
@@ -566,12 +570,100 @@ app.post('/animal_information/update_process', function(req, res) {
     })
 });
 
-
 app.get('/animal_information/delete/', function(req, res) {
     const animal_number = url.parse(req.url, true).query.id;
 
     db.query(`DELETE FROM animal WHERE number = ?`,
     [animal_number],
+    function(err, result) {
+        if (err) {
+            res.send(err);
+            throw err;
+        }
+ 
+        res.redirect('/mypage/');
+    });
+});
+
+app.get('/care_service_information/', function(req, res) {
+    const id = req.session.user_id;
+    var care_service_list = ``;
+    var care_service_date_list = ``;
+
+    db.query(`SELECT * FROM care_service WHERE owner_id = ?`,[id],
+    function(err, care_service){
+        if (err) throw err;
+        else{
+            db.query('SELECT * FROM care_service_date',
+                function(error, care_service_date) {
+                    if (err) throw err;
+                else{
+                    for (var i=0; i<Object.keys(care_service).length; i++) {
+                        for (var j=0; j<Object.keys(care_service_date).length; j++) {
+                            if (care_service_date[j].mail_number == care_service[i].mail_number)
+                            {
+                                care_service_date_list += care_service_date[j].mail_date;
+                                care_service_date_list += '<br/>';
+                            }
+                        }
+
+                        care_service_list += `
+                        <p>${care_service[i].name}</p>
+                        <p>${care_service[i].mail_category}</p>
+                        <p>${care_service_date_list}</p>
+                        <p>${care_service[i].account}</p>
+                        <p><input type="submit" value="수정" onClick="location.href='/mypage/care_service_information/update/?id=${care_service[i].mail_number}'">
+                        <input type="submit" value="삭제" onClick="location.href='/mypage/care_service_information/delete/?id=${care_service[i].mail_number}'"></p>       
+                        `;
+
+                        care_service_date_list = ``;
+                    }
+                    res.end(care_service_template(care_service_list));
+                }
+            });
+            
+        }        
+    }); 
+})
+
+/*app.get('/care_service_information/update', function(req, res) {
+    const care_service_number = url.parse(req.url, true).query.id;
+    var date_list;
+
+    if (care_service_number) {
+        db.query(`SELECT * FROM care_service WHERE number = ?`, 
+        [care_service_number],
+        function(error, result1) {
+            if (error) {
+                throw error;
+            }
+            db.query(`SELECT * FROM care_service_date WHERE number = ?`, 
+            [care_service_number],
+            function(error, result2) {
+            if (error) {
+                throw error;
+            }
+            for (var i=0; i<result2.length; i++) {
+                date_list[i] = result2.mail_date;
+            }
+            res.end(care_service_template(result1[0].name, result1[0].category, care_service_number,
+                date_list, result1[0].account));
+            })
+        })
+    }
+   
+});*/
+
+/*app.post('/care_service_information/update_process', function(req, res) {
+    
+});*/
+
+app.get('/care_service_information/delete/', function(req, res) {
+    const care_service_number = url.parse(req.url, true).query.id;
+    console.log(care_service_number);
+    
+    db.query(`DELETE FROM care_service WHERE mail_number = ?`,
+    [care_service_number],
     function(err, result) {
         if (err) {
             res.send(err);
@@ -697,7 +789,6 @@ app.post('/resign_check/', function(req, res) {
 app.get('/last_resign/', function(req, res) {
     res.send(last_resign_template());
 })
-
 
 
 app.get('/resign/', function(req, res) {
