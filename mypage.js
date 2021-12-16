@@ -121,16 +121,20 @@ function email_template(email_check_txt, check_email){
         <head>
         <title>email update</title>
         <meta charset="utf-8">
-    </head>
-    <body>
-        <form action="/mypage/user_information/email_update/" method="post">
-        <p><input type="text" name="email" placeholder="email" value="${check_email}" formaction="/mypage/user_information/email_check"> <input type="submit" value="이메일 확인" formaction="/mypage/user_information/email_check">
-        <p id="email_check_txt">${email_check_txt}</p>
-        </p> 
-        
-        <p><input type="submit" value="변경하기"></p>
-        </form>
-    </body>       
+        </head>
+        <body>
+            <form action="/mypage/user_information/email_update/" method="post">
+            <div class="row">
+                <input type="email" name="email" placeholder="email" value="${check_email}" formaction="/mypage/user_information/email_check"> 
+                <input type="submit" value="이메일 확인" formaction="/mypage/user_information/email_check"></p>
+                </div>
+                <p id="email_check">${email_check_txt}</p>         
+                <input type="hidden" name="email_check_txt" value="${email_check_txt}" formaction="/mypage/user_information/email_check" >
+
+                
+                <p><input type="submit" value="변경하기"></p>
+            </form>
+        </body>       
         </html>
     `;
 }
@@ -143,13 +147,17 @@ function nickname_template(nickname_check_txt, check_nickname){
         <meta charset="utf-8">
     </head>
     <body>
-        <form action="/mypage/user_information/nickname_update/" method="post">
-        <p><input type="text" name="nickname" placeholder="nickname" value="${check_nickname}" formaction="/mypage/user_information/nickname_check"> <input type="submit" value="닉네임 확인" formaction="/mypage/user_information/nickname_check">
-        <p id="nickname_check_txt">${nickname_check_txt}</p>
-        </p> 
+    <form action="/mypage/user_information/nickname_update/" method="post">
+    <div class="row">
+        <input type="nickname" name="nickname" placeholder="nickname" value="${check_nickname}" formaction="/mypage/user_information/nickname_check"> 
+        <input type="submit" value="닉네임 확인" formaction="/mypage/user_information/nickname_check"></p>
+        </div>
+        <p id="nickname_check">${nickname_check_txt}</p>         
+        <input type="hidden" name="nickname_check_txt" value="${nickname_check_txt}" formaction="/mypage/user_information/nickname_check" >
+
         
         <p><input type="submit" value="변경하기"></p>
-        </form>
+    </form>
     </body>       
         </html>
     `;
@@ -382,14 +390,14 @@ app.post('/user_information/email_check', function(request, response) {
     const email = post.email;
     console.log(email);
 
-    var email_check_txt = "사용할 수 있는  이메일입니다."
-    db.query(`SELECT * FROM user`, function(error, users) {
-        if(error) {
-            throw error;
+    var email_check_txt = "사용할 수 있는 이메일입니다."
+    db.query(`SELECT * FROM user`, function(err, result) {
+        if (err) {
+            throw err;
         }
 
-        for (var i = 0; i < Object.keys(users).length; i++) {
-            if (email === users[i].email) {
+        for (var i = 0; i < result.length; i++) {
+            if (email === result[i].email) {
                 email_check_txt = "사용할 수 없는 이메일입니다."
                 break;
             }
@@ -400,20 +408,40 @@ app.post('/user_information/email_check', function(request, response) {
 
 
 
-app.post('/user_information/email_update/', function(req,res){
-    const email=req.body.email;
-    const id=req.session.user_id;
-    db.query(`UPDATE user SET email=? WHERE id=?`,
-    [email, id],
-    function(err, result) {
-        if(err) {
-            res.send(err);
-            throw err;
-        }
-        console.log(result);
-        res.redirect(`/mypage/user_information/`);
-    })
-})
+app.post('/user_information/email_update/', function(request, response) {
+    const post = request.body;
+    const email = post.email;
+    const email_check_txt = post.email_check_txt;
+    const id=request.session.user_id;
+
+
+    if (email_check_txt == "사용할 수 없는 이메일입니다.") {
+        response.send('<script type="text/javascript">alert("중복된 이메일입니다."); document.location.href="/mypage/user_information/email/";</script>');
+    }else if (email_check_txt == "이메일 중복을 확인하세요.") {
+        response.send('<script type="text/javascript">alert("이메일 중복을 먼저 확인해주세요."); document.location.href="/mypage/user_information/email/";</script>');
+    }
+    else if (email === '' ) {
+        response.send('<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/mypage/user_information/email/";</script>');
+    }
+     else {
+        db.query(`UPDATE user SET email=? WHERE id=?`,
+        [email, id],
+        function(error, result) {
+            if (error) {
+                response.send(error);
+                throw error;                
+                
+
+            }
+            console.log(result);
+            response.redirect('/mypage/user_information/');
+        });
+        
+    }
+});
+
+
+
 app.get('/user_information/nickname/',function(req,res){
     res.end(nickname_template("닉네임 중복을 확인하세요.", ''));
 });
@@ -441,19 +469,36 @@ app.post('/user_information/nickname_check', function(request, response) {
 });
 
 
-app.post('/user_information/nickname_update/', function(req,res){
-    const nickname=req.body.nickname;
-    const id=req.session.user_id;
-    db.query(`UPDATE user SET nickname=? WHERE id=?`,
-    [nickname, id],
-    function(err, result) {
-        if(err) {
-            res.send(err);
-            throw err;
-        }
-        console.log(result);
-        res.redirect(`/mypage/user_information/`);
-    })
+app.post('/user_information/nickname_update/', function(request,response){
+    const post = request.body;
+    const nickname = post.nickname;
+    const nickname_check_txt = post.nickname_check_txt;
+    const id=request.session.user_id;
+
+
+    if (nickname_check_txt == "사용할 수 없는 닉네임입니다.") {
+        response.send('<script type="text/javascript">alert("중복된 닉네임입니다."); document.location.href="/mypage/user_information/nickname/";</script>');
+    }else if (nickname_check_txt == "닉네임 중복을 확인하세요.") {
+        response.send('<script type="text/javascript">alert("닉네임 중복을 먼저 확인해주세요."); document.location.href="/mypage/user_information/nickname/";</script>');
+    }
+    else if (nickname === '' ) {
+        response.send('<script type="text/javascript">alert("닉네임을 입력해주세요."); document.location.href="/mypage/user_information/nickname/";</script>');
+    }
+     else {
+        db.query(`UPDATE user SET nickname=? WHERE id=?`,
+        [nickname, id],
+        function(error, result) {
+            if (error) {
+                response.send(error);
+                throw error;                
+                
+
+            }
+            console.log(result);
+            response.redirect('/mypage/user_information/');
+        });
+        
+    }
 })
 
 
