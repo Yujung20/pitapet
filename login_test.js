@@ -261,7 +261,7 @@ function main_template(current,question_list,review_list,board_list,hospital_lis
             }
             
             .navbar_menu li{
-                padding: 8px 60px;
+                padding: 8px 40px;
                 font-size: 20px;
              
             }
@@ -288,7 +288,8 @@ function main_template(current,question_list,review_list,board_list,hospital_lis
             .navbar_icons{
                 list-style: none;
                 display: flex;
-            
+                margin: 0;
+                padding-left:0;
             }
             .navbar_icons li{
                 padding: 8px 12px;
@@ -343,17 +344,17 @@ function main_template(current,question_list,review_list,board_list,hospital_lis
         </div>
             <div class="container">
                 <div class="item">
-                    <h2><a href="/login" class="title">Q&A</a></h2>
+                    <h2><a href="/qna" class="title">Q&A</a></h2>
                     <h4 class="contents"> ${question_list}</h4>
                 </div>
 
                 <div class="item">
-                    <h2><a href="/login" class="title">리뷰</a></h2>
+                    <h2><a href="/review" class="title">리뷰</a></h2>
                     <h4 class="contents"> ${review_list}</h4>
                 </div>
 
                 <div class="item">
-                    <h2><a href="/login" class="title">커뮤니티</a></h2>
+                    <h2><a href="/board" class="title">커뮤니티</a></h2>
                     <h4 class="contents"> ${board_list}</h4>
                 </div>
 
@@ -400,7 +401,7 @@ app.get('/', function (req, res, next) {
     db.query(`SELECT * FROM question ORDER BY date DESC`, function(error, questions) {
         if (Object.keys(questions).length > 0) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
-                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}----,${questions[i].date}</a><p>`;
+                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}, ${questions[i].date}</a><p>`;
                 if(i==4){break;}
             }
         } else {
@@ -411,7 +412,7 @@ app.get('/', function (req, res, next) {
     db.query(`SELECT * FROM review ORDER BY date DESC`, function(error, reviews) {
         if (Object.keys(reviews).length > 0) {
             for (var i = 0; i < Object.keys(reviews).length; i++) {
-                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a><p>`;
+                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}, ${reviews[i].date}</a><p>`;
                 if(i==4){break;}
             }
         } else {
@@ -446,7 +447,7 @@ app.get('/', function (req, res, next) {
                     }
                 }
                 if(H_H!=hospitals[i+1].hospital_name){
-                    hospital_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}             </a><p>`;
+                    hospital_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}    ${H_pet_list}</a><p>`;
                     H_num1++;
                 if(i+1!=(hospitals).length){
                     H_pet_list=` `;
@@ -455,7 +456,7 @@ app.get('/', function (req, res, next) {
                 }
                 }
             }
-            hospital_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a><p>`;
+            hospital_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}    ${H_pet_list}</a><p>`;
         }
     });
     
@@ -486,7 +487,7 @@ app.get('/', function (req, res, next) {
                     }
                 }
                 if(S_H!=stores[i+1].store_name){
-                    store_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}----------${S_pet_list}</a><p>`;
+                    store_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}     ${S_pet_list}</a><p>`;
                     S_num1++;
                 if(i+1!=(stores).length){
                     S_pet_list=` `;
@@ -495,7 +496,7 @@ app.get('/', function (req, res, next) {
                 }
                 }
             }
-            store_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}----------${S_pet_list}</a><p>`;
+            store_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}    ${S_pet_list}</a><p>`;
         }
     });
     if(req.session.user_id)//로그인 한 경우
@@ -508,7 +509,7 @@ app.get('/', function (req, res, next) {
         db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
             if (Object.keys(boards).length > 0) {
                 for (var i = 0; i < Object.keys(boards).length; i++) {
-                    board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}</a><p>`;
+                    board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}, ${boards[i].date}</a><p>`;
                     if(i==4){break;}
                 }
             } else {
@@ -521,6 +522,7 @@ app.get('/', function (req, res, next) {
         current=`<li> <a href="/login">로그인</a> </li>
         <li> <a href="/signup">회원가입</a> </li>`
         console.log("로그인 안한 상태");
+        board_list = `로그인을 해주세요.`;
         db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
             if (Object.keys(boards).length > 0) {
 
