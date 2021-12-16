@@ -436,19 +436,36 @@ app.post('/user_information/email_check', function(request, response) {
     })
 });
 
-app.post('/user_information/email_update/', function(req,res){
-    const email=req.body.email;
-    const id=req.session.user_id;
-    db.query(`UPDATE user SET email=? WHERE id=?`,
-    [email, id],
-    function(err, result) {
-        if(err) {
-            res.send(err);
-            throw err;
-        }
-        console.log(result);
-        res.redirect(`/mypage/user_information/`);
-    })
+app.post('/user_information/email_update/', function(request,response){
+    const post = request.body;
+    const email = post.email;
+    const email_check_txt = post.email_check_txt;
+    const id=request.session.user_id;
+
+
+    if (email_check_txt == "사용할 수 없는 이메일입니다.") {
+        response.send('<script type="text/javascript">alert("중복된 이메일입니다."); document.location.href="/mypage/user_information/email/";</script>');
+    }else if (email_check_txt == "이메일 중복을 확인하세요.") {
+        response.send('<script type="text/javascript">alert("이메일 중복을 먼저 확인해주세요."); document.location.href="/mypage/user_information/email/";</script>');
+    }
+    else if (email === '' ) {
+        response.send('<script type="text/javascript">alert("이메일을 입력해주세요."); document.location.href="/mypage/user_information/email/";</script>');
+    }
+     else {
+        db.query(`UPDATE user SET email=? WHERE id=?`,
+        [email, id],
+        function(error, result) {
+            if (error) {
+                response.send(error);
+                throw error;                
+                
+
+            }
+            console.log(result);
+            response.redirect('/mypage/user_information/');
+        });
+        
+    }
 })
 
 app.get('/user_information/nickname/',function(req,res){
