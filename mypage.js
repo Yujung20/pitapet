@@ -43,6 +43,8 @@ function main_template(nickname) {
         <a href="/mypage/review/"> 작성한 리뷰</a> 
         <a href="/mypage/board/"> 작성한 커뮤니티</a>
         <a href="/create_care_service/"> 케어서비스 등록</a> 
+        <a href="/mypage/care_service_information/"> 케어서비스 조회</a> 
+
         <a href="/mypage/resign_check/"> 회원 탈퇴</a>             
         </body>
     </html>
