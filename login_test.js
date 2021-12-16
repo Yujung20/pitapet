@@ -76,10 +76,10 @@ app.get('/login',(req,res)=> {
             backgroung-color:#C4D6F238;
             border-radius: 10px;
             position: absolute;
-            width: 400px;
-            height: 500px;
-            left: 800px;
-            top: 353px;
+            width: 20vw;
+            height: 15vh;
+            left: 50%;
+            top: 35%;
             
         }
 
@@ -111,10 +111,10 @@ app.get('/login',(req,res)=> {
             
             .imgcontainer {
             position: absolute;
-            width: 240px;
-            height: 240px;
-            left: 500px;
-            top: 350px;
+            width: 15vw;
+            height: 20vh;
+            left: 30%;
+            top: 40%;
             
             }
 
@@ -176,14 +176,7 @@ app.get('/login',(req,res)=> {
             padding-top: 10px;
 
             }
-            /* Change styles for span and cancel button on extra small screens */
-            @media screen and (max-width: 300px) {
-            span.psw {
-                display: block;
-                float: none;
-            }
             
-            }
             </style>
         </head>
         <body>

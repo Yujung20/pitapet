@@ -39,24 +39,26 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                     }
                 </script>
                 <style>
-                    .col-70 {
-                        float: left;
-                        width: 70%;
-                        margin-top: 6px;
+                    .container {
+                        display: flex;
+                        flex-direction: column;
+                        flex: 1;
+                        align-items: center;
+                        width: 100%;
+                        margin-left: auto;
+                        margin-right: auto;
                     }
-                    .col-30 {
-                        float: left;
-                        width: 30%;
-                        margin-left: 0px;
-                        margin-top: 6px;
+                    label {
+                        align-self: start;
                     }
-                    .row:after {
-                        content: "";
-                        display: table;
-                        clear: both;
+                    .row {
+                        flex diretion: row;
+                        justify-content: space-between;
+                        flex: 1;
+                        display: flex;
                     }
                     input[type=text], input[type=password], input[type="email"] {
-                        width: 50%;
+                        width: 80%;
                         padding: 15px;
                         margin: 5px 0 0 0;
                         display: inline-block;
@@ -79,15 +81,11 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
             </head>
             <body>
                 <h1>일반회원</h1>
-                <form action="/signup/signup_process" method="post">
+                <form class="container" action="/signup/signup_process" method="post">
                         <p><label for="id_save">아이디</label></p>
                         <div class="row">
-                            <div class="col-70">
-                                <input type="text" name="id" placeholder="id" value="${check_id}" id="id_save" oninput='saveValue(this)' formaction="/signup/id_check" formaction="/signup/email_check"> 
-                            </div>
-                            <div class="col-30">
-                                <input type="submit" value="아이디 확인" formaction="/signup/id_check">
-                            </div>
+                            <input type="text" name="id" placeholder="id" value="${check_id}" id="id_save" oninput='saveValue(this)' formaction="/signup/id_check" formaction="/signup/email_check"> 
+                            <input type="submit" value="아이디 확인" formaction="/signup/id_check">
                         </div>
                         <p id="id_check_txt">${id_check_txt}</p>
                         <input type="hidden" name="id_check_txt" value="${id_check_txt}" formaction="/signup/email_check" formaction="/signup/nickname_check">
@@ -98,23 +96,15 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                         <p><input type="password" name="pwd2" placeholder="password check" id="password_check_save" oninput='saveValue(this)'></p>
                         <p><label for="email_save">이메일</label></p>
                         <div class="row">
-                        <div class="col-70">
                         <input type="email" name="email" placeholder="email" id="email_save" oninput='saveValue(this)' formaction="/signup/email_check"> 
-                        </div>
-                        <div class="col-30">
                         <input type="submit" value="이메일 확인" formaction="/signup/email_check"></p>
-                        </div>
                         </div>
                         <p id="email_check">${email_check_txt}</p>
                         <input type="hidden" name="email_check_txt" value="${email_check_txt}" formaction="/signup/id_check" formaction="/signup/nickname_check">
                         <p><label for="nickname_save">닉네임</label></p>
                         <div class="row">
-                        <div class="col-70">
                         <input type="text" name="nickname" placeholder="nickname" id="nickname_save" oninput='saveValue(this)'>
-                        </div>
-                        <div class="col-30">
                         <input type="submit" value="닉네임 확인" formaction="/signup/nickname_check">
-                        </div>
                         </div>
                         <p>${nickname_check_txt}</p>
                         <input type="hidden" name="nickname_check_txt" value="${nickname_check_txt}" formaction="/signup/id_check" formaction="/signup/email_check">
