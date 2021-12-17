@@ -8,6 +8,18 @@ const bcrypt = require('bcrypt');
 
 var db = require('./db');
 
+const multer = require('multer');
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+        cb(null, './upload/expert');
+        },
+        filename: function (req, file, cb) {
+        cb(null, Date.now() + "-" + file.originalname);
+        }
+    })
+});
+
 function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) { 
     return `
         <!doctype html>
@@ -209,7 +221,7 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                     <button id="general_btn" onclick="open_signup(this)">일반 회원</button>
                     <button id="expert_btn" onclick="open_signup(this)">전문가 회원</button>
                 </div>
-                <form id="signup_form" action="/signup/signup_process" method="post" style='max-width:500px; width: 100%'>
+                <form id="signup_form" action="/signup/signup_process" enctype="multipart/form-data" method="post" style='max-width:500px; width: 100%'>
                         <p><label for="id_save">아이디</label></p>
                         <div class="row">
                             <input type="text" name="id" placeholder="id" value="${check_id}" id="id_save" oninput='saveValue(this)' formaction="/signup/id_check" formaction="/signup/email_check"> 
@@ -250,7 +262,7 @@ app.get('/', function(request, response) {
     response.end(template("아이디 중복을 확인하세요.", '', "이메일 중복을 확인하세요.", "닉네임 중복을 확인하세요."));
 });
 
-app.post('/id_check', function(request, response) {
+app.post('/id_check', upload.single('license'), function(request, response) {
     const post = request.body;
     const id = post.id;
     const email_check_txt = post.email_check_txt;
@@ -273,7 +285,7 @@ app.post('/id_check', function(request, response) {
     })
 });
 
-app.post('/email_check', function(req, res) {
+app.post('/email_check', upload.single('license'), function(req, res) {
     const body = req.body;
     const id_check_txt = body.id_check_txt;
     const nickname_check_txt = body.nickname_check_txt;
@@ -296,7 +308,7 @@ app.post('/email_check', function(req, res) {
     })
 })
 
-app.post('/nickname_check', function(req, res) {
+app.post('/nickname_check', upload.single('license'), function(req, res) {
     const body = req.body;
     const id_check_txt = body.id_check_txt;
     const email_check_txt = body.email_check_txt;
@@ -319,7 +331,7 @@ app.post('/nickname_check', function(req, res) {
     })
 })
 
-app.post('/signup_process', function(request, response) {
+app.post('/signup_process', upload.single('license'), function(request, response) {
     const post = request.body;
     const id = post.id;
     const pwd = post.pwd;
@@ -332,6 +344,12 @@ app.post('/signup_process', function(request, response) {
     const email_check_txt = post.email_check_txt;
     const nickname_check_txt = post.nickname_check_txt;
     const is_normal = post.is_normal;
+    let photo = undefined;
+    if(request.file) {
+        photo = request.file.path;
+    } else {
+        photo = null;
+    }
     
     if (id_check_txt === "사용할 수 없는 아이디입니다.") {
         response.send('<script type="text/javascript">alert("중복된 아이디입니다."); document.location.href="/signup";</script>');
@@ -355,7 +373,7 @@ app.post('/signup_process', function(request, response) {
         if (is_normal) {
             bcrypt.hash(pwd, 10, function(error, hash) {
                 db.query(`INSERT INTO user (id, password, email, nickname, license, certificate, is_normal) VALUES(?, ?, ?, ?, ?, ?, ?)`,
-                [id, hash, email, nickname, license, certificate, !is_normal], 
+                [id, hash, email, nickname, photo, certificate, !is_normal], 
                 function(error, result) {
                     if (error) {
                         throw error;
