@@ -328,7 +328,7 @@ function email_template(email_check_txt, check_email) {
         }
         input[type=submit] {
             width: 10vw;
-            margin: 2.5% 0;
+            margin: 2% 0;
             border: 1px solid #ccc;
             border-radius: 15px;
             text-align:center;
@@ -368,13 +368,13 @@ function email_template(email_check_txt, check_email) {
 
             <div class="row">
                 <p><input type="email" name="email" placeholder="email" value="${check_email}" formaction="/mypage/user_information/email_check"> </p>
-                <input type="submit" id="email" value="이메일 확인" formaction="/mypage/user_information/email_check"></p>
+                <input type="submit" id="email" value="이메일 중복 확인" formaction="/mypage/user_information/email_check"></p>
                 </div>
                 <label id="email_check">${email_check_txt}</label>
                 <input type="hidden" name="email_check_txt" value="${email_check_txt}" formaction="/mypage/user_information/email_check" >
                 <p><button type="submit" >확인 </button>
-
-                </form>
+            </div>
+            </form>
         </body>       
         </html>
     `;
@@ -387,18 +387,77 @@ function nickname_template(nickname_check_txt, check_nickname) {
         <head>
         <title>nickname update</title>
         <meta charset="utf-8">
+        <style>
+        form {
+            height: 100vh;
+            justify-content: center;
+            width: 70vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        label {
+            align-self: flex-start;
+            margin-left:10vw;
+        }
+        input[type=nickname] {
+            width: 40vw;
+            padding: 2% 2%;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 15px;
+        }
+        input[type=submit] {
+            width: 10vw;
+            margin: 2% 0;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            text-align:center;
+            background-color:#0066FF;
+            color: white;
+        }
+
+
+        button {
+            width: 50vw;
+            padding: 2% 2%;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 15px;
+            text-align:center;
+            background-color:#0066FF;
+            color: white;
+        }
+        .text{
+            margin-top:10vh;                              
+            font-weight: bold;
+            font-size: 35px;             
+            color: black;
+            margin-bottom: 15%;                
+        }
+        .row {
+            justify-content: space-between;
+            display: flex;
+        }
+        </style>
     </head>
     <body>
     <form action="/mypage/user_information/nickname_update/" method="post">
-    <div class="row">
-        <input type="nickname" name="nickname" placeholder="nickname" value="${check_nickname}" formaction="/mypage/user_information/nickname_check"> 
-        <input type="submit" value="닉네임 확인" formaction="/mypage/user_information/nickname_check"></p>
-        </div>
-        <p id="nickname_check">${nickname_check_txt}</p>         
-        <input type="hidden" name="nickname_check_txt" value="${nickname_check_txt}" formaction="/mypage/user_information/nickname_check" >
+    <div class="text"><b> 닉네임 변경하기</b> </div>
+    <label for="nickname">새 닉네임</label>
 
-        
-        <p><input type="submit" value="변경하기"></p>
+    <div class="row">
+        <p><input type="nickname" name="nickname" placeholder="nickname" value="${check_nickname}" formaction="/mypage/user_information/nickname_check"> </p>
+        <input type="submit" id="nickname" value="닉네임 중복 확인" formaction="/mypage/user_information/nickname_check"></p>
+        </div>
+        <label id="nickname_check">${nickname_check_txt}</label>
+        <input type="hidden" name="nickname_check_txt" value="${nickname_check_txt}" formaction="/mypage/user_information/nickname_check" >
+        <p><button type="submit" >확인 </button>
+    </div>
     </form>
     </body>       
         </html>
