@@ -155,7 +155,7 @@ app.get('/login',(req,res)=> {
                 
             }
             hr.one{
-            width:300px;
+            width:90%;
             color:black;
             text-align:center;
             }
