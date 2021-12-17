@@ -313,6 +313,7 @@ function main_template(current,question_list,review_list,board_list,hospital_lis
                 padding: 0 30px;
                 background: lightgray; 
                 margin: 20px;
+                border-radius:20px;
               }
               .title{
                 border-bottom: 3px solid blue;

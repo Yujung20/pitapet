@@ -9,14 +9,81 @@ app.use(body_parser.urlencoded({ extended: false}));
 var db = require('./db');
 const path = require('path');
 
-function main_template(boardlist,search_title){
+function main_template(current,boardlist,search_title){
     return `
     <!doctype html>
       <html>
           <head>
               <title>Board</title>
               <meta charset="utf-8">
-              <style>
+              <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+                <style>
+                body{
+                    margin: 0;
+                }
+                a{
+                    text-decoration: none;
+                    color: black;
+                }
+                .navbar{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 8px 12px;
+                    
+                }
+                .navbar_logo{
+                    font-size: 30px;
+                
+                }
+                .navbar_logo i{
+                    color: blue;
+                }
+                
+                .navbar_menu{
+                    display: flex;
+                    list-style: none;
+                    padding-left: 0;
+                }
+                
+                .navbar_menu li{
+                    padding: 8px 40px;
+                    font-size: 20px;
+                
+                }
+                .navbar_menu li:hover{
+                    border-bottom:3px solid blue;
+                }
+                
+                .navbar_menu ul{
+                    align-items: center;
+                    list-style: none;
+                    padding-left: 0;
+                    display: none;
+                }
+                .navbar_menu ul li{
+                    padding: 8px 5px;
+                }
+                .navbar_menu li:hover ul{
+                    display: flex;
+                    position: absolute;
+                }
+                .navbar_menu li:hover li:hover{
+                    box-sizing: border-box;
+                }
+                .navbar_icons{
+                    list-style: none;
+                    display: flex;
+                    margin: 0;
+                    padding-left:0;
+                }
+                .navbar_icons li{
+                    padding: 8px 12px;
+                }
+                
+                .navbar_icons li:hover{
+                    border-bottom: 3px solid blue;
+                }
                 .tableline {
                     border-bottom: 1px solid #888888;
                 }
@@ -80,6 +147,29 @@ function main_template(boardlist,search_title){
               </style>
           </head>
           <body>
+          <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
               <h1>Board</h1>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <form action="/board/search?b_title=${search_title}"method="get">
@@ -111,16 +201,108 @@ function main_template(boardlist,search_title){
     `;
   }
   
-  function detail_template(board_id, board_title, board_content, board_user, board_date, board_category,
+  function detail_template(current, board_id, board_title, board_content, board_user, board_date, board_category,
       comments, auth_btn) {
       return `
       <!doctype html>
       <html>
           <head>
               <title>board content</title>
+              <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            </style>
               <meta charset="utf-8">
           </head>
           <body>
+          <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
               <table class="detail_table">
                 <tr align="center">
                     <td align="left"><h2>[ ${board_category} ]${board_title}</h2></td>
@@ -146,15 +328,107 @@ function main_template(boardlist,search_title){
       `
   }
   
-  function board_template() {
+  function board_template(current) {
       return `
       <!doctype html>
       <html>
           <head>
               <title>write board</title>
+              <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            </style>
               <meta charset="utf-8">
           </head>
           <body>
+          <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
               <h1>작성하기</h1>
               <form action="/board/write/" method="post">
                   <p><input type"text" name="title" placeholder="title"></p>
@@ -170,15 +444,107 @@ function main_template(boardlist,search_title){
       `;
   }
   
-  function board_update_template(board_id, board_title, board_content, board_category) {
+  function board_update_template(current,board_id, board_title, board_content, board_category) {
       return `
       <!doctype html>
       <html>
           <head>
               <title>update board</title>
+              <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            </style>
               <meta charset="utf-8">
           </head>
           <body>
+                <nav class="navbar">
+                    <div class="navbar_logo">
+                        <a href="/"><i class="fas fa-paw"></i></a>
+                        <a href="/">pit-a-pet</a>
+                    </div>
+
+                    <ul class="navbar_menu">
+                        <li> <a href="/qna">Q&A</a> </li>
+                        <li> <a href="/review">리뷰</a> </li>
+                        <li> <a href="/information">기본 정보</a> </li>
+                        <li> <a href="/hospital">동반 정보</a>
+                            <ul class="sub">
+                                <li> <a href="/hospital">병원</a> </li>
+                                <li> <a href="/store">매장</a> </li>
+                            </ul>
+                        </li>
+                        <li> <a href="/board">커뮤니티</a> </li>
+                    </ul>
+
+                    <ul class ="navbar_icons">
+                        ${current}
+                    </ul>
+                </nav>
               <form action="/board/written/${board_id}/update_process/" method="post">
                   <h1><input type="text" name="title" value="${board_title}"></h1>
                   <p><textarea name="content">${board_content}</textarea></p>
@@ -195,6 +561,17 @@ function main_template(boardlist,search_title){
   
   app.get('/', function(req, res) {
       var board_list = ``;
+      var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var id=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${id}--마이페이지</a> </li>`
+                console.log(id)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
       db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
           if (Object.keys(boards).length > 0) {
             for (var i = 0; i < Object.keys(boards).length; i++) {
@@ -209,12 +586,23 @@ function main_template(boardlist,search_title){
             } else {
                 board_list = '0개의 게시물이 있습니다.';
             }
-          res.end(main_template(board_list));
+          res.end(main_template(current,board_list));
       });
   });
   
   app.get('/write/', function(req, res) {
-      res.end(board_template());
+    var current=``;
+    if(req.session.user_id){//로그인 한 경우
+        var id=req.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${id}--마이페이지</a> </li>`
+        console.log(id)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
+      res.end(board_template(current));
   })
   
   app.post('/write/', function(req, res) {
@@ -223,7 +611,6 @@ function main_template(boardlist,search_title){
       const content = body.content;
       const category = body.category;
       const user = req.session.user_id;
-      
       db.query(`INSERT INTO board (user_id, title, content, category) VALUES(?, ?, ?, ?)`,
       [user, title, content, category],
       function(error, result) {
@@ -238,7 +625,17 @@ function main_template(boardlist,search_title){
   app.get('/written/:board_id', function(req, res) {
       const board_id = req.params.board_id;
       var comments_list = ``;
-  
+      var current=``;
+      if(req.session.user_id){//로그인 한 경우
+          var id=req.session.user_id;
+          current=`<li> <a href="/logout">로그아웃</a> </li>
+          <li> <a href="/mypage">${id}--마이페이지</a> </li>`
+          console.log(id)
+      }
+      else{
+          current=`<li> <a href="/login">로그인</a> </li>
+          <li> <a href="/signup">회원가입</a> </li>`
+      }
       if (board_id) {
           db.query(`SELECT * FROM board WHERE board_number = ?`, 
           [board_id],
@@ -289,7 +686,7 @@ function main_template(boardlist,search_title){
                       `
                   }
   
-                  res.send(detail_template(board_id, board[0].title, board[0].content, board[0].user_id, formating_qdate, board[0].category, comments_list, auth_btn));
+                  res.send(detail_template(current,board_id, board[0].title, board[0].content, board[0].user_id, formating_qdate, board[0].category, comments_list, auth_btn));
               })
           })
       }
@@ -298,7 +695,17 @@ function main_template(boardlist,search_title){
   app.get('/search/', function(req, res) {
         const b_keyword = req.query.search_title;
         var board_list = ``;
-
+        var current=``;
+        if(req.session.user_id){//로그인 한 경우
+            var id=req.session.user_id;
+            current=`<li> <a href="/logout">로그아웃</a> </li>
+            <li> <a href="/mypage">${id}--마이페이지</a> </li>`
+            console.log(id)
+        }
+        else{
+            current=`<li> <a href="/login">로그인</a> </li>
+            <li> <a href="/signup">회원가입</a> </li>`
+        }
         console.log(b_keyword);
         if(b_keyword) {
         db.query(`SELECT * FROM board WHERE title LIKE ? ORDER BY date DESC`, 
@@ -317,7 +724,7 @@ function main_template(boardlist,search_title){
                     
             }
         
-            res.send(main_template(board_list));
+            res.send(main_template(current,board_list));
         })
         }
         else {
@@ -346,7 +753,17 @@ function main_template(boardlist,search_title){
   app.get('/written/:board_id/update/', function(req, res) {
       const board_id = req.params.board_id;
       console.log(board_id);
-  
+      var current=``;
+      if(req.session.user_id){//로그인 한 경우
+          var id=req.session.user_id;
+          current=`<li> <a href="/logout">로그아웃</a> </li>
+          <li> <a href="/mypage">${id}--마이페이지</a> </li>`
+          console.log(id)
+      }
+      else{
+          current=`<li> <a href="/login">로그인</a> </li>
+          <li> <a href="/signup">회원가입</a> </li>`
+      }
       db.query(`SELECT * FROM board WHERE board_number = ?`,
       [board_id],
       function(err, board) {
@@ -355,7 +772,7 @@ function main_template(boardlist,search_title){
               throw err;
           }
           console.log(board);
-          res.send(board_update_template(board_id, board[0].title, board[0].content, board[0].category));
+          res.send(board_update_template(current,board_id, board[0].title, board[0].content, board[0].category));
       })
   });
   
