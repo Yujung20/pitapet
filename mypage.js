@@ -303,19 +303,78 @@ function email_template(email_check_txt, check_email) {
         <head>
         <title>email update</title>
         <meta charset="utf-8">
+        <style>
+        form {
+            height: 100vh;
+            justify-content: center;
+            width: 70vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        label {
+            align-self: flex-start;
+            margin-left:10vw;
+        }
+        input[type=email] {
+            width: 40vw;
+            padding: 2% 2%;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 15px;
+        }
+        input[type=submit] {
+            width: 10vw;
+            margin: 2.5% 0;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            text-align:center;
+            background-color:#0066FF;
+            color: white;
+        }
+
+
+        button {
+            width: 50vw;
+            padding: 2% 2%;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 15px;
+            text-align:center;
+            background-color:#0066FF;
+            color: white;
+        }
+        .text{
+            margin-top:10vh;                              
+            font-weight: bold;
+            font-size: 35px;             
+            color: black;
+            margin-bottom: 15%;                
+        }
+        .row {
+            justify-content: space-between;
+            display: flex;
+        }
+        </style>
         </head>
         <body>
             <form action="/mypage/user_information/email_update/" method="post">
-            <div class="row">
-                <input type="email" name="email" placeholder="email" value="${check_email}" formaction="/mypage/user_information/email_check"> 
-                <input type="submit" value="이메일 확인" formaction="/mypage/user_information/email_check"></p>
-                </div>
-                <p id="email_check">${email_check_txt}</p>         
-                <input type="hidden" name="email_check_txt" value="${email_check_txt}" formaction="/mypage/user_information/email_check" >
+            <div class="text"><b> 이메일 변경하기</b> </div>
+            <label for="email">새 이메일</label>
 
-                
-                <p><input type="submit" value="변경하기"></p>
-            </form>
+            <div class="row">
+                <p><input type="email" name="email" placeholder="email" value="${check_email}" formaction="/mypage/user_information/email_check"> </p>
+                <input type="submit" id="email" value="이메일 확인" formaction="/mypage/user_information/email_check"></p>
+                </div>
+                <label id="email_check">${email_check_txt}</label>
+                <input type="hidden" name="email_check_txt" value="${email_check_txt}" formaction="/mypage/user_information/email_check" >
+                <p><button type="submit" >확인 </button>
+
+                </form>
         </body>       
         </html>
     `;
@@ -516,12 +575,56 @@ app.get('/user_information/password/',function(req,res){
         <title>password update</title>
         <meta charset="utf-8">
     </head>
+    <style>
+    form {
+        height: 100vh;
+        justify-content: center;
+        width: 70vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    label {
+        align-self: flex-start;
+        margin-left:10vw;
+    }
+    input[type=password] {
+        width: 50vw;
+        padding: 2% 2%;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        border-radius: 15px;
+    }
+    input[type=submit] {
+        width: 50vw;
+        padding: 2% 2%;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        border-radius: 15px;
+        text-align:center;
+        background-color:#0066FF;
+        color: white;
+    }
+    .text{
+        margin-top:10vh;                              
+        font-weight: bold;
+        font-size: 35px;             
+        color: black;
+        margin-bottom: 15%;                
+    }     
+    </style>
     <body>
     <form action="/mypage/user_information/password_update/" method="post">
+        <div class="text"><b> 비밀번호 변경하기</b> </div>
+        <label for="pwd">새 비밀번호</label>
         <p><input type="password" name="pwd1" placeholder="password"></p>
-        <p><input type="password" name="pwd2" placeholder="password check"></p>
-    
-        <p><input type="submit" value="변경하기"></p>
+        <label for="pwd">새 비밀번호 확인</label>
+        <p><input type="password" name="pwd2" placeholder="password check"></p>    
+        <p><input type="submit" value="확인"></p>
         
     </form>
     </body>   
@@ -536,7 +639,7 @@ app.post('/user_information/password_update/', function(req,res){
     const pwd2 = post.pwd2;
     const id=req.session.user_id;
     if (pwd1 !== pwd2) {
-        res.send(`<script>alert('비밀번호가 일치하지 않습니다.')</script>`);
+        res.send('<script type="text/javascript">alert("비밀번호가 일치하지 않습니다."); document.location.href="/mypage/user_information/password/";</script>');
     } else {
         bcrypt.hash(pwd1, 10, function(error, hash) {
             db.query(`UPDATE user SET password=? WHERE id = ?`,
