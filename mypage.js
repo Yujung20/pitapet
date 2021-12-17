@@ -204,19 +204,93 @@ function resign_check(){
     `;
 }
 
-function user_information_template(user_id, user_password, user_email, user_nickname) {
+function user_information_template(user_id,  user_email, user_nickname) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>mypage_user</title>
             <meta charset="utf-8">
+            <style>
+            .mypage_user{
+                position: absolute;
+                height:70%;
+                top:15%;
+                padding-left:5%;
+            }
+            
+            .text1{
+                font-size:50px;
+                font-weight: bold;
+                height: 10vh;
+                padding-left:5%;
+                display: inline-block;
+                margin-bottom:2%;
+            }
+            
+            
+            .mypage_{
+                padding-left:5%;
+            }
+            .text2{
+                font-size:20px;                
+                line-height:2.5;
+            }
+            .atag{
+                font-size:20px;                
+                line-height:2.5;
+            }
+            .atagtext{
+                font-weight:bold;
+            }
+            a {
+                text-decoration:none !important
+            }           
+            a:link {
+                color :black;
+            }
+            a:visited {
+                color: black;
+                text-shadow: 2px 2px 2px gray; 
+            }
+            a:hover {
+                border-bottom: 3px solid blue;
+            }
+            a:active {
+            color : blue;
+            }
+            
+            hr{
+                width:75vw;
+                color:black;
+                text-align:center;
+                left:5%;
+
+            }
+
+            </style>
         </head>
         <body> 
-        <h3>아이디: ${user_id}</h3>
-            <h3>비밀번호: ${user_password}</h3><p><input type="submit" value="변경하기" onClick="location.href='/mypage/user_information/password/'"></p>  
-            <h3>이메일: ${user_email}</h3><p><input type="submit" value="변경하기" onClick="location.href='/mypage/user_information/email/'"></p>        
-            <h3>닉네임: ${user_nickname}</h3><p><input type="submit" value="변경하기" onClick="location.href='/mypage/user_information/nickname/'"></p>      
+        <div class="mypage_user">
+            <div class="row">
+            <div class="text1">회원 정보 조회</div></div>
+            <div class="mypage_id mypage_">
+                <div class="text2">아이디: ${user_id}</div>            
+            </div>
+            <div class="mypage_password mypage_">
+                <p><a class="atag" href="/mypage/user_information/password/">비밀번호 변경</a></p>  
+            </div>
+            <hr class="one">
+            <div class="mypage_email mypage_">
+                <div class="text2">이메일: ${user_email}</div>
+                <p><a class="atag" href="/mypage/user_information/email/">이메일 변경</a></p>        
+            </div>
+            <hr class="one">
+            <div class="mypage_nickname mypage_">
+            <div class="text2">닉네임: ${user_nickname}</div>
+            <p><a class="atag" href="/mypage/user_information/nickname/">닉네임 변경</a></p>      
+            </div>
+        </div>
         </body>
     </html>
     `;
@@ -432,7 +506,7 @@ app.get('/user_information/', function(req, res) {
             throw error;
         }
         console.log(user);
-        res.end(user_information_template(user_id,user[0].password, user[0].email, user[0].nickname));
+        res.end(user_information_template(user_id, user[0].email, user[0].nickname));
     })
 })
 
