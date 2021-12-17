@@ -31,7 +31,7 @@ function main_template(boardlist,search_title){
                 }
 
                 .search_p {
-                    font-size: 20px;
+                    font-size: 14px;
                 }
 
                 .search_text {
@@ -68,6 +68,14 @@ function main_template(boardlist,search_title){
                     opacity: 0.9;
                     border-radius: 10px;
                     box-shadow: 3px 3px 3px #b0b0b0;
+                }
+
+                .detail_table {
+                    align="center';
+                    width="100%";
+                    cellpadding="0";
+                    cellspacing="0";
+                    border="0";
                 }
               </style>
           </head>
@@ -113,11 +121,17 @@ function main_template(boardlist,search_title){
               <meta charset="utf-8">
           </head>
           <body>
-              <h1>${board_title}</h1>
-              <p>${board_category}</p>
-              <p>${board_content}</p>
-              <p>${board_user}</p>
-              <p>${board_date}</p>
+              <table class="detail_table">
+                <tr align="center">
+                    <td align="left"><h2>[ ${board_category} ]${board_title}</h2></td>
+                    <td align="right"><p>${board_user}</p></td>
+                </tr>
+                <tr align="center">
+                    <td align="right"><p>${board_date}</p></td>
+                </tr>
+                <tr align="center">
+                    <td align="left"><p>${board_content}</p></td>
+              </table>
               ${auth_btn}
               <hr/>
               <h3>댓글</h3>
@@ -382,9 +396,10 @@ function main_template(boardlist,search_title){
   
   app.get('/written/comment/:comment_id/delete/', function(req, res) {
       const comment_id = req.params.comment_id;
+      const board_id = req.body.board_id;
   
-      db.query(`DELETE FROM board_comment WHERE comment_number = ?`,
-      [comment_id],
+      db.query(`DELETE FROM board_comment WHERE comment_number = ? AND board_number = ?`,
+      [comment_id, board_id],
       function(err, result) {
           if (err) {
               res.send(err);
@@ -392,7 +407,7 @@ function main_template(boardlist,search_title){
           }
           console.log(result);
   
-          res.redirect('/board/');
+          res.redirect(`/board/written/${board_id}/`);
       });
   });
   
