@@ -193,11 +193,56 @@ function resign_check(){
         <head>
             <title>resign_check</title>
             <meta charset="utf-8">
+            <style>
+            form {
+                height: 100vh;
+                justify-content: center;
+                width: 70vw;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            label {
+                align-self: flex-start;
+                margin-left:10vw;
+            }
+            input[type=password] {
+                width: 50vw;
+                padding: 2% 2%;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
+            input[type=submit] {
+                width: 50vw;
+                padding: 2% 2%;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+                text-align:center;
+                background-color:#0066FF;
+                color: white;
+            }
+            .text{
+                margin-top:10vh;                              
+                font-weight: bold;
+                font-size: 35px;             
+                color: black;
+                margin-bottom: 15%;                
+            }            
+            </style>
         </head>
         <body> 
         <form action="/mypage/resign_check" method="post">
+            <div class="text"><b> 회원 탈퇴</b> </div>
+            <label for="pwd">비밀번호 확인</label>
             <p><input type="password" name="password" placeholder="password" ></p>   
-            <p><input type="submit" value="확인"></p>         
+            <p><input type="submit" value="확인"></p>     
+                     
         </form>
         </body>
     </html>
@@ -303,18 +348,77 @@ function email_template(email_check_txt, check_email) {
         <head>
         <title>email update</title>
         <meta charset="utf-8">
+        <style>
+        form {
+            height: 100vh;
+            justify-content: center;
+            width: 70vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        label {
+            align-self: flex-start;
+            margin-left:10vw;
+        }
+        input[type=email] {
+            width: 40vw;
+            padding: 2% 2%;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 15px;
+        }
+        input[type=submit] {
+            width: 10vw;
+            margin: 2% 0;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            text-align:center;
+            background-color:#0066FF;
+            color: white;
+        }
+
+
+        button {
+            width: 50vw;
+            padding: 2% 2%;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 15px;
+            text-align:center;
+            background-color:#0066FF;
+            color: white;
+        }
+        .text{
+            margin-top:10vh;                              
+            font-weight: bold;
+            font-size: 35px;             
+            color: black;
+            margin-bottom: 15%;                
+        }
+        .row {
+            justify-content: space-between;
+            display: flex;
+        }
+        </style>
         </head>
         <body>
             <form action="/mypage/user_information/email_update/" method="post">
-            <div class="row">
-                <input type="email" name="email" placeholder="email" value="${check_email}" formaction="/mypage/user_information/email_check"> 
-                <input type="submit" value="이메일 확인" formaction="/mypage/user_information/email_check"></p>
-                </div>
-                <p id="email_check">${email_check_txt}</p>         
-                <input type="hidden" name="email_check_txt" value="${email_check_txt}" formaction="/mypage/user_information/email_check" >
+            <div class="text"><b> 이메일 변경하기</b> </div>
+            <label for="email">새 이메일</label>
 
-                
-                <p><input type="submit" value="변경하기"></p>
+            <div class="row">
+                <p><input type="email" name="email" placeholder="email" value="${check_email}" formaction="/mypage/user_information/email_check"> </p>
+                <input type="submit" id="email" value="이메일 중복 확인" formaction="/mypage/user_information/email_check"></p>
+                </div>
+                <label id="email_check">${email_check_txt}</label>
+                <input type="hidden" name="email_check_txt" value="${email_check_txt}" formaction="/mypage/user_information/email_check" >
+                <p><button type="submit" >확인 </button>
+            </div>
             </form>
         </body>       
         </html>
@@ -328,18 +432,77 @@ function nickname_template(nickname_check_txt, check_nickname) {
         <head>
         <title>nickname update</title>
         <meta charset="utf-8">
+        <style>
+        form {
+            height: 100vh;
+            justify-content: center;
+            width: 70vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        label {
+            align-self: flex-start;
+            margin-left:10vw;
+        }
+        input[type=nickname] {
+            width: 40vw;
+            padding: 2% 2%;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 15px;
+        }
+        input[type=submit] {
+            width: 10vw;
+            margin: 2% 0;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            text-align:center;
+            background-color:#0066FF;
+            color: white;
+        }
+
+
+        button {
+            width: 50vw;
+            padding: 2% 2%;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 15px;
+            text-align:center;
+            background-color:#0066FF;
+            color: white;
+        }
+        .text{
+            margin-top:10vh;                              
+            font-weight: bold;
+            font-size: 35px;             
+            color: black;
+            margin-bottom: 15%;                
+        }
+        .row {
+            justify-content: space-between;
+            display: flex;
+        }
+        </style>
     </head>
     <body>
     <form action="/mypage/user_information/nickname_update/" method="post">
-    <div class="row">
-        <input type="nickname" name="nickname" placeholder="nickname" value="${check_nickname}" formaction="/mypage/user_information/nickname_check"> 
-        <input type="submit" value="닉네임 확인" formaction="/mypage/user_information/nickname_check"></p>
-        </div>
-        <p id="nickname_check">${nickname_check_txt}</p>         
-        <input type="hidden" name="nickname_check_txt" value="${nickname_check_txt}" formaction="/mypage/user_information/nickname_check" >
+    <div class="text"><b> 닉네임 변경하기</b> </div>
+    <label for="nickname">새 닉네임</label>
 
-        
-        <p><input type="submit" value="변경하기"></p>
+    <div class="row">
+        <p><input type="nickname" name="nickname" placeholder="nickname" value="${check_nickname}" formaction="/mypage/user_information/nickname_check"> </p>
+        <input type="submit" id="nickname" value="닉네임 중복 확인" formaction="/mypage/user_information/nickname_check"></p>
+        </div>
+        <label id="nickname_check">${nickname_check_txt}</label>
+        <input type="hidden" name="nickname_check_txt" value="${nickname_check_txt}" formaction="/mypage/user_information/nickname_check" >
+        <p><button type="submit" >확인 </button>
+    </div>
     </form>
     </body>       
         </html>
@@ -391,12 +554,52 @@ function last_resign_template() {
         <head>
             <title>last resign</title>
             <meta charset="utf-8">
+            <style>
+            body {
+                height: 100vh;
+                justify-content: center;
+                width: 70vw;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            label {
+                color:red;
+            }
+            
+            input[type=submit] {
+                width: 25vw;
+                padding: 2% 2%;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+                text-align:center;
+                background-color:#0066FF;
+                color: white;
+            }
+            .text{
+                margin-top:10vh;                              
+                font-weight: bold;
+                font-size: 35px;             
+                color: black;
+                margin-bottom: 15%;                
+            }       
+            .row {
+                justify-content: space-between;
+                display: flex;
+            }     
+            </style>
         </head>
         <body>
-        <h2>정말 탈퇴하시겠습니까?</h2>
-        <p><input type="submit" value="예" onClick="location.href='/mypage/resign'">
-        <input type="submit" value="아니오" onClick="location.href='/mypage/'"></p>
-
+        <div class="text"><b> 정말 탈퇴하시겠습니까?</b> </div>
+        <label for="caution"> 삭제된 계정은 다시 복구할 수 없고 계정의 게시물이나 정보는 완전히 삭제되는 점을 기억해주세요.</label>
+        <div class="row">
+            <p><input type="submit" value="예" onClick="location.href='/mypage/resign'">
+            <input type="submit" value="아니오" onClick="location.href='/mypage/'"></p>
+        </div>
         </body>
     </html>
     `;
@@ -516,12 +719,56 @@ app.get('/user_information/password/',function(req,res){
         <title>password update</title>
         <meta charset="utf-8">
     </head>
+    <style>
+    form {
+        height: 100vh;
+        justify-content: center;
+        width: 70vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    label {
+        align-self: flex-start;
+        margin-left:10vw;
+    }
+    input[type=password] {
+        width: 50vw;
+        padding: 2% 2%;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        border-radius: 15px;
+    }
+    input[type=submit] {
+        width: 50vw;
+        padding: 2% 2%;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        border-radius: 15px;
+        text-align:center;
+        background-color:#0066FF;
+        color: white;
+    }
+    .text{
+        margin-top:10vh;                              
+        font-weight: bold;
+        font-size: 35px;             
+        color: black;
+        margin-bottom: 15%;                
+    }     
+    </style>
     <body>
     <form action="/mypage/user_information/password_update/" method="post">
+        <div class="text"><b> 비밀번호 변경하기</b> </div>
+        <label for="pwd">새 비밀번호</label>
         <p><input type="password" name="pwd1" placeholder="password"></p>
-        <p><input type="password" name="pwd2" placeholder="password check"></p>
-    
-        <p><input type="submit" value="변경하기"></p>
+        <label for="pwd">새 비밀번호 확인</label>
+        <p><input type="password" name="pwd2" placeholder="password check"></p>    
+        <p><input type="submit" value="확인"></p>
         
     </form>
     </body>   
@@ -536,7 +783,7 @@ app.post('/user_information/password_update/', function(req,res){
     const pwd2 = post.pwd2;
     const id=req.session.user_id;
     if (pwd1 !== pwd2) {
-        res.send(`<script>alert('비밀번호가 일치하지 않습니다.')</script>`);
+        res.send('<script type="text/javascript">alert("비밀번호가 일치하지 않습니다."); document.location.href="/mypage/user_information/password/";</script>');
     } else {
         bcrypt.hash(pwd1, 10, function(error, hash) {
             db.query(`UPDATE user SET password=? WHERE id = ?`,
