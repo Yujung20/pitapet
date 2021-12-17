@@ -64,7 +64,7 @@ function main_template(boardlist,search_title){
                     margin: 3px 0 0 5px;
                     border: none;
                     cursor: pointer;
-                    width: 50%;
+                    width: 42.3%;
                     opacity: 0.9;
                     border-radius: 10px;
                     box-shadow: 3px 3px 3px #b0b0b0;
@@ -77,7 +77,7 @@ function main_template(boardlist,search_title){
                 <form action="/board/search?b_title=${search_title}"method="get">
                 <tr>
                 <td align="center">
-                    <p class="search_p">커뮤니티 검색&nbsp&nbsp
+                    <p class="search_p">커뮤니티 검색&nbsp&nbsp&nbsp
                     <input type="text" name="search_title" placeholder="검색어를 입력하세요." class="search_text">&nbsp
                     <input type="submit" value="검색" class="search_submit"></p>
                 </td>
