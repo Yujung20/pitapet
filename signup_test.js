@@ -41,6 +41,8 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                     function open_signup(e) {
                         if (e.id === 'general_btn') {
                             var expert = document.getElementById('expert_btn');
+                            var license = document.getElementById("license");
+                            if (license) license.remove()
                             if (e.classList.contains('active')) {
                                 e.classList.remove('active');
                             } else {
@@ -54,6 +56,16 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                             } else {
                                 if (general.classList.contains('active')) general.classList.remove('active');
                                 e.classList.add('active');
+                            }
+                            var license_exist = document.getElementById("license");
+                            if (!license_exist){
+                                var license = document.createElement('input');
+                                license.setAttribute("type", "file");
+                                license.setAttribute("name", "license");
+                                license.setAttribute("id", "license");
+
+                                // document.getElementById('signup_form').appendChild(license);
+                                document.getElementById('signup_form').insertBefore(license, document.getElementById('signup_form').children[15]);
                             }
                         }
                     }                      
@@ -145,7 +157,7 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                     <button id="general_btn" onclick="open_signup(this)">일반 회원</button>
                     <button id="expert_btn" onclick="open_signup(this)">전문가 회원</button>
                 </div>
-                <form class="form" action="/signup/signup_process" method="post" style='max-width:500px; width: 100%'>
+                <form id="signup_form" action="/signup/signup_process" method="post" style='max-width:500px; width: 100%'>
                         <p><label for="id_save">아이디</label></p>
                         <div class="row">
                             <input type="text" name="id" placeholder="id" value="${check_id}" id="id_save" oninput='saveValue(this)' formaction="/signup/id_check" formaction="/signup/email_check"> 
@@ -174,8 +186,6 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                         </div>
                         <p id="nickname_check_txt">${nickname_check_txt}</p>
                         <input type="hidden" name="nickname_check_txt" value="${nickname_check_txt}" formaction="/signup/id_check" formaction="/signup/email_check">
-                        <p><input type="file" name="license"></p>
-                        <p><input type="file" name="certificate"></p>
                         <p><input id="submit_btn" type="submit" onclick="clearStorage()" value="가입하기"></p>
                 </form>
             </div>
