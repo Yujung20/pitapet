@@ -16,14 +16,13 @@ function template() {
             <meta charset="utf-8">
             <style>
             form {
-                border: 3px
-                backgroung-color:#C4D6F238;
-                border-radius: 10px;
-                position: absolute;
-                width: 20vw;
-                height: 15vh;
-                left: 50%;
-                margin-left: -200px;
+                display: flex;
+                flex-direction: column;
+                max-width: 500px;
+                width: 100%;
+                margin-top: 10%;
+                margin-left: auto;
+                margin-right: auto;
             }
     
             input[type=text], textarea[name=special_note] {

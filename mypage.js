@@ -130,12 +130,56 @@ function user_check() {
     return `
     <!doctype html>
     <html>
-        <head>
-            <title>user_check</title>
-            <meta charset="utf-8">
+    <head>
+        <title>user_check</title>
+        <meta charset="utf-8">
+        <style>
+            form {
+                height: 100vh;
+                justify-content: center;
+                width: 70vw;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            label {
+                align-self: flex-start;
+                margin-left:10vw;
+            }
+            input[type=password] {
+                width: 50vw;
+                padding: 2% 2%;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
+            input[type=submit] {
+                width: 50vw;
+                padding: 2% 2%;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+                text-align:center;
+                background-color:#0066FF;
+                color: white;
+            }
+            .text{
+                margin-top:10vh;                              
+                font-weight: bold;
+                font-size: 35px;             
+                color: black;
+                margin-bottom: 15%;                
+            }            
+            </style>
         </head>
         <body> 
         <form action="/mypage/user_check" method="post">
+        <div class="text"><b> 회원 정보 조회</b> </div>
+            <label for="pwd">비밀번호 확인</label>
             <p><input type="password" name="password" placeholder="password" ></p>   
             <p><input type="submit" value="확인"></p>         
         </form>
