@@ -141,11 +141,14 @@ function main_template(current,boardlist,search_title){
                 }
 
                 .detail_table {
-                    align="center';
                     width="100%";
                     cellpadding="0";
                     cellspacing="0";
                     border="0";
+                }
+
+                .datail_table.detail_underline {
+                    border-top: 2px solid #888888;
                 }
               </style>
           </head>
@@ -286,6 +289,13 @@ function main_template(current,boardlist,search_title){
               <meta charset="utf-8">
           </head>
           <body>
+<<<<<<< HEAD
+              <table align="center" class="detail_table">
+                <tr align="center" padding=25px>
+                    <td align="left"><h2>[ ${board_category} ]</h2></td>
+                    <td align="left"><h2>${board_title}</h2></td>
+                    <td width=66% align="right"><p>${board_user}</p></td>
+=======
           <nav class="navbar">
             <div class="navbar_logo">
                 <a href="/"><i class="fas fa-paw"></i></a>
@@ -313,11 +323,12 @@ function main_template(current,boardlist,search_title){
                 <tr align="center">
                     <td align="left"><h2>[ ${board_category} ]${board_title}</h2></td>
                     <td align="right"><p>${board_user}</p></td>
+>>>>>>> 53bdf774321058a197c47e494458f3cad0171ccc
                 </tr>
-                <tr align="center">
-                    <td align="right"><p>${board_date}</p></td>
+                <tr class="detail_underline" align="center" padding=10px>
+                    <td width=33% align="right" colspan="3"><p>${board_date}</p></td>
                 </tr>
-                <tr align="center">
+                <tr align="center" padding=20px>
                     <td align="left"><p>${board_content}</p></td>
               </table>
               ${auth_btn}
@@ -674,7 +685,11 @@ function main_template(current,boardlist,search_title){
                               <p>${comments[i].content}</p>
                               <p>${comments[i].user_id}</p>
                               <p>${formating_adate}</p>
-                              <p><input type="submit" value="삭제" onClick="location.href='comment/${comments[i].comment_number}/delete/'"></p>
+                              <form action="/board/comment_delete/" method="post">
+                                <input type="hidden" name="comment_number" value="${comments[i].comment_number}">
+                                <input type="hidden" name="board_number" value="${board_id}">
+                                <p><input type="submit" value="삭제"></p>
+                            </form>
                               <hr/>
                           `
                       } else {
@@ -823,11 +838,12 @@ function main_template(current,boardlist,search_title){
       });
   });
   
-  app.get('/written/comment/:comment_id/delete/', function(req, res) {
-      const comment_id = req.body.comment_id;
-      const board_id = req.body.board_id;
+  app.get('/comment_delete', function(req, res) {
+    const body = req.body;  
+    const comment_id = body.comment_number;
+    const board_id = body.board_number;
   
-      db.query(`DELETE FROM board_comment WHERE comment_number = ? `,
+      db.query(`DELETE FROM board_comment WHERE comment_number = ?`,
       [comment_id],
       function(err, result) {
           if (err) {
