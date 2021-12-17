@@ -8,15 +8,107 @@ app.use(body_parser.urlencoded({ extended: false}));
 
 var db = require('./db');
 const path=require('path')
-function main_template(marker_list,info_list,search_name){
+function main_template(current,marker_list,info_list,search_name){
     return `
     <!doctype html>
     <html>
         <head>
             <title>store</title>
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            </style>
             <meta charset="utf-8">
         </head>
         <body> 
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <form action="/store/search?h_name=${search_name}"method="get">
                 <p><input type="text" name="search_name" placeholder="검색어를 입력하세요.">
                 <input type="submit" value="검색"></p>
@@ -68,15 +160,107 @@ function main_template(marker_list,info_list,search_name){
     `;
     
 }
-function detail_template(detail_list){
+function detail_template(current,detail_list){
     return `
     <!doctype html>
     <html>
         <head>
             <title>detail info</title>
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            </style>
             <meta charset="utf-8">
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <h5>${detail_list}</h5>
         <br>
         </body>
@@ -86,6 +270,17 @@ function detail_template(detail_list){
 app.get('/', function (req, res) {
     var marker_list=``;
     var info_list=``;
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var id=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${id}--마이페이지</a> </li>`
+                console.log(id)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name ORDER BY store.store_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일');`,
     function(err,stores){
         if (err) throw err;
@@ -132,7 +327,7 @@ app.get('/', function (req, res) {
             marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                 `;
             info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
-            res.end(main_template(marker_list,info_list));
+            res.end(main_template(current,marker_list,info_list));
         }
         
     });
@@ -142,6 +337,17 @@ app.get('/search/', function (req, res) {
     var marker_list=``;
     var info_list=``;
     console.log(keyword);
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var id=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${id}--마이페이지</a> </li>`
+                console.log(id)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name WHERE store.store_name LIKE ? ORDER BY store.store_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일')`,['%'+keyword+'%'],
     function(err,stores){
         if (err) throw err;
@@ -189,12 +395,12 @@ app.get('/search/', function (req, res) {
                 `;
             info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
             console.log(marker_list);
-            res.end(main_template(marker_list,info_list));
+            res.end(main_template(current, marker_list,info_list));
         }
         else {
             marker_list=``
             info_list=``
-            res.end(main_template(marker_list,info_list));
+            res.end(main_template(current, marker_list,info_list));
         }
         
     });
@@ -203,6 +409,17 @@ app.get('/info/',function(req,res){
     const info_id = url.parse(req.url, true).query.id;
     console.log(info_id);
     var detail_list=``;
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var id=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${id}--마이페이지</a> </li>`
+                console.log(id)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     if(info_id){
         db.query(`SELECT * FROM store LEFT JOIN store_pet ON store.store_name=store_pet.store_name LEFT JOIN store_time ON store.store_name=store_time.store_name WHERE store.store_name = ? ORDER BY store.store_name ASC, FIELD (day,'월요일','화요일','수요일','목요일','금요일','토요일','일요일')`,[info_id],
         function(error, stores){
@@ -244,7 +461,7 @@ app.get('/info/',function(req,res){
             }
             detail_list+=`<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>`;
             console.log(stores);
-            res.send(detail_template(detail_list));
+            res.send(detail_template(current,detail_list));
         })
     }
 });
