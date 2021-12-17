@@ -395,11 +395,11 @@ function main_template(boardlist,search_title){
   });
   
   app.get('/written/comment/:comment_id/delete/', function(req, res) {
-      const comment_id = req.params.comment_id;
+      const comment_id = req.body.comment_id;
       const board_id = req.body.board_id;
   
-      db.query(`DELETE FROM board_comment WHERE comment_number = ? AND board_number = ?`,
-      [comment_id, board_id],
+      db.query(`DELETE FROM board_comment WHERE comment_number = ? `,
+      [comment_id],
       function(err, result) {
           if (err) {
               res.send(err);
