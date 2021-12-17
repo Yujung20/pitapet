@@ -108,7 +108,7 @@ function main_template(boardlist,search_title){
   
   app.get('/', function(req, res) {
       var board_list = ``;
-      db.query(`SELECT * FROM board`, function(error, boards) {
+      db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
           if (Object.keys(boards).length > 0) {
             for (var i = 0; i < Object.keys(boards).length; i++) {
                 board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}</a></p>`;
@@ -207,26 +207,24 @@ function main_template(boardlist,search_title){
         var board_list = ``;
 
         console.log(b_keyword);
-
-            console.log(b_keyword);
-            db.query(`SELECT * FROM board WHERE title LIKE ?`, 
-            ['%'+b_keyword+'%'],function(err, boards) {
-                if (err) {
-                    res.send(err);
-                    throw err;
-                }
+        db.query(`SELECT * FROM board WHERE title LIKE ? ORDER BY date DESC`, 
+        ['%'+b_keyword+'%'],function(err, boards) {
+            if (err) {
+                res.send(err);
+                throw err;
+            }
         
-                if (Object.keys(boards).length > 0) {
-                    for (var i = 0; i < Object.keys(boards).length; i++) {
-                        board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}</a><p>`;
-                    }
-                } else {
-                    board_list = `<p> 검색 결과가 없습니다. </p>`
+            if (Object.keys(boards).length > 0) {
+                for (var i = 0; i < Object.keys(boards).length; i++) {
+                    board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}</a><p>`;
+                }
+            } else {
+                board_list = `<p> 검색 결과가 없습니다. </p>`
                     
-                }
+            }
         
-                res.send(main_template(board_list));
-            })
+            res.send(main_template(board_list));
+        })
   });
   
   app.post('/write_comment/', function(req, res) {
