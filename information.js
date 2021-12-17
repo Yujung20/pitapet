@@ -83,6 +83,9 @@ function main_template(current, type_list) {
             .navbar_icons li:hover{
                 border-bottom: 3px solid blue;
             }
+            .nav_selected{
+                color: blue;
+            }
             </style>
             <meta charset="utf-8">
         </head>
@@ -96,7 +99,7 @@ function main_template(current, type_list) {
             <ul class="navbar_menu">
                 <li> <a href="/qna">Q&A</a> </li>
                 <li> <a href="/review">리뷰</a> </li>
-                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/information"  class="nav_selected">기본 정보</a> </li>
                 <li> <a href="/hospital">동반 정보</a>
                     <ul class="sub">
                         <li> <a href="/hospital">병원</a> </li>
@@ -195,6 +198,9 @@ function information_template(current,feedtimes, foodtype, vaccine, bathtimes, w
             .navbar_icons li:hover{
                 border-bottom: 3px solid blue;
             }
+            .nav_selected{
+                color: blue;
+            }
             </style>
             <meta charset="utf-8">
         </head>
@@ -208,7 +214,7 @@ function information_template(current,feedtimes, foodtype, vaccine, bathtimes, w
                 <ul class="navbar_menu">
                     <li> <a href="/qna">Q&A</a> </li>
                     <li> <a href="/review">리뷰</a> </li>
-                    <li> <a href="/information">기본 정보</a> </li>
+                    <li> <a href="/information"  class="nav_selected">기본 정보</a> </li>
                     <li> <a href="/hospital">동반 정보</a>
                         <ul class="sub">
                             <li> <a href="/hospital">병원</a> </li>

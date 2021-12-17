@@ -82,6 +82,9 @@ function main_template(current,marker_list,info_list,search_name){
             .navbar_icons li:hover{
                 border-bottom: 3px solid blue;
             }
+            .nav_selected{
+                color: blue;
+            }
             </style>
             <meta charset="utf-8">
         </head>
@@ -96,10 +99,10 @@ function main_template(current,marker_list,info_list,search_name){
                 <li> <a href="/qna">Q&A</a> </li>
                 <li> <a href="/review">리뷰</a> </li>
                 <li> <a href="/information">기본 정보</a> </li>
-                <li> <a href="/hospital">동반 정보</a>
+                <li> <a href="/hospital" class="nav_selected">동반 정보</a>
                     <ul class="sub">
                         <li> <a href="/hospital">병원</a> </li>
-                        <li> <a href="/store">매장</a> </li>
+                        <li> <a href="/store" class="nav_selected">매장</a> </li>
                     </ul>
                 </li>
                 <li> <a href="/board">커뮤니티</a> </li>
@@ -234,6 +237,9 @@ function detail_template(current,detail_list){
             .navbar_icons li:hover{
                 border-bottom: 3px solid blue;
             }
+            .nav_selected{
+                color: blue;
+            }
             </style>
             <meta charset="utf-8">
         </head>
@@ -248,10 +254,10 @@ function detail_template(current,detail_list){
                 <li> <a href="/qna">Q&A</a> </li>
                 <li> <a href="/review">리뷰</a> </li>
                 <li> <a href="/information">기본 정보</a> </li>
-                <li> <a href="/hospital">동반 정보</a>
+                <li> <a href="/hospital" class="nav_selected">동반 정보</a>
                     <ul class="sub">
                         <li> <a href="/hospital">병원</a> </li>
-                        <li> <a href="/store">매장</a> </li>
+                        <li> <a href="/store" class="nav_selected">매장</a> </li>
                     </ul>
                 </li>
                 <li> <a href="/board">커뮤니티</a> </li>
