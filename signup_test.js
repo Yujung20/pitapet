@@ -34,9 +34,13 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                                 license.setAttribute("type", "file");
                                 license.setAttribute("name", "license");
                                 license.setAttribute("id", "license");
-
-                                // document.getElementById('signup_form').appendChild(license);
                                 document.getElementById('signup_form').insertBefore(license, document.getElementById('signup_form').children[15]);
+
+                                var license_label = document.createElement('label');
+                                license_label.setAttribute("for", "license");
+                                license_label.setAttribute("id", "license_label");
+                                license_label.innerHTML = "증명서 첨부";
+                                document.getElementById('signup_form').insertBefore(license_label, document.getElementById('signup_form').children[15]);
                             }
                         }
                     }
@@ -59,7 +63,11 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                         if (e.id === 'general_btn') {
                             var expert = document.getElementById('expert_btn');
                             var license = document.getElementById("license");
-                            if (license) license.remove()
+                            var license_label = document.getElementById("license_label");
+                            if (license) {
+                                license.remove();
+                                license_label.remove();
+                            }
                             if (e.classList.contains('active')) {
                                 e.classList.remove('active');
                             } else {
@@ -86,6 +94,12 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
 
                                 // document.getElementById('signup_form').appendChild(license);
                                 document.getElementById('signup_form').insertBefore(license, document.getElementById('signup_form').children[15]);
+
+                                var license_label = document.createElement('label');
+                                license_label.setAttribute("for", "license");
+                                license_label.setAttribute("id", "license_label");
+                                license_label.innerHTML = "증명서 첨부";
+                                document.getElementById('signup_form').insertBefore(license_label, document.getElementById('signup_form').children[15]);
                             }
 
                             sessionStorage.setItem(e.id, e.classList);
@@ -104,6 +118,11 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                     }
                     label {
                         align-self: start;
+                    }
+                    #license_label {
+                        margin-top: 10px;
+                        margin-right: 10px;
+                        font-size: 15px;
                     }
                     p {
                         margin: 10px 0px 0px 0px;
