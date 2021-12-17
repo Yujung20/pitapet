@@ -78,7 +78,7 @@ function main_template(nickname) {
                 text-shadow: 2px 2px 2px gray; 
             }
             a:hover {
-                color : gray;
+                border-bottom: 3px solid blue;
             }
             a:active {
             color : blue;
