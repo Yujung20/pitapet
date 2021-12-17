@@ -27,15 +27,63 @@ function main_template(review_list, search_title) {
         <head>
             <title>Q&A</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                .row {
+                    flex-direction: row;
+                    flex: 1;
+                    justify-content: center;
+                    display: flex;
+                    max-width: 500px;
+                    width: 100%;
+                }
+                label {
+                    align-self: center;
+                    width: 20%;
+                    font-size: 15px;
+                }
+                #search_title {
+                    width: 80%;
+                    padding: 10px;
+                    margin: 3px 0 0 0;
+                    display: inline-block;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 30%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    float: right;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+            </style>
         </head>
         <body>
+        <div class="container">
             <h1>Review</h1>
-            <a href="/review/write_review/">리뷰 작성하기</a>
-            <form action="/review/search?title=${search_title}">
-                <p><input type="text" name="search_title" placeholder="검색어를 입력하세요.">
+            <form class="row" action="/review/search?title=${search_title}">
+                <label for="search_title">리뷰 검색</label>
+                <input type="text" id="search_title" name="search_title" placeholder="검색어를 입력하세요.">
                 <input type="submit" value="검색">
             </form>
+            <a href="/review/write_review/">리뷰 작성하기</a>
             ${review_list}
+        </div>
         </body>
     </html>
     `
