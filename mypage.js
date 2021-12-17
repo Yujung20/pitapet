@@ -193,11 +193,56 @@ function resign_check(){
         <head>
             <title>resign_check</title>
             <meta charset="utf-8">
+            <style>
+            form {
+                height: 100vh;
+                justify-content: center;
+                width: 70vw;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            label {
+                align-self: flex-start;
+                margin-left:10vw;
+            }
+            input[type=password] {
+                width: 50vw;
+                padding: 2% 2%;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
+            input[type=submit] {
+                width: 50vw;
+                padding: 2% 2%;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+                text-align:center;
+                background-color:#0066FF;
+                color: white;
+            }
+            .text{
+                margin-top:10vh;                              
+                font-weight: bold;
+                font-size: 35px;             
+                color: black;
+                margin-bottom: 15%;                
+            }            
+            </style>
         </head>
         <body> 
         <form action="/mypage/resign_check" method="post">
+            <div class="text"><b> 회원 탈퇴</b> </div>
+            <label for="pwd">비밀번호 확인</label>
             <p><input type="password" name="password" placeholder="password" ></p>   
-            <p><input type="submit" value="확인"></p>         
+            <p><input type="submit" value="확인"></p>     
+                     
         </form>
         </body>
     </html>
@@ -509,12 +554,52 @@ function last_resign_template() {
         <head>
             <title>last resign</title>
             <meta charset="utf-8">
+            <style>
+            body {
+                height: 100vh;
+                justify-content: center;
+                width: 70vw;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            label {
+                color:red;
+            }
+            
+            input[type=submit] {
+                width: 25vw;
+                padding: 2% 2%;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+                text-align:center;
+                background-color:#0066FF;
+                color: white;
+            }
+            .text{
+                margin-top:10vh;                              
+                font-weight: bold;
+                font-size: 35px;             
+                color: black;
+                margin-bottom: 15%;                
+            }       
+            .row {
+                justify-content: space-between;
+                display: flex;
+            }     
+            </style>
         </head>
         <body>
-        <h2>정말 탈퇴하시겠습니까?</h2>
-        <p><input type="submit" value="예" onClick="location.href='/mypage/resign'">
-        <input type="submit" value="아니오" onClick="location.href='/mypage/'"></p>
-
+        <div class="text"><b> 정말 탈퇴하시겠습니까?</b> </div>
+        <label for="caution"> 삭제된 계정은 다시 복구할 수 없고 계정의 게시물이나 정보는 완전히 삭제되는 점을 기억해주세요.</label>
+        <div class="row">
+            <p><input type="submit" value="예" onClick="location.href='/mypage/resign'">
+            <input type="submit" value="아니오" onClick="location.href='/mypage/'"></p>
+        </div>
         </body>
     </html>
     `;
