@@ -136,17 +136,6 @@ function main_template(current,boardlist,search_title){
                     border-radius: 10px;
                     box-shadow: 3px 3px 3px #b0b0b0;
                 }
-
-                .detail_table {
-                    width="100%";
-                    cellpadding="0";
-                    cellspacing="0";
-                    border="0";
-                }
-
-                .datail_table.detail_underline {
-                    border-top: 2px solid #888888;
-                }
               </style>
           </head>
           <body>
@@ -173,7 +162,6 @@ function main_template(current,boardlist,search_title){
                 ${current}
             </ul>
         </nav>
-              <h1>Board</h1>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <form action="/board/search?b_title=${search_title}"method="get">
                 <tr>
@@ -279,17 +267,27 @@ function main_template(current,boardlist,search_title){
             .navbar_icons li:hover{
                 border-bottom: 3px solid blue;
             }
+
+
+            .detail_table {
+                width="100%";
+                cellpadding="0";
+                cellspacing="0";
+                border="0";
+            }
+
+           td.underlined {
+               border-top: 2px solid #000000;
+           }
+
+           td.font_size {
+               font-size: 20px;
+           }
+
             </style>
               <meta charset="utf-8">
           </head>
           <body>
-<<<<<<< HEAD
-              <table align="center" class="detail_table">
-                <tr align="center" padding=25px>
-                    <td align="left"><h2>[ ${board_category} ]</h2></td>
-                    <td align="left"><h2>${board_title}</h2></td>
-                    <td width=66% align="right"><p>${board_user}</p></td>
-=======
           <nav class="navbar">
             <div class="navbar_logo">
                 <a href="/"><i class="fas fa-paw"></i></a>
@@ -313,17 +311,17 @@ function main_template(current,boardlist,search_title){
                 ${current}
             </ul>
         </nav>
-              <table class="detail_table">
+        <table align="center" class="detail_table" bgcolor="#F4F4F4";>
                 <tr align="center">
-                    <td align="left"><h2>[ ${board_category} ]${board_title}</h2></td>
-                    <td align="right"><p>${board_user}</p></td>
->>>>>>> 53bdf774321058a197c47e494458f3cad0171ccc
+                    <td align="left"><h2>[ ${board_category} ]</h2></td>
+                    <td align="left"><h2>${board_title}</h2></td>
+                    <td width=76% align="right"><p>${board_user}</p></td>
                 </tr>
-                <tr class="detail_underline" align="center" padding=10px>
-                    <td width=33% align="right" colspan="3"><p>${board_date}</p></td>
+                <tr align="center">
+                    <td class="underlined" width=38% align="right" colspan="3"><p>${board_date}</p></td>
                 </tr>
-                <tr align="center" padding=20px>
-                    <td align="left"><p>${board_content}</p></td>
+                <tr align="center">
+                    <td class="font_size" align="left"><p>&nbsp;&nbsp;${board_content}</p></td>
               </table>
               ${auth_btn}
               <hr/>
@@ -589,7 +587,7 @@ function main_template(current,boardlist,search_title){
                 const qdate = String(boards[i].date).split(" ");
                 var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
                 board_list += `<tr align="center"><td class="tableline" align="left" width="50%">`
-                board_list += `<a href="/board/written/${boards[i].board_number}">${boards[i].title}</a></td>`;
+                board_list += `<a href="/board/written/${boards[i].board_number}">[ ${boards[i].category} ] ${boards[i].title}</a></td>`;
                 board_list += `<td class="tableline" align="right">${boards[i].user_id}</td>`
                 board_list += `<td class="tableline" align="right">`
                 board_list += `<p>${formating_qdate}</p></td></tr>`
