@@ -781,7 +781,7 @@ const transporter = nodemailer.createTransport(smtpTransport({
   }
   
   //매일 오전 10시에 실행
-  cron.schedule('0 10 1-31 * *', function() {
+  cron.schedule('0 2 1-31 * *', function() {
     var mail_number_array = [];
     var owner_id_array = [];
     var name_array = [];
