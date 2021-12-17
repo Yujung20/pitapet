@@ -84,6 +84,9 @@ function main_template(current,boardlist,search_title){
                 .navbar_icons li:hover{
                     border-bottom: 3px solid blue;
                 }
+                .nav_selected{
+                    color: blue;
+                }
                 .tableline {
                     border-bottom: 1px solid #888888;
                 }
@@ -136,14 +139,6 @@ function main_template(current,boardlist,search_title){
                     border-radius: 10px;
                     box-shadow: 3px 3px 3px #b0b0b0;
                 }
-
-                .detail_table {
-                    align="center';
-                    width="100%";
-                    cellpadding="0";
-                    cellspacing="0";
-                    border="0";
-                }
               </style>
           </head>
           <body>
@@ -163,14 +158,13 @@ function main_template(current,boardlist,search_title){
                         <li> <a href="/store">매장</a> </li>
                     </ul>
                 </li>
-                <li> <a href="/board">커뮤니티</a> </li>
+                <li> <a href="/board" class="nav_selected">커뮤니티</a> </li>
             </ul>
 
             <ul class ="navbar_icons">
                 ${current}
             </ul>
         </nav>
-              <h1>Board</h1>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <form action="/board/search?b_title=${search_title}"method="get">
                 <tr>
@@ -276,6 +270,29 @@ function main_template(current,boardlist,search_title){
             .navbar_icons li:hover{
                 border-bottom: 3px solid blue;
             }
+<<<<<<< HEAD
+
+
+            .detail_table {
+                width="100%";
+                cellpadding="0";
+                cellspacing="0";
+                border="0";
+            }
+
+           td.underlined {
+               border-top: 2px solid #000000;
+           }
+
+           td.font_size {
+               font-size: 20px;
+           }
+
+=======
+            .nav_selected{
+                color: blue;
+            }
+>>>>>>> 38d8323c46205b8665a8cfdbbf225e2d47469a93
             </style>
               <meta charset="utf-8">
           </head>
@@ -296,23 +313,24 @@ function main_template(current,boardlist,search_title){
                         <li> <a href="/store">매장</a> </li>
                     </ul>
                 </li>
-                <li> <a href="/board">커뮤니티</a> </li>
+                <li> <a href="/board" class="nav_selected">커뮤니티</a> </li>
             </ul>
 
             <ul class ="navbar_icons">
                 ${current}
             </ul>
         </nav>
-              <table class="detail_table">
+        <table align="center" class="detail_table" bgcolor="#F4F4F4";>
                 <tr align="center">
-                    <td align="left"><h2>[ ${board_category} ]${board_title}</h2></td>
-                    <td align="right"><p>${board_user}</p></td>
+                    <td align="left"><h2>[ ${board_category} ]</h2></td>
+                    <td align="left"><h2>${board_title}</h2></td>
+                    <td width=76% align="right"><p>${board_user}</p></td>
                 </tr>
                 <tr align="center">
-                    <td align="right"><p>${board_date}</p></td>
+                    <td class="underlined" width=38% align="right" colspan="3"><p>${board_date}</p></td>
                 </tr>
                 <tr align="center">
-                    <td align="left"><p>${board_content}</p></td>
+                    <td class="font_size" align="left"><p>&nbsp;&nbsp;${board_content}</p></td>
               </table>
               ${auth_btn}
               <hr/>
@@ -402,6 +420,9 @@ function main_template(current,boardlist,search_title){
             .navbar_icons li:hover{
                 border-bottom: 3px solid blue;
             }
+            .nav_selected{
+                color: blue;
+            }
             </style>
               <meta charset="utf-8">
           </head>
@@ -422,7 +443,7 @@ function main_template(current,boardlist,search_title){
                         <li> <a href="/store">매장</a> </li>
                     </ul>
                 </li>
-                <li> <a href="/board">커뮤니티</a> </li>
+                <li> <a href="/board" class="nav_selected">커뮤니티</a> </li>
             </ul>
 
             <ul class ="navbar_icons">
@@ -518,6 +539,9 @@ function main_template(current,boardlist,search_title){
             .navbar_icons li:hover{
                 border-bottom: 3px solid blue;
             }
+            .nav_selected{
+                color: blue;
+            }
             </style>
               <meta charset="utf-8">
           </head>
@@ -538,7 +562,7 @@ function main_template(current,boardlist,search_title){
                                 <li> <a href="/store">매장</a> </li>
                             </ul>
                         </li>
-                        <li> <a href="/board">커뮤니티</a> </li>
+                        <li> <a href="/board" class="nav_selected">커뮤니티</a> </li>
                     </ul>
 
                     <ul class ="navbar_icons">
@@ -578,7 +602,7 @@ function main_template(current,boardlist,search_title){
                 const qdate = String(boards[i].date).split(" ");
                 var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
                 board_list += `<tr align="center"><td class="tableline" align="left" width="50%">`
-                board_list += `<a href="/board/written/${boards[i].board_number}">${boards[i].title}</a></td>`;
+                board_list += `<a href="/board/written/${boards[i].board_number}">[ ${boards[i].category} ] ${boards[i].title}</a></td>`;
                 board_list += `<td class="tableline" align="right">${boards[i].user_id}</td>`
                 board_list += `<td class="tableline" align="right">`
                 board_list += `<p>${formating_qdate}</p></td></tr>`
@@ -662,7 +686,11 @@ function main_template(current,boardlist,search_title){
                               <p>${comments[i].content}</p>
                               <p>${comments[i].user_id}</p>
                               <p>${formating_adate}</p>
-                              <p><input type="submit" value="삭제" onClick="location.href='comment/${comments[i].comment_number}/delete/'"></p>
+                              <form action="/board/comment_delete/" method="post">
+                                <input type="hidden" name="comment_number" value="${comments[i].comment_number}">
+                                <input type="hidden" name="board_number" value="${board_id}">
+                                <p><input type="submit" value="삭제"></p>
+                            </form>
                               <hr/>
                           `
                       } else {
@@ -811,11 +839,12 @@ function main_template(current,boardlist,search_title){
       });
   });
   
-  app.get('/written/comment/:comment_id/delete/', function(req, res) {
-      const comment_id = req.body.comment_id;
-      const board_id = req.body.board_id;
+  app.get('/comment_delete', function(req, res) {
+    const body = req.body;  
+    const comment_id = body.comment_number;
+    const board_id = body.board_number;
   
-      db.query(`DELETE FROM board_comment WHERE comment_number = ? `,
+      db.query(`DELETE FROM board_comment WHERE comment_number = ?`,
       [comment_id],
       function(err, result) {
           if (err) {
