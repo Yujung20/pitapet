@@ -22,6 +22,23 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                         document.getElementById("password_check_save").value = getSavedValue("password_check_save");
                         document.getElementById("email_save").value = getSavedValue("email_save");
                         document.getElementById("nickname_save").value = getSavedValue("nickname_save");
+
+                        document.getElementById("general_btn").classList = getSavedValue("general_btn");
+                        if (!document.getElementById("general_btn").classList.contains('active')) document.getElementById("general_btn").classList.add('active');
+                        document.getElementById("expert_btn").classList = getSavedValue("expert_btn")
+                        if (document.getElementById("expert_btn").classList.contains('active')) {
+                            if (document.getElementById("general_btn").classList.contains('active')) document.getElementById("general_btn").classList.remove('active');
+                            var license_exist = document.getElementById("license");
+                            if (!license_exist){
+                                var license = document.createElement('input');
+                                license.setAttribute("type", "file");
+                                license.setAttribute("name", "license");
+                                license.setAttribute("id", "license");
+
+                                // document.getElementById('signup_form').appendChild(license);
+                                document.getElementById('signup_form').insertBefore(license, document.getElementById('signup_form').children[15]);
+                            }
+                        }
                     }
 
                     function saveValue(e) {
@@ -49,6 +66,9 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                                 if (expert.classList.contains('active')) expert.classList.remove('active');
                                 e.classList.add('active');
                             }
+
+                            sessionStorage.setItem(e.id, e.classList);
+                            sessionStorage.setItem('expert_btn', expert.classList);
                         } else {
                             var general = document.getElementById('general_btn');
                             if (e.classList.contains('active')) {
@@ -67,6 +87,9 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                                 // document.getElementById('signup_form').appendChild(license);
                                 document.getElementById('signup_form').insertBefore(license, document.getElementById('signup_form').children[15]);
                             }
+
+                            sessionStorage.setItem(e.id, e.classList);
+                            sessionStorage.setItem('general_btn', general.classList);
                         }
                     }                      
                 </script>
