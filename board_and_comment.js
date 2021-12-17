@@ -17,32 +17,87 @@ function main_template(boardlist,search_title){
               <title>Board</title>
               <meta charset="utf-8">
               <style>
-              button {
-                background-color: #0066FF;
-                color: white;
-                padding: 14px;
-                margin: 8px 0;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-                border-radius: 15px;
+                .tableline {
+                    border-bottom: 1px solid #888888;
                 }
-    
-                button:hover {
-                opacity: 0.8;
+
+                .tableline a:hover {
+                    border-bottom:3px solid blue;
+                }
+
+                a {
+                    text-decoration: none;
+                    color: black;
+                }
+
+                .search_p {
+                    font-size: 20px;
+                }
+
+                .search_text {
+                    width: 40%;
+                    padding: 15px;
+                    margin: 3px 0 0 0;
+                    display: inline-block;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;
+                }
+
+                .search_submit {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 15px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 8%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+
+                .tb_button {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 15px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 42.3%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
                 }
               </style>
           </head>
           <body>
               <h1>Board</h1>
-              <div class="container">
-              <form action="/board/search?b_title=${search_title}"method="get">
-                <input type="text" name="search_title" placeholder="검색어를 입력하세요.">
-                <button type="submit">검색</button>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <form action="/board/search?b_title=${search_title}"method="get">
+                <tr>
+                <td align="center">
+                    <p class="search_p">커뮤니티 검색&nbsp&nbsp&nbsp
+                    <input type="text" name="search_title" placeholder="검색어를 입력하세요." class="search_text">&nbsp
+                    <input type="submit" value="검색" class="search_submit"></p>
+                </td>
+                </tr>
             </form>
-            </div>
-              <a href="/board/write/">작성하기</a>
+            </table>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+            <td align="center">
+              <button class="tb_button" type="button" onclick="location.href='/board/write/'">글 작성하기</button>
+            </td>
+            </tr>
+            </table>
+            <table align="center" width="80%" cellpadding="0" cellspacing="0" border="0">
+                <tr align="left">
+                    <td><h3>글 목록</h3></td>
+                </tr>
+                <tr> <p>&nbsp</p> </tr>
               ${boardlist}
+              </table>
           </body>
       </html>
     `;
@@ -129,7 +184,13 @@ function main_template(boardlist,search_title){
       db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
           if (Object.keys(boards).length > 0) {
             for (var i = 0; i < Object.keys(boards).length; i++) {
-                board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}</a></p>`;
+                const qdate = String(boards[i].date).split(" ");
+                var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
+                board_list += `<tr align="center"><td class="tableline" align="left" width="50%">`
+                board_list += `<a href="/board/written/${boards[i].board_number}">${boards[i].title}</a></td>`;
+                board_list += `<td class="tableline" align="right">${boards[i].user_id}</td>`
+                board_list += `<td class="tableline" align="right">`
+                board_list += `<p>${formating_qdate}</p></td></tr>`
             }
             } else {
                 board_list = '0개의 게시물이 있습니다.';
