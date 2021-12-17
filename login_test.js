@@ -313,6 +313,7 @@ function main_template(current,question_list,review_list,board_list,hospital_lis
                 padding: 0 30px;
                 background: lightgray; 
                 margin: 20px;
+                border-radius:20px;
               }
               .title{
                 border-bottom: 3px solid blue;
@@ -622,28 +623,27 @@ app.post('/find_id', function(req,res) {
         if(error) {
             throw error;
         }
-        else if (users.length > 0) {
+        if (nickname.length < 1) {
+            res.send('<script type="text/javascript">alert("닉네임을 입력해주세요.");location.href="/find_id";</script>');
+        } else if (email.length < 1) {
+            res.send('<script type="text/javascript">alert("이메일을 입력해주세요.");location.href="/find_id";</script>');
+        } else if (users.length > 0) {
+            let found = 0;
             for (var i = 0; i < Object.keys(users).length; i++) {
                 if(nickname === users[i].nickname) {
                     if(email === users[i].email) {
                         const id = users[i].id;
                         res.send(id_found_template(id));
+                        found = 1;
                     }
                 }
-                else if((email.length >= 1 && email !== users[i].email) || (nickname.length >= 1 && nickname !== users[i].nickname)) {
-                    res.send('<script type="text/javascript">alert("입력하신 정보와 일치하는 회원 아이디가 존재하지 않습니다.");location.href="/find_id";</script>');
-                    break;
-                }
             }
-        }
-        else {
-            if(email.length < 1) {
-                res.send('<script type="text/javascript">alert("이메일을 입력해주세요.");location.href="/find_id";</script>');
+            if (!found) {
+                console.log("something went wrong");
+                throw error;
             }
-
-            if(nickname.length < 1) {
-                res.send('<script type="text/javascript">alert("닉네임을 입력해주세요.");location.href="/find_id";</script>');
-            }
+        } else {
+            res.send('<script type="text/javascript">alert("입력하신 정보와 일치하는 회원 아이디가 존재하지 않습니다.");location.href="/find_id";</script>');
         }     
     })
 })
