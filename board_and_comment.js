@@ -84,6 +84,9 @@ function main_template(current,boardlist,search_title){
                 .navbar_icons li:hover{
                     border-bottom: 3px solid blue;
                 }
+                .nav_selected{
+                    color: blue;
+                }
                 .tableline {
                     border-bottom: 1px solid #888888;
                 }
@@ -155,7 +158,7 @@ function main_template(current,boardlist,search_title){
                         <li> <a href="/store">매장</a> </li>
                     </ul>
                 </li>
-                <li> <a href="/board">커뮤니티</a> </li>
+                <li> <a href="/board" class="nav_selected">커뮤니티</a> </li>
             </ul>
 
             <ul class ="navbar_icons">
@@ -267,6 +270,7 @@ function main_template(current,boardlist,search_title){
             .navbar_icons li:hover{
                 border-bottom: 3px solid blue;
             }
+<<<<<<< HEAD
 
 
             .detail_table {
@@ -284,6 +288,11 @@ function main_template(current,boardlist,search_title){
                font-size: 20px;
            }
 
+=======
+            .nav_selected{
+                color: blue;
+            }
+>>>>>>> 38d8323c46205b8665a8cfdbbf225e2d47469a93
             </style>
               <meta charset="utf-8">
           </head>
@@ -304,7 +313,7 @@ function main_template(current,boardlist,search_title){
                         <li> <a href="/store">매장</a> </li>
                     </ul>
                 </li>
-                <li> <a href="/board">커뮤니티</a> </li>
+                <li> <a href="/board" class="nav_selected">커뮤니티</a> </li>
             </ul>
 
             <ul class ="navbar_icons">
@@ -411,6 +420,9 @@ function main_template(current,boardlist,search_title){
             .navbar_icons li:hover{
                 border-bottom: 3px solid blue;
             }
+            .nav_selected{
+                color: blue;
+            }
             </style>
               <meta charset="utf-8">
           </head>
@@ -431,7 +443,7 @@ function main_template(current,boardlist,search_title){
                         <li> <a href="/store">매장</a> </li>
                     </ul>
                 </li>
-                <li> <a href="/board">커뮤니티</a> </li>
+                <li> <a href="/board" class="nav_selected">커뮤니티</a> </li>
             </ul>
 
             <ul class ="navbar_icons">
@@ -527,6 +539,9 @@ function main_template(current,boardlist,search_title){
             .navbar_icons li:hover{
                 border-bottom: 3px solid blue;
             }
+            .nav_selected{
+                color: blue;
+            }
             </style>
               <meta charset="utf-8">
           </head>
@@ -547,7 +562,7 @@ function main_template(current,boardlist,search_title){
                                 <li> <a href="/store">매장</a> </li>
                             </ul>
                         </li>
-                        <li> <a href="/board">커뮤니티</a> </li>
+                        <li> <a href="/board" class="nav_selected">커뮤니티</a> </li>
                     </ul>
 
                     <ul class ="navbar_icons">
