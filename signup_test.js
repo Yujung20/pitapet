@@ -37,6 +37,26 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                     function clearStorage() {
                         sessionStorage.clear();
                     }
+
+                    function open_signup(e) {
+                        if (e.id === 'general_btn') {
+                            var expert = document.getElementById('expert_btn');
+                            if (e.classList.contains('active')) {
+                                e.classList.remove('active');
+                            } else {
+                                if (expert.classList.contains('active')) expert.classList.remove('active');
+                                e.classList.add('active');
+                            }
+                        } else {
+                            var general = document.getElementById('general_btn');
+                            if (e.classList.contains('active')) {
+                                e.classList.remove('active');
+                            } else {
+                                if (general.classList.contains('active')) general.classList.remove('active');
+                                e.classList.add('active');
+                            }
+                        }
+                    }                      
                 </script>
                 <style>
                     .container {
@@ -65,7 +85,7 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                         margin: 3px 0 0 0;
                         display: inline-block;
                         border: 1px solid #000000;
-                        border-radius: 15px;
+                        border-radius: 10px;
                         background: none;
                     }
                     input[type="submit"] {
@@ -77,7 +97,8 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                         cursor: pointer;
                         width: 80%;
                         opacity: 0.9;
-                        border-radius: 15px;
+                        border-radius: 10px;
+                        box-shadow: 3px 3px 3px #b0b0b0;
                     }
                     #submit_btn {
                         width: 100%;
@@ -90,11 +111,40 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                     #password_save, #password_check_save {
                         max-width: 500px;
                     }
+
+                    .tab {
+                        overflow: hidden;
+                        background-color: #C4D6F2;
+                        max-width: 500px;
+                        width: 100%;
+                        box-shadow: 3px 3px 3px #b0b0b0;
+                      }
+                      .tab button {
+                        background-color: inherit;
+                        float: left;
+                        border: none;
+                        outline: none;
+                        cursor: pointer;
+                        padding: 14px 16px;
+                        transition: 0.3s;
+                        width: 50%;
+                      }
+                      .tab button:hover {
+                        background-color: #0066FF;
+                        color: white;
+                      }
+                      .tab button.active {
+                        background-color: #0066FF;
+                        color: white;
+                      }
                 </style>
             </head>
             <body>
             <div class="container">
-                <h1>일반회원</h1>
+                <div class="tab">
+                    <button id="general_btn" onclick="open_signup(this)">일반 회원</button>
+                    <button id="expert_btn" onclick="open_signup(this)">전문가 회원</button>
+                </div>
                 <form class="form" action="/signup/signup_process" method="post" style='max-width:500px; width: 100%'>
                         <p><label for="id_save">아이디</label></p>
                         <div class="row">
