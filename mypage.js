@@ -33,19 +33,94 @@ function main_template(nickname) {
         <head>
             <title>mypage</title>
             <meta charset="utf-8">
-        </head>
-        <body> 
-        <h3>닉네임: ${nickname}</h3>
-        <a href="/mypage/user_check/"> 회원 정보 조회</a> 
-        <a href="/register/"> 반려동물 등록</a> 
-        <a href="/mypage/animal_information/"> 동물 정보 조회</a> 
-        <a href="/mypage/qna/"> 작성한 Q&A</a> 
-        <a href="/mypage/review/"> 작성한 리뷰</a> 
-        <a href="/mypage/board/"> 작성한 커뮤니티</a>
-        <a href="/create_care_service/"> 케어서비스 등록</a> 
-        <a href="/mypage/care_service_information/"> 케어서비스 조회</a> 
+            <style>
+            .mypage{
+                position: absolute;
+                height:70%;
+                top:15%;
+                padding-left:5%;
+            }
+            
+            .text1{
+                font-size:50px;
+                font-weight: bold;
+                height: 10vh;
+                padding-left:5%;
+                display: inline-block;
+            }
+            .text2{
+                font-size:20px;
+                display: inline-block;
 
-        <a href="/mypage/resign_check/"> 회원 탈퇴</a>             
+                height: 10vh;
+                padding-left: 10px;
+            }
+            
+            .mypage_{
+                padding-left:5%;
+            }
+            .atag{
+                font-size:20px;
+                
+                line-height:2.5;
+            }
+            .atagtext{
+                font-weight:bold;
+            }
+            a {
+                text-decoration:none !important
+            }           
+            a:link {
+                color :black;
+            }
+            a:visited {
+                color: black;
+                text-shadow: 2px 2px 2px gray; 
+            }
+            a:hover {
+                color : gray;
+            }
+            a:active {
+            color : blue;
+            }
+            
+            hr{
+                width:75vw;
+                color:black;
+                text-align:center;
+                left:5%;
+
+            }
+             
+            </style>
+        </head>
+        <body>
+        <div class="mypage">
+            <div class="row">
+            <div class="text1"> My Page </div><div class="text2"> ${nickname}님</div>
+            </div>
+            <div class="mypage_mine mypage_">
+                <a class="atag" href="/mypage/user_check/"> 회원 정보 조회</a> <br>
+                <a class="atag" href="/register/"> 반려동물 등록하기</a> <br>
+                <a class="atag" href="/mypage/animal_information/"> 동물 정보 조회</a> <br>
+                <a class="atag" href="/create_care_service/"> 케어서비스 등록하기</a> <br>
+                <a class="atag" href="/mypage/care_service_information/"> 케어서비스 조회</a> 
+            </div>
+            <hr class="one">
+
+            <div class="mypage_write mypage_">
+                <a class="atagtext atag" href="/mypage/">내가 쓴 글 조회</a> <br>
+
+                <a class="atag" href="/mypage/qna/"> Q&A</a> <br>
+                <a class="atag" href="/mypage/review/"> 리뷰</a> <br>
+                <a class="atag" href="/mypage/board/"> 커뮤니티</a><br>
+            </div>
+            <hr class="two">
+
+            <div class="mypage_resign mypage_">
+                <a class="atag" href="/mypage/resign_check/"> 회원 탈퇴</a>  
+            </div>           
+            </div>
         </body>
     </html>
     `;
@@ -211,13 +286,7 @@ function care_service_template(care_service_list) {
     `;
 }
 
-function care_service_update_template(care_service_name, care_service_category, care_service_number, date_list, care_service_account){
-    
-    for (var i; i < date_list.length; i++)
-    {
-        
-    }
-    
+function care_service_update_template(care_service_name, care_service_category, care_service_number, care_service_date, care_service_account) {
     return `
     <!doctype html>
     <html>
@@ -229,8 +298,8 @@ function care_service_update_template(care_service_name, care_service_category, 
             <p>${care_service_name}</p>
             <p>${care_service_category}</p>
 
-            <form action="/mypage/animal_information/update_process/?id=${care_service_number}" method="post">
-            <p><input type="date" name="mail_date" min="1990-01-01" max="2022-12-31" value=${care_service_date_date_list}></p>
+            <form action="/mypage/care_service_information/update_process/?id=${care_service_number}" method="post">
+            <p><input type="date" name="mail_date" min="1990-01-01" max="2022-12-31" value=${care_service_date}></p>
             <p><textarea name="note" value=${care_service_account}></textarea></p>
             <p><input type="submit" value="수정"></p>
             </form>
@@ -479,7 +548,7 @@ app.post('/user_information/nickname_check', function(request, response) {
     const nickname = post.nickname;
     console.log(nickname);
 
-    var nickname_check_txt = "사용할 수 있는  닉네임입니다."
+    var nickname_check_txt = "사용할 수 있는 닉네임입니다."
     db.query(`SELECT * FROM user`, function(error, users) {
         if(error) {
             throw error;
@@ -645,37 +714,59 @@ app.get('/care_service_information/', function(req, res) {
     }); 
 })
 
-/*app.get('/care_service_information/update', function(req, res) {
+app.get('/care_service_information/update', function(req, res) {
     const care_service_number = url.parse(req.url, true).query.id;
-    var date_list;
 
     if (care_service_number) {
-        db.query(`SELECT * FROM care_service WHERE number = ?`, 
+        db.query(`SELECT * FROM care_service WHERE mail_number = ?`, 
         [care_service_number],
         function(error, result1) {
             if (error) {
                 throw error;
             }
-            db.query(`SELECT * FROM care_service_date WHERE number = ?`, 
+            db.query(`SELECT * FROM care_service_date WHERE mail_number = ?`, 
             [care_service_number],
             function(error, result2) {
             if (error) {
                 throw error;
             }
-            for (var i=0; i<result2.length; i++) {
-                date_list[i] = result2.mail_date;
-            }
-            res.end(care_service_template(result1[0].name, result1[0].category, care_service_number,
-                date_list, result1[0].account));
+
+            res.end(care_service_update_template(result1[0].name, result1[0].mail_category, care_service_number,
+                result2[0].mail_date, result1[0].account));
             })
         })
     }
    
-});*/
+});
 
-/*app.post('/care_service_information/update_process', function(req, res) {
-    
-});*/
+app.post('/care_service_information/update_process', function(req, res) {
+    const care_service_number = url.parse(req.url, true).query.id;
+
+    const body = req.body;
+    const date = body.mail_date;
+    const note = body.note;
+
+    db.query(`UPDATE care_service SET account=? WHERE mail_number = ?`,
+    [note, care_service_number],
+    function(err, result) {
+        if(err) {
+            res.send(err);
+            throw err;
+        }
+        console.log(result);
+    })
+
+    db.query(`UPDATE care_service_date SET mail_date=? WHERE mail_number = ?`,
+    [date, care_service_number],
+    function(err, result) {
+        if(err) {
+            res.send(err);
+            throw err;
+        }
+        console.log(result);
+        res.redirect(`/mypage/care_service_information/`);
+    })
+});
 
 app.get('/care_service_information/delete/', function(req, res) {
     const care_service_number = url.parse(req.url, true).query.id;
