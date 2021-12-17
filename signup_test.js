@@ -150,7 +150,7 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                         margin: 10px 0px 0px 0px;
                     }
                     .row {
-                        flex diretion: row;
+                        flex-direction: row;
                         justify-content: space-between;
                         flex: 1;
                         display: flex;

@@ -65,7 +65,21 @@ function main_template(review_list, search_title) {
                     margin: 3px 0 0 5px;
                     border: none;
                     cursor: pointer;
-                    width: 30%;
+                    width: 20%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    float: right;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                button {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 5px 0 0 0;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 500px;
+                    width: 80%;
                     opacity: 0.9;
                     border-radius: 10px;
                     float: right;
@@ -81,7 +95,7 @@ function main_template(review_list, search_title) {
                 <input type="text" id="search_title" name="search_title" placeholder="검색어를 입력하세요.">
                 <input type="submit" value="검색">
             </form>
-            <a href="/review/write_review/">리뷰 작성하기</a>
+            <button type="button" onclick="location.href='/review/write_review/'">리뷰 작성하기</button>
             ${review_list}
         </div>
         </body>
