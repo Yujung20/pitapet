@@ -261,6 +261,7 @@ app.get('/search', function(req, res) {
     const keyword = req.query.search_title;
     var review_list = ``;
 
+    if (keyword) {
     db.query(`SELECT * FROM review WHERE title LIKE ? ORDER BY date DESC`,
     ['%' + keyword + '%'],
     function(err, reviews) {
@@ -279,6 +280,10 @@ app.get('/search', function(req, res) {
 
         res.send(main_template(review_list));
     })
+    }
+    else {
+        res.send('<script type="text/javascript">alert("검색어를 입력해주세요.");location.href="/review";</script>')
+    }
 })
 
 app.get('/write_review/', function(req, res) {

@@ -16,13 +16,31 @@ function main_template(boardlist,search_title){
           <head>
               <title>Board</title>
               <meta charset="utf-8">
+              <style>
+              button {
+                background-color: #0066FF;
+                color: white;
+                padding: 14px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                border-radius: 15px;
+                }
+    
+                button:hover {
+                opacity: 0.8;
+                }
+              </style>
           </head>
           <body>
               <h1>Board</h1>
+              <div class="container">
               <form action="/board/search?b_title=${search_title}"method="get">
-                <p><input type="text" name="search_title" placeholder="검색어를 입력하세요.">
-                <input type="submit" value="검색"></p>
+                <input type="text" name="search_title" placeholder="검색어를 입력하세요.">
+                <button type="submit">검색</button>
             </form>
+            </div>
               <a href="/board/write/">작성하기</a>
               ${boardlist}
           </body>
@@ -207,6 +225,7 @@ function main_template(boardlist,search_title){
         var board_list = ``;
 
         console.log(b_keyword);
+        if(b_keyword) {
         db.query(`SELECT * FROM board WHERE title LIKE ? ORDER BY date DESC`, 
         ['%'+b_keyword+'%'],function(err, boards) {
             if (err) {
@@ -225,6 +244,10 @@ function main_template(boardlist,search_title){
         
             res.send(main_template(board_list));
         })
+        }
+        else {
+            res.send('<script type="text/javascript">alert("검색어를 입력해주세요.");location.href="/board";</script>')
+        }
   });
   
   app.post('/write_comment/', function(req, res) {
