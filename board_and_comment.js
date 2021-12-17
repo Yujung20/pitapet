@@ -270,8 +270,6 @@ function main_template(current,boardlist,search_title){
             .navbar_icons li:hover{
                 border-bottom: 3px solid blue;
             }
-<<<<<<< HEAD
-
 
             .detail_table {
                 width="100%";
@@ -279,7 +277,6 @@ function main_template(current,boardlist,search_title){
                 cellspacing="0";
                 border="0";
             }
-
            td.underlined {
                border-top: 2px solid #000000;
            }
@@ -287,12 +284,54 @@ function main_template(current,boardlist,search_title){
            td.font_size {
                font-size: 20px;
            }
-
-=======
             .nav_selected{
                 color: blue;
             }
->>>>>>> 38d8323c46205b8665a8cfdbbf225e2d47469a93
+            .comment_textarea {
+                width: 60%;
+                margin: 3px 0 0 0;
+                padding: 42px;
+                display: inline-blue;
+                border: 2px solid blue;
+                border-radius: 10px;
+                background: none;
+            }
+            .comment_submit {
+                background-color: #0066FF;
+                color: white;
+                padding: 42px;
+                margin: 3px 0 0 6px;
+                border: none;
+                cursor: pointer;
+                width: 10%;
+                opacity: 0.9;
+                border-radius: 10px;
+                box-shadow: 3px 3px 3px #b0b0b0;
+            }
+            .auth_btn1 {
+                background-color: #0066FF;
+                color: white;
+                padding: 20px;
+                margin: 3px 0 0 5px;
+                border: none;
+                cursor: pointer;
+                width: 10%;
+                opacity: 0.9;
+                border-radius: 10px;
+                box-shadow: 3px 3px 3px #b0b0b0;
+            }
+            .auth_btn2 {
+                background-color: #0066FF;
+                color: white;
+                padding: 20px;
+                margin: 3px 0 0 5px;
+                border: none;
+                cursor: pointer;
+                width: 10%;
+                opacity: 0.9;
+                border-radius: 10px;
+                box-shadow: 3px 3px 3px #b0b0b0;
+            }
             </style>
               <meta charset="utf-8">
           </head>
@@ -333,13 +372,17 @@ function main_template(current,boardlist,search_title){
                     <td class="font_size" align="left"><p>&nbsp;&nbsp;${board_content}</p></td>
               </table>
               ${auth_btn}
-              <hr/>
-              <h3>댓글</h3>
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <form action="/board/write_comment/" method="post">
-                  <input type="hidden" name="board_id" value="${board_id}">
-                  <p><textarea name="content"></textarea></p>
-                  <p><input type="submit" value="등록"></p>
-              </form>
+                <input type="hidden" name="board_id" value="${board_id}">
+                <tr>
+                <td align="center">
+                    <input type="textarea" name="content" class="comment_textarea">
+                    <input type="submit" value="등록" class="comment_submit">
+                </td>
+                </tr>
+            </form>
+            </table>
               ${comments}
           </body>
       </html>
@@ -709,8 +752,14 @@ function main_template(current,boardlist,search_title){
                   let auth_btn = ``;
                   if (req.session.user_id === board[0].user_id) {
                       auth_btn = `
-                          <p><input type="submit" value="수정" onClick="location.href='/board/written/${board_id}/update/'"></p>
-                          <p><input type="submit" value="삭제" onClick="location.href='/board/written/${board_id}/delete/'"></p>
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr align="right">
+                      <td aiign="right'>
+                          <input class="auth_btn1" type="submit" value="수정" onClick="location.href='/board/written/${board_id}/update/'">
+                          <input class="auth_btn2" type="submit" value="삭제" onClick="location.href='/board/written/${board_id}/delete/'">
+                        </td>
+                        </tr>
+                        </table>
                       `
                   }
   
