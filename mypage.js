@@ -100,9 +100,7 @@ function main_template(nickname) {
             <div class="text1"> My Page </div><div class="text2"> ${nickname}님</div>
             </div>
             <div class="mypage_mine mypage_">
-                <a class="atag" href="/mypage/user_check/"> 회원 정보 조회</a> <br>
-                <a class="atag" href="/register/"> 반려동물 등록하기</a> <br>
-                <a class="atag" href="/mypage/animal_information/"> 동물 정보 조회</a> <br>
+                <a class="atag" href="/mypage/user_check/"> 회원 정보 조회</a> <br>               
                 <a class="atag" href="/create_care_service/"> 케어서비스 등록하기</a> <br>
                 <a class="atag" href="/mypage/care_service_information/"> 케어서비스 조회</a> 
             </div>
@@ -274,46 +272,6 @@ function nickname_template(nickname_check_txt, check_nickname) {
     `;
 }
 
-function animal_template(animal_list) {
-    return `
-    <!doctype html>
-    <html>
-        <head>
-            <title>animal</title>
-            <meta charset="utf-8">
-        </head>
-        <body> 
-        ${animal_list}
-        </body>
-    </html>
-    `;
-}
-
-function animal_update_template(animal_name,animal_type,animal_number,animal_gender,animal_birthday,animal_special_note){
-    return `
-    <!doctype html>
-    <html>
-        <head>
-            <title>animal update</title>
-            <meta charset="utf-8">
-        </head>
-        <body>
-            <p>${animal_name}</p>
-            <p>${animal_type}</p>
-
-            <form action="/mypage/animal_information/update_process/?id=${animal_number}" method="post">
-            <p><select name="gender" value=${animal_gender}> 
-            <option value="여">여</option>
-            <option value="남">남</option>
-            </select></p>
-            <p><input type="date" name="birthday" min="1990-01-01" max="2022-12-31" value=${animal_birthday} ></p>
-            <p><textarea name="special_note" value=${animal_special_note}></textarea></p>
-            <p><input type="submit" value="수정"></p>
-            </form>
-        </body>
-    </html>
-    `;
-}
 
 function care_service_template(care_service_list) {
     return `
@@ -640,82 +598,6 @@ app.post('/user_information/nickname_update/', function(request,response){
         
     }
 })
-
-app.get('/animal_information/',function(req,res){
-    const id=req.session.user_id;
-    var animal_list=``;
-    db.query(`SELECT * FROM animal WHERE owner_id=?`,[id],
-    function(err,animals){
-        if (err) throw err;
-        else{
-            for (var i=0; i<Object.keys(animals).length;i++){
-                animal_list+=`
-                <p>${animals[i].name}</p>
-                <p>${animals[i].type}</p>
-                <p> ${animals[i].gender}</p>
-                <p> ${animals[i].birthday}</p>
-                <p> ${animals[i].special_note}</p>
-                <p><input type="submit" value="수정" onClick="location.href='/mypage/animal_information/update/?id=${animals[i].number}'">
-                <input type="submit" value="삭제" onClick="location.href='/mypage/animal_information/delete/?id=${animals[i].number}'"></p>
-                                   
-                `;
-            }
-            res.end(animal_template(animal_list));
-                       
-        }        
-    }); 
-})
-
-app.get('/animal_information/update', function(req, res) {
-    const animal_number = url.parse(req.url, true).query.id;
-
-    if (animal_number) {
-        db.query(`SELECT * FROM animal WHERE number = ?`, 
-        [animal_number],
-        function(error, result) {
-            if (error) {
-                throw error;
-            }
-            res.end(animal_update_template(result[0].name, result[0].type, animal_number,result[0].gender,result[0].birthday,result[0].special_note));
-        })
-    }
-   
-});
-
-app.post('/animal_information/update_process', function(req, res) {
-    const animal_number = url.parse(req.url, true).query.id;
-
-    const body = req.body;
-    const gender = body.gender;
-    const birthday = body.birthday;
-    const special_note = body.special_note;
-
-    db.query(`UPDATE animal SET gender=?, birthday=?, special_note=? WHERE number = ?`,
-    [gender,birthday,special_note,animal_number],
-    function(err, result) {
-        if(err) {
-            res.send(err);
-            throw err;
-        }
-        console.log(result);
-        res.redirect(`/mypage/animal_information/`);
-    })
-});
-
-app.get('/animal_information/delete/', function(req, res) {
-    const animal_number = url.parse(req.url, true).query.id;
-
-    db.query(`DELETE FROM animal WHERE number = ?`,
-    [animal_number],
-    function(err, result) {
-        if (err) {
-            res.send(err);
-            throw err;
-        }
- 
-        res.redirect('/mypage/');
-    });
-});
 
 app.get('/care_service_information/', function(req, res) {
     const id = req.session.user_id;
