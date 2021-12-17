@@ -310,7 +310,6 @@ function main_template(current,question_list,review_list,board_list,hospital_lis
               .item { 
                 padding: 0 30px;
                 background: lightgray; 
-                border-radius: 20px;
                 margin: 20px;
               }
               .title{
@@ -402,9 +401,7 @@ app.get('/', function (req, res, next) {
     db.query(`SELECT * FROM question ORDER BY date DESC`, function(error, questions) {
         if (Object.keys(questions).length > 0) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
-                const qdate = String(questions[i].date).split(" ");
-                var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
-                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title},${formating_qdate}</a><p>`;
+                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}, ${questions[i].date}</a><p>`;
                 if(i==4){break;}
             }
         } else {
@@ -415,9 +412,7 @@ app.get('/', function (req, res, next) {
     db.query(`SELECT * FROM review ORDER BY date DESC`, function(error, reviews) {
         if (Object.keys(reviews).length > 0) {
             for (var i = 0; i < Object.keys(reviews).length; i++) {
-                const rdate = String(reviews[i].date).split(" ");
-                var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
-                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title},${formating_rdate}</a><p>`;
+                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}, ${reviews[i].date}</a><p>`;
                 if(i==4){break;}
             }
         } else {
@@ -514,9 +509,7 @@ app.get('/', function (req, res, next) {
         db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
             if (Object.keys(boards).length > 0) {
                 for (var i = 0; i < Object.keys(boards).length; i++) {
-                    const bdate = String(boards[i].date).split(" ");
-                    var formating_bdate = bdate[3] + "-" + bdate[1] + "-" + bdate[2] + "-" + bdate[4];
-                    board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}, ${formating_bdate}</a><p>`;
+                    board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}, ${boards[i].date}</a><p>`;
                     if(i==4){break;}
                 }
             } else {
