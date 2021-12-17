@@ -533,6 +533,7 @@ app.post('/find_id', function(req,res) {
     const written = req.body;
     const nickname = written.nickname;
     const email = written.email;
+    
     db.query(`SELECT * FROM user WHERE nickname = ? AND email = ? `,[nickname, email], function(error, users) {
         if(error) {
             throw error;
@@ -545,24 +546,19 @@ app.post('/find_id', function(req,res) {
                         res.send(id_found_template(id));
                     }
                 }
-                else if(email.length >=1 && email !== users[i].email && nickname.length >= 1) {
-                    res.write("<script>alert('Cannot find the email or the email does not exist. Please try again.');location.href='/find_id';</script>");
-                    break;
-                }
-
-                else if(nickname.length >= 1 && nickname !== users[i].nickname && email.length >=1) {
-                    res.write("<script>alert('Cannot find the nickname or the nickname does not exist. Please try again.');location.href='/find_id';</script>");
+                else if((email.length >= 1 && email !== users[i].email) || (nickname.length >= 1 && nickname !== users[i].nickname)) {
+                    res.send('<script type="text/javascript">alert("입력하신 정보와 일치하는 회원 아이디가 존재하지 않습니다.");location.href="/find_id";</script>');
                     break;
                 }
             }
         }
         else {
             if(email.length < 1) {
-                res.write("<script>alert('Please input email.');location.href='/find_id';</script>");
+                res.send('<script type="text/javascript">alert("이메일을 입력해주세요.");location.href="/find_id";</script>');
             }
 
             if(nickname.length < 1) {
-                res.write("<script>alert('Please input nickname.');location.href='/find_id';</script>");
+                res.send('<script type="text/javascript">alert("닉네임을 입력해주세요.");location.href="/find_id";</script>');
             }
         }     
     })
