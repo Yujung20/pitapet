@@ -14,10 +14,57 @@ function template(animal_name, name_check_txt) {
         <head>
             <title>create care service</title>
             <meta charset="utf-8">
+            <style>
+            form {
+                border: 3px
+                backgroung-color:#C4D6F238;
+                border-radius: 10px;
+                position: absolute;
+                width: 20vw;
+                height: 15vh;
+                left: 50%;
+                margin-left: -200px;
+            }
+    
+            input[type=text], textarea[name=note] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
+
+            input[type=date], select[name=category] {
+                width: 60%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
+
+            button {
+                background-color: #0066FF;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                border-radius: 15px;
+            }
+        
+            button:hover {
+                opacity: 0.8;
+            }
+            </style>
         </head>
         <body>
-            <h1>create care service</h1>
             <form action="/create_care_service/create_mail" method="post">
+                <h1>케어서비스 등록하기</h1>
                 <p><input type="text" name="pet_name" placeholder="이름"></textarea></p>
                 <p><select name="category"> 
                     <option value="건강 검진일">건강 검진일</option>
@@ -27,7 +74,7 @@ function template(animal_name, name_check_txt) {
                 </select></p>
                 <p><input type="date" name="mail_date" min="1990-01-01" max="2022-12-31" value="2021-12-01"></p>
                 <p><textarea name="note"></textarea></p>
-                <p><input type="submit" value="등록하기"></p>
+                <button type="submit">등록하기</button>
             </form>
         </body>
     </html>

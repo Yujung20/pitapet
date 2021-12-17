@@ -14,10 +14,57 @@ function template() {
         <head>
             <title>create_animal</title>
             <meta charset="utf-8">
+            <style>
+            form {
+                border: 3px
+                backgroung-color:#C4D6F238;
+                border-radius: 10px;
+                position: absolute;
+                width: 20vw;
+                height: 15vh;
+                left: 50%;
+                margin-left: -200px;
+            }
+    
+            input[type=text], textarea[name=special_note] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
+
+            select[name=gender], input[type=date], select[name=type] {
+                width: 60%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
+
+            button {
+                background-color: #0066FF;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                border-radius: 15px;
+            }
+        
+            button:hover {
+                opacity: 0.8;
+            }
+            </style>
         </head>
         <body>
-            <h1>create animal</h1>
             <form action="/register/register_process" method="post">
+                <h1>반려동물 등록하기</h1>
                 <p>
                     <input type="text" name="name" placeholder="name"  formaction="/register/name_check"> 
                 </p>
@@ -38,7 +85,7 @@ function template() {
                     <option value="기타">기타</option>
                 </select></p>
                 <p><textarea name="special_note"></textarea></p>
-                <p><input type="submit" value="등록하기"></p>
+                <button type="submit">등록하기</button>
             </form>
         </body>
     </html>
