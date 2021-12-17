@@ -57,6 +57,16 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
 
                     function clearStorage() {
                         sessionStorage.clear();
+
+                        var expert = document.getElementById('expert_btn');
+                        if (expert.classList.contains('active')) {
+                            var is_normal = document.createElement('input');
+                            is_normal.setAttribute('type', 'hidden');
+                            is_normal.setAttribute('value', true);
+                            is_normal.setAttribute('name', 'is_normal');
+                            document.getElementById('signup_form').appendChild(is_normal);
+                        }
+
                     }
 
                     function open_signup(e) {
@@ -321,7 +331,8 @@ app.post('/signup_process', function(request, response) {
     const id_check_txt = post.id_check_txt;
     const email_check_txt = post.email_check_txt;
     const nickname_check_txt = post.nickname_check_txt;
-
+    const is_normal = post.is_normal;
+    
     if (id_check_txt === "사용할 수 없는 아이디입니다.") {
         response.send('<script type="text/javascript">alert("중복된 아이디입니다."); document.location.href="/signup";</script>');
     } else if (id_check_txt === "아이디 중복을 확인하세요.") {
@@ -341,18 +352,31 @@ app.post('/signup_process', function(request, response) {
     else if (pwd !== pwd2) {
         response.send('<script type="text/javascript">alert("비밀번호가 일치하지 않습니다."); document.location.href="/signup";</script>');
     } else {
-        bcrypt.hash(pwd, 10, function(error, hash) {
-            db.query(`INSERT INTO user (id, password, email, nickname, license, certificate) VALUES(?, ?, ?, ?, ?, ?)`,
-            [id, hash, email, nickname, license, certificate], 
-            function(error, result) {
-                if (error) {
-                    throw error;
-                }
-                console.log(result);
-                response.redirect('/');
+        if (is_normal) {
+            bcrypt.hash(pwd, 10, function(error, hash) {
+                db.query(`INSERT INTO user (id, password, email, nickname, license, certificate, is_normal) VALUES(?, ?, ?, ?, ?, ?, ?)`,
+                [id, hash, email, nickname, license, certificate, !is_normal], 
+                function(error, result) {
+                    if (error) {
+                        throw error;
+                    }
+                    console.log(result);
+                    response.redirect('/');
+                });
             });
-        });
-        
+        } else {
+            bcrypt.hash(pwd, 10, function(error, hash) {
+                db.query(`INSERT INTO user (id, password, email, nickname, license, certificate) VALUES(?, ?, ?, ?, ?, ?)`,
+                [id, hash, email, nickname, license, certificate], 
+                function(error, result) {
+                    if (error) {
+                        throw error;
+                    }
+                    console.log(result);
+                    response.redirect('/');
+                });
+            });
+        }
     }
 });
 
