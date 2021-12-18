@@ -701,7 +701,9 @@ app.get('/find_password', (req, res)=>{
         <body>
             <form action="/find_password" method="post">
                 <h1>비밀번호 찾기</h1>
+                <label for="id">아이디</label>
                 <p><input type="text" name="id" placeholder="id"></p>
+                <label for="email">이메일</label>
                 <p><input type="text" name="email" placeholder="email"></p>
                 <button type="submit">확인</button>
             </form>
@@ -826,7 +828,7 @@ const transporter = nodemailer.createTransport(smtpTransport({
   }
   
   //매일 오전 10시에 실행
-  cron.schedule('32 23 1-31 * *', function() {
+  cron.schedule('30 15 1-31 * *', function() {
     var mail_number_array = [];
     var owner_id_array = [];
     var name_array = [];
