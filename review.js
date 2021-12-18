@@ -106,6 +106,20 @@ function main_template(review_list, search_title) {
                     font-weight: bolder;
                     margin: 10px 0px 5px 0px;
                 }
+                #delete_btn {
+                    background-color: white;
+                    color: #0066FF;
+                    padding: 10px 0px 10px 0px;
+                    margin: 5px 0 0 0;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 500px;
+                    width: 80%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    float: right;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
                 input[type="submit"] {
                     background-color: #0066FF;
                     color: white;
@@ -196,6 +210,14 @@ function review_detail_template(review_number, title, content, date, price, prod
                     max-width: 800px;
                     width: 100%;
                 }
+                .auth_btn {
+                    flex-direction: column;
+                    justify-content: space-between;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
                 .category_price {
                     flex-direction: column;
                     justify-content: space-between;
@@ -239,6 +261,32 @@ function review_detail_template(review_number, title, content, date, price, prod
                 #content {
                     margin: 20px 0 10px 0;
                 }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 50px;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                #delete_btn {
+                    background-color: white;
+                    color: #0066FF;
+                    padding: 10px 0px 10px 0px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 50px;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
             </style>
         </head>
         <body>
@@ -262,7 +310,9 @@ function review_detail_template(review_number, title, content, date, price, prod
                 </div>
                 <p id="content">${content}</p>
                 <p><img src="${photo}"></p>
-                ${auth_btn}
+                <div class="auth_btn">
+                    ${auth_btn}
+                </div>
             </div>
             <h3>댓글</h3>
             <form action="/review/write_comment/" method="post">
@@ -731,7 +781,7 @@ app.get('/:review_id', function(req, res) {
                 <p><input type="submit" value="수정" onClick="location.href='/review/update/${review_id}/'"></p>
                 <form action="/review/delete/" method="post">
                     <input type="hidden" name="review_number" value="${review_id}">
-                    <p><input type="submit" value="삭제"></p>    
+                    <p><input type="submit" value="삭제" id="delete_btn"></p>    
                 </form>
                 `
             }
