@@ -64,14 +64,18 @@ function template(animal_name, name_check_txt) {
         <body>
             <form action="/create_care_service/create_mail" method="post">
                 <h1>케어서비스 등록하기</h1>
+                <label for="pet_name">이름</label>
                 <p><input type="text" name="pet_name" placeholder="이름"></textarea></p>
+                <label for="category">카테고리</label>
                 <p><select name="category"> 
                     <option value="건강 검진일">건강 검진일</option>
                     <option value="접종일">접종일</option>
                     <option value="생일">생일</option>
                     <option value="기념일">기념일</option>
                 </select></p>
+                <label for="mail_date">날짜</label>
                 <p><input type="date" name="mail_date" min="1990-01-01" max="2022-12-31" value="2021-12-01"></p>
+                <label for="note">특이사항</label>
                 <p><textarea name="note"></textarea></p>
                 <button type="submit">등록하기</button>
             </form>
