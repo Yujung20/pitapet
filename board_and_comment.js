@@ -139,6 +139,109 @@ function main_template(current,boardlist,search_title){
                     border-radius: 10px;
                     box-shadow: 3px 3px 3px #b0b0b0;
                 }
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto; 
+                    width: 800px; 
+                }
+                .row {
+                    flex-direction: row;
+                    flex: 1;
+                    justify-content: center;
+                    display: flex;
+                    max-width: 500px;
+                    width: 100%;
+                }
+                .board_row {
+                    flex-direction: row;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    width: 800px;
+                }
+                .auth_date_row {
+                    flex-direction: row;
+                    flex: 1;
+                    display: flex;
+                    justify-content: right;;
+                    width: 800px;
+                }
+                .user_id {
+                    align-self: center;
+                    margin: 0px 20px 0px 0px;
+                }
+                label {
+                    align-self: center;
+                    width: 20%;
+                    font-size: 13px;
+                }
+                a {
+                    color: black;
+                    text-decoration: none;
+                    align-self: center;
+                    width: 20%;
+                }
+                a:hover {
+                    border-bottom: 3px solid blue;
+                    width: auto;
+                }
+                hr {
+                    margin: 0px;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                #search_title {
+                    width: 80%;
+                    padding: 10px;
+                    margin: 3px 0 0 0;
+                    display: inline-block;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;
+                }
+                .board_list {
+                    flex-direction: column;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    width: 800px
+                }
+                #list_txt {
+                    align-self: start;
+                    font-weight: bolder;
+                    margin: 10px 0px 5px 0px;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 10px 10px 10px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 20%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    float: right;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                button {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 5px 0 0 0;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 500px;
+                    width: 80%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    float: right;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
               </style>
           </head>
           <body>
@@ -165,31 +268,18 @@ function main_template(current,boardlist,search_title){
                 ${current}
             </ul>
         </nav>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                <form action="/board/search?b_title=${search_title}"method="get">
-                <tr>
-                <td align="center">
-                    <p class="search_p">커뮤니티 검색&nbsp&nbsp&nbsp
-                    <input type="text" name="search_title" placeholder="검색어를 입력하세요." class="search_text">&nbsp
-                    <input type="submit" value="검색" class="search_submit"></p>
-                </td>
-                </tr>
-            </form>
-            </table>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-            <td align="center">
-              <button class="tb_button" type="button" onclick="location.href='/board/write/'">글 작성하기</button>
-            </td>
-            </tr>
-            </table>
-            <table align="center" width="80%" cellpadding="0" cellspacing="0" border="0">
-                <tr align="left">
-                    <td><h3>글 목록</h3></td>
-                </tr>
-                <tr> <p>&nbsp</p> </tr>
-              ${boardlist}
-              </table>
+              <div class="container">
+                <form class="row" action="/board/search?b_title=${search_title}" method="get">
+                    <label for="search_title">커뮤니티 검색</label>
+                    <input type="text" id="search_title" name="search_title" placeholder="검색어를 입력하세요.">
+                    <input type="submit" value="검색">
+                </form>
+                <button type="button" onclick="location.href='/board/write/'">글 작성하기</button>
+                <div class="board_list">
+                    <p id="list_txt">글 목록</p>
+                    ${boardlist}
+                </div>
+            </div>
           </body>
       </html>
     `;
@@ -271,54 +361,123 @@ function main_template(current,boardlist,search_title){
                 border-bottom: 3px solid blue;
             }
 
-            .detail_table {
-                width="100%";
-                cellpadding="0";
-                cellspacing="0";
-                border="0";
-            }
-           td.underlined {
-               border-top: 2px solid #000000;
-           }
-
-           td.font_size {
-               font-size: 20px;
-           }
-           td.underlined_blue {
-            border-top: 2px solid blue;
-           }
             .nav_selected{
                 color: blue;
             }
-            .comment_textarea {
-                width: 51%;
-                margin: 3px 0 0 0;
-                padding: 42px;
-                display: inline-blue;
-                border: 2px solid blue;
-                border-radius: 10px;
-                background: none;
+            .container {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto; 
+                width: 800px; 
             }
-            .comment_submit {
+            .title_row {
+                flex-direction: row;
+                justify-content: space-between;
+                flex: 1;
+                display: flex;
+                width: 800px; 
+            }
+            .board {
+                flex-direction: column;
+                flex: 1;
+                display: flex;
+                padding: 10px 10px 10px 10px;
+                background: rgba(196, 196, 196, 0.15);
+                box-shadow: 3px 3px 3px #b0b0b0;
+            }
+            .comment {
+                flex-direction: column;
+                flex: 1;
+                display: flex;
+                width: 800px; 
+            }
+            .write_comment {
+                flex-direction: row;
+                flex: 1;
+                display: flex;
+                margin: 20px 0px 0px 0px;
+                justify-content: space-between;
+            }
+            textarea {
+                width: 800px; 
+                border:1px solid #0066FF;
+                border-radius: 10px;
+                height: 95px;
+            }
+            #write_comment_btn {
+                width: 100%;
+                max-width: 90px;
+            }
+            #comment_user_id {
+                color: #0066FF;
+                margin: 5px 0px 0px 0px;
+            }
+            #comment_hr {
+                border: 1px solid #0066FF;
+            }
+            .comment_date {
+                display: flex;
+                justify-content: flex-end;
+                margin-top: auto;
+            }
+            .comment_list {
+                margin: 10px 0 0 0;
+            }
+            .auth_btn {
+                flex-direction: row;
+                justify-content: flex-start;
+                flex: 1;
+                display: flex;
+                max-width: 800px;
+                width: 100%;
+            }
+            p {
+                margin: 5px 0px;
+            }
+            hr {
+                width: 100%;
+            }
+            #title, #user {
+                margin: 0;
+            }
+            #title {
+                font-size: 20px;
+            }
+            #user {
+                align-self: center;
+            }
+            #date {
+                align-self: flex-end;
+                margin-top: auto;
+            }
+            #content {
+                margin: 30px 0 10px 0;
+            }
+            input[type="submit"] {
                 background-color: #0066FF;
                 color: white;
-                padding: 42px;
-                margin: 3px 0 0 6px;
+                padding: 10px 10px 10px 10px;
+                margin: 0px 0 0 5px;
                 border: none;
                 cursor: pointer;
-                width: 10%;
+                max-width: 50px;
+                width: 100%;
                 opacity: 0.9;
                 border-radius: 10px;
                 box-shadow: 3px 3px 3px #b0b0b0;
             }
-            .auth_btn {
-                background-color: #0066FF;
-                color: white;
-                padding: 18px;
-                margin: 3px 0 0 5px;
+            #delete_btn {
+                background-color: white;
+                color: #0066FF;
+                padding: 10px 10px 10px 10px;
+                margin: 0px 0 0 10px;
                 border: none;
                 cursor: pointer;
-                width: 13%;
+                max-width: 50px;
+                width: 100%;
                 opacity: 0.9;
                 border-radius: 10px;
                 box-shadow: 3px 3px 3px #b0b0b0;
@@ -350,33 +509,32 @@ function main_template(current,boardlist,search_title){
                 ${current}
             </ul>
         </nav>
-        <table align="center" class="detail_table" bgcolor="#F4F4F4";>
-                <tr align="center">
-                    <td align="left"><h2>&nbsp;[ ${board_category} ]</h2></td>
-                    <td align="left"><h2>&nbsp;${board_title}</h2></td>
-                    <td width=80% align="right"><p>${board_user}&nbsp;</p></td>
-                </tr>
-                <tr align="center">
-                    <td class="underlined" width=38% align="right" colspan="3"><p>${board_date}&nbsp;</p></td>
-                </tr>
-                <tr align="center">
-                    <td class="font_size" align="left"><p>&nbsp;&nbsp;&nbsp;${board_content}</p></td>
-                    </tr>
-              </table>
-              ${auth_btn}
-              <div style="padding: 2% 0 2% 0; text-align="center"'></div>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <form action="/board/write_comment/" method="post">
-                <input type="hidden" name="board_id" value="${board_id}">
-                <tr>
-                <td align="center">
-                    <input type="textarea" name="content" class="comment_textarea">
-                    <input type="submit" value="등록" class="comment_submit">
-                </td>
-                </tr>
-            </form>
-            </table>
-              ${comments}
+        <div class="container">
+            <div class="board">
+                <div class="title_row">
+                    <p id="title"><strong>&nbsp;[ ${board_category} ]&nbsp;${board_title}</strong></p>
+                    <p id="user">작성자: ${board_user}</p>
+                </div>
+                <hr/>
+                <p id="date">${board_date}</p>
+                <p id="content">${board_content}</p>
+                <div class="auth_btn">
+                    ${auth_btn}
+                </div>
+            </div>
+            <div class="comment">
+                <form action="/board/write_comment/" method="post">
+                    <input type="hidden" name="board_id" value="${board_id}">
+                    <div class="write_comment">
+                        <textarea name="content"></textarea>
+                        <input type="submit" id="write_comment_btn" value="댓글 달기">
+                    </div>
+                </form>
+                <div class="comment_list">
+                    ${comments}
+                </div>
+            </div>
+            </div>
           </body>
       </html>
       `
@@ -637,12 +795,16 @@ function main_template(current,boardlist,search_title){
             for (var i = 0; i < Object.keys(boards).length; i++) {
                 const qdate = String(boards[i].date).split(" ");
                 var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
-                board_list += `<tr align="center"><td class="tableline" align="left" width="50%">
-                                <a href="/board/written/${boards[i].board_number}">[ ${boards[i].category} ] ${boards[i].title}</a></td>
-                                <td class="tableline" align="right">${boards[i].user_id}</td>
-                                <td class="tableline" align="right">
-                                <p>${formating_qdate}</p></td></tr>
-                                `
+                board_list += `
+                               <div class="board_row">
+                                    <a href="/board/written/${boards[i].board_number}">[ ${boards[i].category} ] ${boards[i].title}</a>
+                                    <div class="auth_date_row">
+                                        <p class="user_id">${boards[i].user_id}<p>
+                                        <p>${formating_qdate}</p>
+                                    </div>
+                                </div>
+                                <hr/>
+                            `;
             }
             } else {
                 board_list = '0개의 게시물이 있습니다.';
@@ -720,32 +882,29 @@ function main_template(current,boardlist,search_title){
   
                       if (req.session.user_id === comments[i].user_id) {
                           comments_list += `
-                          <<table align="center" class="detail_table";>
-                          <tr align="center" >
-                              <td align="left"><h2 style="color: blue;">&nbsp;${comments[i].user_id}</h2></td>
-                          </tr>
-                          <tr align="center">
-                              <td class="underlined_blue" width=950px align="right" colspan="3"><p style="color: blue;">${formating_adate}&nbsp;</p></td>
-                          </tr>
-                          <tr align="center">
-                              <td class="font_size" align="left" style="color: blue;"><p>&nbsp;&nbsp;&nbsp;${comments[i].content}</p></td>
-                              </tr>
-                        </table>
-                                `
+                            <p id="comment_user_id">${comments[i].user_id}</p>
+                            <hr id="comment_hr"/>
+                            <div class="comment_date">
+                                <p>${formating_adate}</p> </span>
+                            </div>
+                            <p>${comments[i].content}</p>
+                            <div class="auth_btn">
+                                <form action="/board/written/${comments[i].comment_number}/board_comment_delete/" method="post">
+                                    <input type="hidden" name="comment_number" value="${comments[i].comment_number}">
+                                    <input type="hidden" name="board_number" value="${board_id}">
+                                    <p><input id="delete_btn" type="submit" value="삭제"></p>
+                                </form>
+                            </div>
+                                `;
                       } else {
-                          comments_list += `
-                          <<table align="center" class="detail_table";>
-                          <tr align="center" >
-                              <td align="left"><h2 style="color: blue;">&nbsp;${comments[i].user_id}</h2></td>
-                          </tr>
-                          <tr align="center">
-                              <td class="underlined_blue" width=950px align="right" colspan="3"><p style="color: blue;">${formating_adate}&nbsp;</p></td>
-                          </tr>
-                          <tr align="center">
-                              <td class="font_size" align="left" style="color: blue;"><p>&nbsp;&nbsp;&nbsp;${comments[i].content}</p></td>
-                              </tr>
-                        </table>
-                          `
+                        comments_list += `
+                        <p id="comment_user_id">${comments[i].user_id}</p>
+                        <hr id="comment_hr"/>
+                        <div class="comment_date">
+                            <p>${formating_adate}</p> </span>
+                        </div>
+                        <p>${comments[i].content}</p>
+                        `;
                       }
                   }
   
@@ -755,15 +914,8 @@ function main_template(current,boardlist,search_title){
                   let auth_btn = ``;
                   if (req.session.user_id === board[0].user_id) {
                       auth_btn = `
-                      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                      <tr align="center">
-                      <td width=55%><p>&nbsp</p></td>
-                      <td border-right=20% aiign="right">
-                          <input class="auth_btn" type="submit" value="수정" onClick="location.href='/board/written/${board_id}/update/'">
-                          <input class="auth_btn" type="submit" value="삭제" onClick="location.href='/board/written/${board_id}/delete/'">
-                      </td>
-                      </tr>
-                        </table>
+                        <p><input type="submit" value="수정" onClick="location.href='/board/written/${board_id}/update/'"></p>
+                        <p><input type="submit" value="삭제" onClick="location.href='/board/written/${board_id}/delete/'"></p>   
                       `
                   }
   
@@ -892,21 +1044,19 @@ function main_template(current,boardlist,search_title){
       });
   });
   
-  app.get('/comment_delete', function(req, res) {
+  app.post('/written/:comment_id/board_comment_delete', function(req, res) {
     const body = req.body;  
-    const comment_id = body.comment_number;
-    const board_id = body.board_number;
+    const comment_number = body.comment_number;
+    const board_number = body.board_number;
   
       db.query(`DELETE FROM board_comment WHERE comment_number = ?`,
-      [comment_id],
+      [comment_number],
       function(err, result) {
           if (err) {
               res.send(err);
               throw err;
           }
-          console.log(result);
-  
-          res.redirect(`/board/written/${board_id}/`);
+          res.redirect(`/board/written/${board_number}/`);
       });
   });
   
