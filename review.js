@@ -1282,16 +1282,20 @@ app.post('/write_comment/', function(req, res) {
     const content = body.comment;
     const user_id = req.session.user_id;
 
-    db.query(`INSERT INTO review_comment (review_number, content, user_id) VALUES (?, ?, ?)`,
-    [review_number, content, user_id],
-    function(err, comment) {
-        if (err) {
-            res.send(err);
-            throw err;
-        }
-        console.log(comment);
-        res.redirect(`/review/${review_number}`);
-    });
+    if (req.session.loggedin) {
+        db.query(`INSERT INTO review_comment (review_number, content, user_id) VALUES (?, ?, ?)`,
+        [review_number, content, user_id],
+        function(err, comment) {
+            if (err) {
+                res.send(err);
+                throw err;
+            }
+            console.log(comment);
+            res.redirect(`/review/${review_number}`);
+        });
+    } else {
+        res.send('<script type="text/javascript">alert("로그인이 필요한 서비스입니다.");location.href="/login";</script>')
+    }
 })
 
 app.post('/comment_update/:comment_number', function(req, res) {
