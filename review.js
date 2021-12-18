@@ -44,10 +44,27 @@ function main_template(review_list, search_title) {
                     max-width: 500px;
                     width: 100%;
                 }
+                .review_row {
+                    flex-direction: row;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    max-width: 500px;
+                    width: 100%;
+                }
                 label {
                     align-self: center;
                     width: 20%;
                     font-size: 15px;
+                }
+                a {
+                    align-self: center;
+                    width: 20%;
+                }
+                hr {
+                    margin: 0px;
+                    max-width: 500px;
+                    width: 100%;
                 }
                 #search_title {
                     width: 80%;
@@ -313,7 +330,16 @@ app.get('/', function(req, res) {
             throw error;
         }
         for (var i = 0; i < reviews.length; i++) {
-            review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a></p>`;
+            const rdate = String(reviews[i].date).split(" ");
+            var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
+            review_list += 
+                `<div class="review_row">
+                    <a href="/review/${reviews[i].review_number}">${reviews[i].title}</a>
+                    <p>${reviews[i].user_id}<p>
+                    <p>${formating_rdate}</p>
+                </div>
+                <hr/>
+                `;
         }
         res.send(main_template(review_list));
     })
@@ -349,7 +375,12 @@ app.get('/search', function(req, res) {
 })
 
 app.get('/write_review/', function(req, res) {
-    res.send(review_create_template());
+    const user_login = req.session.loggedin;
+    if (user_login) {
+        res.send(review_create_template());
+    } else {
+        res.send('<script type="text/javascript">alert("로그인이 필요한 서비스입니다.");location.href="/login";</script>')
+    }
 })
 
 app.post('/write_review/', upload.single('photo'), function(req, res) {
