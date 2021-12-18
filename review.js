@@ -1017,7 +1017,7 @@ app.get('/search', function(req, res) {
                     `;
             }
         } else {
-            reivew_list = `<p> 검색 결과가 없습니다. </p>`;
+            review_list = `<p> 검색 결과가 없습니다. </p>`;
         }
 
         res.send(main_template(review_list));

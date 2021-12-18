@@ -679,7 +679,18 @@ app.get('/search/', function(req, res) {
     
             if (Object.keys(questions).length > 0) {
                 for (var i = 0; i < Object.keys(questions).length; i++) {
-                    question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+                    const qdate = String(questions[0].date).split(" ");
+                    var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
+                    question_list += 
+                    `<div class="question_row">
+                        <a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a>
+                        <div class="auth_date_row">
+                            <p class="user_id">${questions[i].user_id}<p>
+                            <p>${formating_qdate}</p>
+                        </div>
+                    </div>
+                    <hr/>
+                    `;
                 }
             } else {
                 question_list = `<p> 검색 결과가 없습니다. </p>`
@@ -695,7 +706,18 @@ app.get('/search/', function(req, res) {
         function(err, answers) {
             if (Object.keys(answers).length > 0) {
                 for (var i = 0; i < Object.keys(answers).length; i++) {
-                    question_list += `<p><a href="/qna/question/${answers[i].question_number}">${answers[i].content}</a><p>`;
+                    const qdate = String(answers[0].date).split(" ");
+                    var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
+                    question_list += 
+                    `<div class="question_row">
+                        <a href="/qna/question/${answers[i].question_number}">${answers[i].content}</a>
+                        <div class="auth_date_row">
+                            <p class="user_id">${answers[i].user_id}<p>
+                            <p>${formating_qdate}</p>
+                        </div>
+                    </div>
+                    <hr/>
+                `;
                 }
             } else {
                 question_list = `<p> 검색 결과가 없습니다. </p>`
