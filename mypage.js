@@ -1062,7 +1062,7 @@ app.post('/user_information/nickname_update/', function(request,response){
 app.get('/care_service_information/', function(req, res) {
     const id = req.session.user_id;
     var care_service_list = ``;
-    var care_service_date_list = ``;
+    var date_list_display = ``;
 
     db.query(`SELECT * FROM care_service WHERE owner_id = ?`,[id],
     function(err, care_service){
@@ -1078,8 +1078,9 @@ app.get('/care_service_information/', function(req, res) {
                             {
                                 const rdate = String(care_service_date[j].mail_date).split(" ");
                                 var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2];
-                                care_service_date_list += formating_rdate;
-                                care_service_date_list += '<br/>';
+
+                                date_list_display += formating_rdate;
+                                date_list_display += '<br/>';
                             }
                         }
 
@@ -1089,19 +1090,19 @@ app.get('/care_service_information/', function(req, res) {
                         <div class="container">
                         <p><label for="name">이름: ${care_service[i].name}</label></p>
                         <p><label for="category">카테고리: ${care_service[i].mail_category}</label></p>
-                        <p><label for="date">날짜: ${care_service_date_list}</label></p>
+                        <p><label for="date">날짜: ${date_list_display}</label></p>
                         <p><label for="account">특이사항: ${care_service[i].account}</label></p>
                         </div>
                         <div class="container2">
-                        <button class="button a" type="submit" onClick="location.href='/mypage/care_service_information/update/?id=${care_service[i].mail_number}'">수정</button>
-                        <button class="button b" type="submit" onClick="location.href='/mypage/care_service_information/delete/?id=${care_service[i].mail_number}'">삭제</button>
+                        <button class="button a" type="button" onClick="location.href='/mypage/care_service_information/update/?id=${care_service[i].mail_number}';">수정</button>
+                        <button class="button b" type="button" onClick="location.href='/mypage/care_service_information/delete/?id=${care_service[i].mail_number}';">삭제</button>
                         </div>
                         </div>
                         <hr color="black" size="2">
                         </div>
                         `;
 
-                        care_service_date_list = ``;
+                        date_list_display = ``;
                     }
                     res.end(care_service_template(care_service_list));
                 }
@@ -1177,7 +1178,7 @@ app.get('/care_service_information/delete/', function(req, res) {
             throw err;
         }
  
-        res.redirect('/mypage/');
+        res.redirect('/mypage/care_service_information/');
     });
 });
 
