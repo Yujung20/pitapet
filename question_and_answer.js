@@ -319,27 +319,106 @@ function question_template() {
     <!doctype html>
     <html>
         <head>
-            <title>create question</title>
+            <title>질문 작성하기</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                form {
+                    max-width: 500px;
+                    width: 100%;
+                }
+                .row {
+                    flex: 1;
+                    display: flex;
+                    max-width: 500px;
+                    width: 100%;
+                }
+                label {
+                    align-self: center;
+                    width: 20%;
+                }
+                p {
+                    display: flex;
+                    flex: 1;
+                    margin: 10px 0px;
+                }
+                input[type=text], #title {
+                    width: 100%;
+                    padding: 10px;
+                    margin: 3px 0 0 20px;
+                    display: flex;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;   
+                    align-self: flex-end;
+                }
+                #category {
+                    width: 30%;
+                    padding: 10px;
+                    margin: 3px 0 0 20px;
+                    display: flex;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;   
+                    align-self: flex-end;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                textarea {
+                    width: 100%;
+                    margin: 0px 0px 0px 20px;
+                    max-width: 700px;
+                    border:1px solid black;
+                    border-radius: 10px;
+                    height: 95px;
+                }
+            </style>
         </head>
         <body>
-            <h1>질문하기</h1>
-            <form action="/qna/write_question/" method="post">
-                <p><input type"text" name="title" placeholder="title"></p>
-                <p><select name="category">
-                    <option value="개">개</option>
-                    <option value="고양이">고양이</option>
-                    <option value="토끼">토끼</option>
-                    <option value="햄스터">햄스터</option>
-                    <option value="앵무새">앵무새</option>
-                    <option value="기니피그">기니피그</option>
-                    <option value="페럿">페럿</option>
-                    <option value="고슴도치">고슴도치</option>
-                    <option value="기타">기타</option>
-                </select></p>
-                <p><textarea name="content"></textarea></p>
-                <p><input type="submit" value="질문 등록하기"></p>
-            </form>
+            <div class="container">
+                <form action="/qna/write_question/" method="post">
+                    <div class="row">
+                        <label for="title">제목</label>
+                        <p><input type"text" name="title" id="title" placeholder="제목"></p>
+                    </div>
+                    <div class="row">
+                        <label for="category">종</label>
+                        <p><select name="category" id="category">
+                            <option value="개">개</option>
+                            <option value="고양이">고양이</option>
+                            <option value="토끼">토끼</option>
+                            <option value="햄스터">햄스터</option>
+                            <option value="앵무새">앵무새</option>
+                            <option value="기니피그">기니피그</option>
+                            <option value="페럿">페럿</option>
+                            <option value="고슴도치">고슴도치</option>
+                            <option value="기타">기타</option>
+                        </select></p>
+                    </div>
+                    <div class="row">
+                        <label for="content">내용</label>
+                        <p><textarea name="content" id="content"></textarea></p>
+                    </div>
+                    <p><input type="submit" value="질문 등록하기"></p>
+                </form>
+            </body>
         </body>
     </html>
     `;
