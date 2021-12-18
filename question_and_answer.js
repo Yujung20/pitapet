@@ -740,7 +740,7 @@ app.post('/write_answer/', function(req, res) {
     var category = "일반인";
 
     if (req.session.loggedin) {
-        if (content === '') res.send(`<script type="text/javascript">alert("내용을 입력해주세요.");location.href="/qna/question/${question_id}";</script>`)
+        if (content === '') res.send(`<script type="text/javascript">alert("내용을 입력해주세요.");location.href="/qna/question/${question_id}";</script>`);
         else {
             db.query(`SELECT * FROM user WHERE id = ?`, 
             [user],
