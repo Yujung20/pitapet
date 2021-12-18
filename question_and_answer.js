@@ -111,7 +111,7 @@ function main_template(question_list, search_title, search_content) {
                     color: black;
                     text-decoration: none;
                     align-self: center;
-                    width: 20%;
+                    width: 50%;
                 }
                 a:hover {
                     border-bottom: 3px solid blue;
@@ -156,22 +156,159 @@ function detail_template(question_id, question_title, question_content, question
         <head>
             <title>create question</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto; 
+                    max-width: 800px;
+                    width: 100%; 
+                }
+                hr {
+                    width: 100%;
+                }
+                p {
+                    margin: 5px 0px;
+                }
+                .question {
+                    flex-direction: column;
+                    flex: 1;
+                    display: flex;
+                    padding: 10px 10px 10px 10px;
+                    background: rgba(196, 196, 196, 0.15);
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .title_row {
+                    flex-direction: row;
+                    justify-content: space-between;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                #title {
+                    font-size: 20px;
+                    align-self: flex-start;
+                }
+                #user {
+                    align-self: center;
+                }
+                #date {
+                    align-self: flex-end;
+                    margin-top: auto;
+                }
+                #content {
+                    margin: 30px 0 10px 0;
+                }
+                .auth_btn {
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .answer {
+                    flex-direction: column;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .write_answer {
+                    flex-direction: row;
+                    flex: 1;
+                    display: flex;
+                    margin: 20px 0px 0px 0px;
+                    justify-content: space-between;
+                }
+                textarea {
+                    width: 100%;
+                    max-width: 700px;
+                    border:1px solid #0066FF;
+                    border-radius: 10px;
+                    height: 95px;
+                }
+                #write_answer_btn {
+                    width: 100%;
+                    max-width: 90px;
+                }
+                .answer_list {
+                    margin: 10px 0 0 0;
+                }
+                #answer_user_id, #answer_category {
+                    color: #0066FF;
+                    margin: 5px 0px 0px 0px;
+                }
+                .answer_date {
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-top: auto;
+                }
+                #answer_hr {
+                    border: 1px solid #0066FF;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 10px 10px 10px;
+                    margin: 0px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 50px;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                #delete_btn {
+                    background-color: white;
+                    color: #0066FF;
+                    padding: 10px 10px 10px 10px;
+                    margin: 0px 0 0 10px;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 50px;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+            </style>
         </head>
         <body>
-            <h1>${question_title}</h1>
-            <p>${question_category}</p>
-            <p>${question_content}</p>
-            <p>${question_user}</p>
-            <p>${question_date}</p>
-            ${auth_btn}
-            <hr/>
-            <h3>답변</h3>
-            <form action="/qna/write_answer/" method="post">
-                <input type="hidden" name="question_id" value="${question_id}">
-                <p><textarea name="content"></textarea></p>
-                <p><input type="submit" value="답변 등록하기"></p>
-            </form>
-            ${answer}
+        <div class="container">
+            <div class="question">
+                <div class="title_row">
+                    <p id="title">${question_title}</p>
+                    <p id="user">작성자: ${question_user}</p>
+                </div>
+                <hr/>
+                <p id="date">${question_date}</p>
+                <p id="category">종: ${question_category}</p>
+                <p id="content">${question_content}</p>
+                <div class="auth_btn">
+                    ${auth_btn}
+                </div>
+            </div>
+            <div class="answer">
+                <form action="/qna/write_answer/" method="post">
+                    <input type="hidden" name="question_id" value="${question_id}">
+                    <div class="write_answer">
+                        <textarea name="content"></textarea>
+                        <input type="submit" id="write_answer_btn" value="답변하기">
+                    </div>
+                </form>
+                <div class="answer_list">
+                    ${answer}
+                </div>
+            </div>
+        </div>
         </body>
     </html>
     `
@@ -264,7 +401,11 @@ app.get('/', function(req, res) {
 });
 
 app.get('/write_question/', function(req, res) {
-    res.end(question_template());
+    if(req.session.loggedin) {
+        res.end(question_template());
+    } else {
+        res.send('<script type="text/javascript">alert("로그인이 필요한 서비스입니다.");location.href="/login";</script>')
+    }
 })
 
 app.post('/write_question/', function(req, res) {
@@ -312,20 +453,34 @@ app.get('/question/:question_id', function(req, res) {
 
                     if (req.session.user_id === answers[i].user_id) {
                         answer_list += `
+                            <div class="title_row">
+                                <p id="answer_user_id">${answers[i].user_id}</p>
+                                <p id="answer_category">${answers[i].category}</p>
+                            </div>
+                            <hr id="answer_hr"/>
+                            <div class="answer_date">
+                                <p>${formating_adate}</p>
+                            </div>
                             <p>${answers[i].content}</p>
-                            <p>${answers[i].user_id}</p>
-                            <p>${formating_adate}</p>
-                            <p>${answers[i].category}</p>
-                            <p><input type="submit" value="삭제" onClick="location.href='answer/${answers[i].answer_number}/delete/'"></p>
-                            <hr/>
+                            <div class="auth_btn">
+                                <form action="/qna/answer_delete/" method="post">
+                                    <input type="hidden" name="question_number" value="${question_id}">
+                                    <input type="hidden" name="answer_number" value="${answers[i].answer_number}">
+                                    <input type="submit" value="삭제" id="delete_btn"></p>
+                                </form>
+                            </div>
                         `
                     } else {
                         answer_list += `
-                            <p>${answers[i].content}</p>
-                            <p>${answers[i].user_id}</p>
+                        <div class="title_row">
+                        <p id="answer_user_id">${answers[i].user_id}</p>
+                        <p id="answer_category">${answers[i].category}</p>
+                        </div>
+                        <hr id="answer_hr"/>
+                        <div class="answer_date">
                             <p>${formating_adate}</p>
-                            <p>${answers[i].category}</p>
-                            <hr/>
+                        </div>
+                        <p>${answers[i].content}</p>
                         `
                     }
                 }
@@ -337,8 +492,11 @@ app.get('/question/:question_id', function(req, res) {
                 if (req.session.user_id === question[0].user_id) {
                     auth_btn = `
                         <p><input type="submit" value="수정" onClick="location.href='/qna/question/${question_id}/update/'"></p>
-                        <p><input type="submit" value="삭제" onClick="location.href='/qna/question/${question_id}/delete/'"></p>
-                    `
+                        <form action="/qna/delete/" method="post">
+                            <input type="hidden" name="question_number" value="${question_id}">
+                            <p><input type="submit" value="삭제" id="delete_btn"></p>
+                        </form>
+                        `;
                 }
 
                 res.send(detail_template(question_id, question[0].title, question[0].content, question[0].user_id, formating_qdate, question[0].category, answer_list, auth_btn));
@@ -463,8 +621,10 @@ app.post('/question/:question_id/update_process/', function(req, res) {
     })
 });
 
-app.get('/question/:question_id/delete/', function(req, res) {
-    const question_id = req.params.question_id;
+app.post('/delete/', function(req, res) {
+    const body = req.body;
+    const question_id = body.question_number;
+    console.log(question_id);
 
     db.query(`DELETE FROM question WHERE question_number = ?`,
     [question_id],
@@ -478,8 +638,10 @@ app.get('/question/:question_id/delete/', function(req, res) {
     });
 });
 
-app.get('/question/answer/:answer_id/delete/', function(req, res) {
-    const answer_id = req.params.answer_id;
+app.post('/answer_delete/', function(req, res) {
+    const body = req.body;
+    const question_id = body.question_number;
+    const answer_id = body.answer_number;
 
     db.query(`DELETE FROM answer WHERE answer_number = ?`,
     [answer_id],
@@ -490,7 +652,7 @@ app.get('/question/answer/:answer_id/delete/', function(req, res) {
         }
         console.log(result);
 
-        res.redirect('/qna/');
+        res.redirect(`/qna/question/${question_id}`);
     });
 });
 
