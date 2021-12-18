@@ -383,11 +383,66 @@ function id_found_template(found_id){
         <head>
             <title>ID found</title>
             <meta charset="utf-8">
+            <style>
+                button {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 5px 0 0 0;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 500px;
+                    width: 80%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    float: right;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+
+                table {
+                    flex: 1;
+                    display: flex;
+                    max-width: 500px;
+                    width: 100%;
+                }
+
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                
+                .row {
+                    flex: 1;
+                    display: flex;
+                    max-width: 500px;
+                    width: 100%;
+                }
+
+                p {
+                    display: flex;
+                    flex: 1;
+                    margin: 10px 0px;
+                }
+
+            </style>
         </head>
         <body>
-        <h1>아이디찾기</h1>
-            <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
-            <a href="/login">로그인</a>
+            <div class="container">
+                <div class="row">
+                    <table>
+                    <tr align="center">
+                        <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
+                    </tr>
+                    </table>
+                </div>
+                <div class="row">
+                    <button type="button" onclick="location.href='/login'">로그인</button>
+                </div>
+            </div>
         </body>
     </html>
     `;
@@ -606,14 +661,76 @@ app.get('/find_id', (req, res)=>{
         <head>
             <title>Find ID</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto;
+                }
+
+                form {
+                max-width: 500px;
+                width: 100%;
+                }
+
+                .row {
+                    flex: 1;
+                    display: flex;
+                    max-width: 500px;
+                    width: 100%;
+                }
+
+                label {
+                align-self: center;
+                width: 20%;
+                }
+
+                p {
+                    display: flex;
+                    flex: 1;
+                    margin: 10px 0px;
+                }
+
+                input[type=text], #findid_nickname, #findid_email {
+                    width: 100%;
+                    padding: 10px;
+                    margin: 3px 0 0 20px;
+                    display: flex;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;   
+                    align-self: flex-end;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+            </style>
         </head>
         <body>
-        <h1>아이디찾기</h1>
-            <form action="/find_id" method="post">
-                <p><input type="text" name="nickname" placeholder="nickname"></p>
-                <p><input type="text" name="email" placeholder="email"></p>
-                <p><input type="submit" value="확인"></p>
-            </form>
+            <div class="container">
+                <form action="/find_id" method="post">
+                <div class="row">
+                    <label for="findid_nickname">닉네임</label>
+                    <input type="text" name="nickname" placeholder="nickname" id="findid_nickname">
+                </div>
+                <div class="row">
+                    <label for="findid_email">이메일</label>
+                    <input type="text" name="email" placeholder="email" id="findid_email">
+                </div>
+                <p><input type="submit" value="아이디 찾기"></p>
+            </div>
         </body>
     </html>
     `;
