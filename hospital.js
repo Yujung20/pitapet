@@ -515,9 +515,9 @@ app.get('/search/',function(req,res){
                     marker_list+=`content:'<div><h6>${hospitals[i].hospital_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                     `;
                     info_list+=`<div class="hospital_row">
-                    <a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
-                    <div class="pet_row">
-                    <p class="pet">${pet_list}</p></div></div><hr/>`;
+                        <a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
+                        <div class="pet_row">
+                        <p class="pet">${pet_list}</p></div></div><hr/>`;
                 if(i+1!=(hospitals).length){
                     pet_list=` `;
                     day_list=` `;

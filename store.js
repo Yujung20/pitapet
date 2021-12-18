@@ -577,6 +577,7 @@ app.get('/info/',function(req,res){
             detail_list+=`<div class="detail_info"><h2>${stores[i].store_name}</h2><h3>${pet_list}</h3><h4>${day_list}</h4></div>`;
             console.log(stores);
             res.send(detail_template(current,detail_list));
+            
         })
     }
 });
