@@ -49,8 +49,20 @@ function main_template(review_list, search_title) {
                     flex: 1;
                     justify-content: space-between;
                     display: flex;
-                    max-width: 500px;
+                    max-width: 800px;
                     width: 100%;
+                }
+                .auth_date_row {
+                    flex-direction: row;
+                    flex: 1;
+                    display: flex;
+                    justify-content: right;;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .user_id {
+                    align-self: center;
+                    margin: 0px 20px 0px 0px;
                 }
                 label {
                     align-self: center;
@@ -58,12 +70,18 @@ function main_template(review_list, search_title) {
                     font-size: 15px;
                 }
                 a {
+                    color: black;
+                    text-decoration: none;
                     align-self: center;
                     width: 20%;
                 }
+                a:hover {
+                    border-bottom: 3px solid blue;
+                    width: auto;
+                }
                 hr {
                     margin: 0px;
-                    max-width: 500px;
+                    max-width: 800px;
                     width: 100%;
                 }
                 #search_title {
@@ -74,6 +92,19 @@ function main_template(review_list, search_title) {
                     border: 1px solid #000000;
                     border-radius: 10px;
                     background: none;
+                }
+                .review_list {
+                    flex-direction: column;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                #list_txt {
+                    align-self: start;
+                    font-weight: bolder;
+                    margin: 10px 0px 5px 0px;
                 }
                 input[type="submit"] {
                     background-color: #0066FF;
@@ -113,7 +144,10 @@ function main_template(review_list, search_title) {
                 <input type="submit" value="검색">
             </form>
             <button type="button" onclick="location.href='/review/write_review/'">리뷰 작성하기</button>
-            ${review_list}
+            <div class="review_list">
+                <p id="list_txt">글 목록</p>
+                ${review_list}
+            </div>
         </div>
         </body>
     </html>
@@ -335,8 +369,10 @@ app.get('/', function(req, res) {
             review_list += 
                 `<div class="review_row">
                     <a href="/review/${reviews[i].review_number}">${reviews[i].title}</a>
-                    <p>${reviews[i].user_id}<p>
-                    <p>${formating_rdate}</p>
+                    <div class="auth_date_row">
+                        <p class="user_id">${reviews[i].user_id}<p>
+                        <p>${formating_rdate}</p>
+                    </div>
                 </div>
                 <hr/>
                 `;
