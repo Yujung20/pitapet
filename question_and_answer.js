@@ -563,24 +563,31 @@ app.post('/write_answer/', function(req, res) {
     const user = req.session.user_id;
     var category = "일반인";
 
-    db.query(`SELECT * FROM user WHERE id = ?`, 
-    [user],
-    function(err, result) {
-        if (!result[0].is_normal) {
-            category = "전문가";
-        }
+    if (req.session.loggedin) {
+        if (content === '') res.send(`<script type="text/javascript">alert("내용을 입력해주세요.");location.href="/qna/question/${question_id}";</script>`)
+        else {
+            db.query(`SELECT * FROM user WHERE id = ?`, 
+            [user],
+            function(err, result) {
+                if (!result[0].is_normal) {
+                    category = "전문가";
+                }
 
-        db.query(`INSERT INTO answer (user_id, content, question_number, category) VALUES (?, ?, ?, ?)`,
-        [user, content, question_id, category],
-        function(error, answer) {
-            if (error) {
-                res.send(error);
-                throw error;
-            }
-            console.log(answer);
-            res.redirect(`/qna/question/${question_id}`);
-        })
-    })
+                db.query(`INSERT INTO answer (user_id, content, question_number, category) VALUES (?, ?, ?, ?)`,
+                [user, content, question_id, category],
+                function(error, answer) {
+                    if (error) {
+                        res.send(error);
+                        throw error;
+                    }
+                    console.log(answer);
+                    res.redirect(`/qna/question/${question_id}`);
+                })
+            });
+        }
+    } else {
+        res.send('<script type="text/javascript">alert("로그인이 필요한 서비스입니다.");location.href="/login";</script>')
+    }
 
     console.log(category);
 });
