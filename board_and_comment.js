@@ -734,10 +734,17 @@ function main_template(current,boardlist,search_title){
                                 `
                       } else {
                           comments_list += `
-                              <p>${comments[i].content}</p>
-                              <p>${comments[i].user_id}</p>
-                              <p>${formating_adate}</p>
-                              <hr/>
+                          <<table align="center" class="detail_table";>
+                          <tr align="center" >
+                              <td align="left"><h2 style="color: blue;">&nbsp;${comments[i].user_id}</h2></td>
+                          </tr>
+                          <tr align="center">
+                              <td class="underlined_blue" width=950px align="right" colspan="3"><p style="color: blue;">${formating_adate}&nbsp;</p></td>
+                          </tr>
+                          <tr align="center">
+                              <td class="font_size" align="left" style="color: blue;"><p>&nbsp;&nbsp;&nbsp;${comments[i].content}</p></td>
+                              </tr>
+                        </table>
                           `
                       }
                   }
