@@ -179,16 +179,17 @@ function main_template(current,boardlist,search_title){
                     width: 20%;
                     font-size: 13px;
                 }
-                a {
+                #underline {
                     color: black;
                     text-decoration: none;
                     align-self: center;
                     width: 20%;
                 }
-                a:hover {
+                #underline:hover {
                     border-bottom: 3px solid blue;
                     width: auto;
                 }
+    
                 hr {
                     margin: 0px;
                     max-width: 800px;
@@ -797,7 +798,7 @@ function main_template(current,boardlist,search_title){
                 var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
                 board_list += `
                                <div class="board_row">
-                                    <a href="/board/written/${boards[i].board_number}">[ ${boards[i].category} ] ${boards[i].title}</a>
+                                    <a id="underline" href="/board/written/${boards[i].board_number}">[ ${boards[i].category} ] ${boards[i].title}</a>
                                     <div class="auth_date_row">
                                         <p class="user_id">${boards[i].user_id}<p>
                                         <p>${formating_qdate}</p>

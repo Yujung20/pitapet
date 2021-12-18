@@ -1003,7 +1003,18 @@ app.get('/search', function(req, res) {
 
         if (reviews.length > 0) {
             for (var i = 0; i < reviews.length; i++) {
-                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a></p>`;
+                const rdate = String(reviews[i].date).split(" ");
+                var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
+                review_list += 
+                    `<div class="review_row">
+                        <a href="/review/${reviews[i].review_number}">${reviews[i].title}</a>
+                        <div class="auth_date_row">
+                            <p class="user_id">${reviews[i].user_id}<p>
+                            <p>${formating_rdate}</p>
+                        </div>
+                    </div>
+                    <hr/>
+                    `;
             }
         } else {
             reivew_list = `<p> 검색 결과가 없습니다. </p>`;
@@ -1043,18 +1054,21 @@ app.post('/write_review/', upload.single('photo'), function(req, res) {
     }
 
     console.log(body);
-
-    db.query(`INSERT INTO review (user_id, title, content, price, product_name, brand, category, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [user_id, title, content, price, product_name, brand, category, photo],
-    function(error, result) {
-        if(error) {
-            res.send(error);
-            throw error;
-        }
-        console.log(result);
-        console.log(req.file);
-        res.redirect(`/review/${result.insertId}`);
-    })
+    if (title === '' || content === '' || price === '' || product_name === '' || brand === '' || category === '') {
+        res.send('<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/review/write_review";</script>');
+    } else {
+        db.query(`INSERT INTO review (user_id, title, content, price, product_name, brand, category, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [user_id, title, content, price, product_name, brand, category, photo],
+        function(error, result) {
+            if(error) {
+                res.send(error);
+                throw error;
+            }
+            console.log(result);
+            console.log(req.file);
+            res.redirect(`/review/${result.insertId}`);
+        });
+    }
 })
 
 app.get('/update/:review_id/', function(req, res) {
