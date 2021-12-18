@@ -106,24 +106,10 @@ function main_template(review_list, search_title) {
                     font-weight: bolder;
                     margin: 10px 0px 5px 0px;
                 }
-                #delete_btn {
-                    background-color: white;
-                    color: #0066FF;
-                    padding: 10px 0px 10px 0px;
-                    margin: 5px 0 0 0;
-                    border: none;
-                    cursor: pointer;
-                    max-width: 500px;
-                    width: 80%;
-                    opacity: 0.9;
-                    border-radius: 10px;
-                    float: right;
-                    box-shadow: 3px 3px 3px #b0b0b0;
-                }
                 input[type="submit"] {
                     background-color: #0066FF;
                     color: white;
-                    padding: 10px 0px 10px 0px;
+                    padding: 10px 10px 10px 10px;
                     margin: 3px 0 0 5px;
                     border: none;
                     cursor: pointer;
@@ -202,6 +188,46 @@ function review_detail_template(review_number, title, content, date, price, prod
                     background: rgba(196, 196, 196, 0.15);
                     box-shadow: 3px 3px 3px #b0b0b0;
                 }
+                .comment {
+                    flex-direction: column;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .write_comment {
+                    flex-direction: row;
+                    flex: 1;
+                    display: flex;
+                    margin: 20px 0px 0px 0px;
+                    justify-content: space-between;
+                }
+                textarea {
+                    width: 100%;
+                    max-width: 700px;
+                    border:1px solid #0066FF;
+                    border-radius: 10px;
+                    height: 95px;
+                }
+                #write_comment_btn {
+                    width: 100%;
+                    max-width: 90px;
+                }
+                #comment_user_id {
+                    color: #0066FF;
+                    margin: 5px 0px 0px 0px;
+                }
+                #comment_hr {
+                    border: 1px solid #0066FF;
+                }
+                .comment_date {
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-top: auto;
+                }
+                .comment_list {
+                    margin: 10px 0 0 0;
+                }
                 .info_row {
                     flex-direction: row;
                     justify-content: space-between;
@@ -211,8 +237,8 @@ function review_detail_template(review_number, title, content, date, price, prod
                     width: 100%;
                 }
                 .auth_btn {
-                    flex-direction: column;
-                    justify-content: space-between;
+                    flex-direction: row;
+                    justify-content: flex-start;
                     flex: 1;
                     display: flex;
                     max-width: 800px;
@@ -259,13 +285,13 @@ function review_detail_template(review_number, title, content, date, price, prod
                     margin-top: auto;
                 }
                 #content {
-                    margin: 20px 0 10px 0;
+                    margin: 30px 0 10px 0;
                 }
                 input[type="submit"] {
                     background-color: #0066FF;
                     color: white;
-                    padding: 10px 0px 10px 0px;
-                    margin: 3px 0 0 5px;
+                    padding: 10px 10px 10px 10px;
+                    margin: 0px 0 0 5px;
                     border: none;
                     cursor: pointer;
                     max-width: 50px;
@@ -277,8 +303,8 @@ function review_detail_template(review_number, title, content, date, price, prod
                 #delete_btn {
                     background-color: white;
                     color: #0066FF;
-                    padding: 10px 0px 10px 0px;
-                    margin: 3px 0 0 5px;
+                    padding: 10px 10px 10px 10px;
+                    margin: 0px 0 0 10px;
                     border: none;
                     cursor: pointer;
                     max-width: 50px;
@@ -314,13 +340,18 @@ function review_detail_template(review_number, title, content, date, price, prod
                     ${auth_btn}
                 </div>
             </div>
-            <h3>댓글</h3>
-            <form action="/review/write_comment/" method="post">
-                <input type="hidden" name="review_number" value="${review_number}"">
-                <p><textarea name="comment"></textarea></p>
-                <p><input type="submit" value="댓글 달기"></p>
-            </form>
-            ${comment_list}
+            <div class="comment">
+                <form action="/review/write_comment/" method="post">
+                    <input type="hidden" name="review_number" value="${review_number}"">
+                    <div class="write_comment">
+                        <textarea name="comment"></textarea>
+                        <input type="submit" id="write_comment_btn" value="댓글 달기">
+                    </div>
+                </form>
+                <div class="comment_list">
+                    ${comment_list}
+                </div>
+            </div>
         </div>
         </body>
     </html>
@@ -334,25 +365,199 @@ function review_detail_no_photo_template(review_number, title, content, date, pr
         <head>
             <title>Q&A</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto; 
+                    max-width: 800px;
+                    width: 100%; 
+                }
+                .title_row {
+                    flex-direction: row;
+                    justify-content: space-between;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .review {
+                    flex-direction: column;
+                    flex: 1;
+                    display: flex;
+                    padding: 10px 10px 10px 10px;
+                    background: rgba(196, 196, 196, 0.15);
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                    max-width: 780px;
+                    width: 100%;
+                }
+                .comment {
+                    flex-direction: column;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .write_comment {
+                    flex-direction: row;
+                    flex: 1;
+                    display: flex;
+                    margin: 20px 0px 0px 0px;
+                    justify-content: space-between;
+                }
+                textarea {
+                    width: 100%;
+                    max-width: 700px;
+                    border:1px solid #0066FF;
+                    border-radius: 10px;
+                    height: 95px;
+                }
+                #write_comment_btn {
+                    width: 100%;
+                    max-width: 90px;
+                }
+                #comment_user_id {
+                    color: #0066FF;
+                    margin: 5px 0px 0px 0px;
+                }
+                #comment_hr {
+                    border: 1px solid #0066FF;
+                }
+                .comment_date {
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-top: auto;
+                }
+                .comment_list {
+                    margin: 10px 0 0 0;
+                }
+                .info_row {
+                    flex-direction: row;
+                    justify-content: space-between;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .auth_btn {
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .category_price {
+                    flex-direction: column;
+                    justify-content: space-between;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .name_brand {
+                    flex-direction: column;
+                    justify-content: space-between;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                p {
+                    margin: 5px 0px;
+                }
+                img {
+                    width: 100%;
+                    object-fit: cover;
+                }
+                hr {
+                    width: 100%;
+                }
+                #title, #user {
+                    margin: 0;
+                }
+                #title {
+                    font-size: 20px;
+                    align-self: flex-start;
+                }
+                #user {
+                    align-self: center;
+                }
+                #date {
+                    align-self: flex-end;
+                    margin-top: auto;
+                }
+                #content {
+                    margin: 30px 0 10px 0;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 10px 10px 10px;
+                    margin: 0px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 50px;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                #delete_btn {
+                    background-color: white;
+                    color: #0066FF;
+                    padding: 10px 10px 10px 10px;
+                    margin: 0px 0 0 10px;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 50px;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+            </style>
         </head>
         <body>
-            <h1>${title}</h1>
-            <p>${date}</p>
-            <p>가격: ${price}</p>
-            <p>상품명: ${product_name}</p>
-            <p>브랜드명: ${brand}</p>
-            <p>카테고리: ${category}</p>
-            <p>작성자: ${user_id}</p>
-            <p>${content}</p>
-            ${auth_btn}
-            <hr/>
-            <h3>댓글</h3>
-            <form action="/review/write_comment/" method="post">
-                <input type="hidden" name="review_number" value="${review_number}"">
-                <p><textarea name="comment"></textarea></p>
-                <p><input type="submit" value="댓글 달기"></p>
-            </form>
-            ${comment_list}
+        <div class="container">
+            <div class="review">
+                <div class="title_row">
+                    <p id="title">${title}</p>
+                    <p id="user">작성자: ${user_id}</p>
+                </div>
+                <hr/>
+                <p id="date">${date}</p>
+                <div class="info_row">
+                    <div class="category_price">
+                    <p>카테고리: ${category}</p>
+                    <p>가격: ${price}</p>
+                    </div>
+                    <div class="name_brand">
+                    <p>상품명: ${product_name}</p>
+                    <p>브랜드명: ${brand}</p>
+                    </div>
+                </div>
+                <p id="content">${content}</p>
+                <div class="auth_btn">
+                    ${auth_btn}
+                </div>
+            </div>
+            <div class="comment">
+                <form action="/review/write_comment/" method="post">
+                    <input type="hidden" name="review_number" value="${review_number}"">
+                    <div class="write_comment">
+                        <textarea name="comment"></textarea>
+                        <input type="submit" id="write_comment_btn" value="댓글 달기">
+                    </div>
+                </form>
+                <div class="comment_list">
+                    ${comment_list}
+                </div>
+            </div>
+        </div>
         </body>
     </html>
     `
@@ -734,7 +939,7 @@ app.get('/:review_id', function(req, res) {
             res.send(err);
             throw err;
         }
-        db.query(`SELECT * FROM review_comment WHERE review_number = ?`,
+        db.query(`SELECT * FROM review_comment WHERE review_number = ? ORDER BY date DESC`,
         [review_id],
         function(err2, comments) {
             if (err2) {
@@ -752,24 +957,32 @@ app.get('/:review_id', function(req, res) {
 
                 if (req.session.user_id === comments[i].user_id) {
                     comment_list += `
+                        <p id="comment_user_id">${comments[i].user_id}</p>
+                        <hr id="comment_hr"/>
+                        <div class="comment_date">
+                            <p>${formating_cdate}</p> </span>
+                        </div>
                         <p>${comments[i].content}</p>
-                        <p>${comments[i].user_id}</p>
-                        <p>${formating_cdate}</p>
-                        <form action="/review/comment_update/${comments[i].review_comment_number}" method="post">
-                            <input type="hidden" name="review_number" value="${review_id}">
-                            <p><input type="submit" value="수정"></p>
-                        </form>
-                        <form action="/review/comment_delete/" method="post">
-                            <input type="hidden" name="comment_number" value="${comments[i].review_comment_number}">
-                            <input type="hidden" name="review_number" value="${review_id}">
-                            <p><input type="submit" value="삭제"></p>
-                        </form>
+                        <div class="auth_btn">
+                            <form action="/review/comment_update/${comments[i].review_comment_number}" method="post">
+                                <input type="hidden" name="review_number" value="${review_id}">
+                                <!--<p><input type="submit" value="수정"></p>-->
+                            </form>
+                            <form action="/review/comment_delete/" method="post">
+                                <input type="hidden" name="comment_number" value="${comments[i].review_comment_number}">
+                                <input type="hidden" name="review_number" value="${review_id}">
+                                <p><input id="delete_btn" type="submit" value="삭제"></p>
+                            </form>
+                        </div>
                     `;
                 } else {
                     comment_list += `
-                        <p>${comments[i].content}</p>
-                        <p>${comments[i].user_id}</p>
-                        <p>${formating_cdate}</p>
+                    <p id="comment_user_id">${comments[i].user_id}</p>
+                    <hr id="comment_hr"/>
+                    <div class="comment_date">
+                        <p>${formating_cdate}</p> </span>
+                    </div>
+                    <p>${comments[i].content}</p>
                     `;
                 }
                 
