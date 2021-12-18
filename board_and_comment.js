@@ -183,13 +183,12 @@ function main_template(current,boardlist,search_title){
                     color: black;
                     text-decoration: none;
                     align-self: center;
-                    width: 20%;
+                    width: 40%;
                 }
                 #underline:hover {
                     border-bottom: 3px solid blue;
                     width: auto;
                 }
-    
                 hr {
                     margin: 0px;
                     max-width: 800px;
@@ -618,6 +617,73 @@ function main_template(current,boardlist,search_title){
             .nav_selected{
                 color: blue;
             }
+            .container {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            form {
+                max-width: 500px;
+                width: 100%;
+            }
+            .row {
+                flex: 1;
+                display: flex;
+                max-width: 500px;
+                width: 100%;
+            }
+            label {
+                align-self: center;
+                width: 20%;
+            }
+            p {
+                display: flex;
+                flex: 1;
+                margin: 10px 0px;
+            }
+            input[type=text], #title {
+                width: 100%;
+                padding: 10px;
+                margin: 3px 0 0 20px;
+                display: flex;
+                border: 1px solid #000000;
+                border-radius: 10px;
+                background: none;   
+                align-self: flex-end;
+            }
+            #category {
+                width: 30%;
+                padding: 10px;
+                margin: 3px 0 0 20px;
+                display: flex;
+                border: 1px solid #000000;
+                border-radius: 10px;
+                background: none;   
+                align-self: flex-end;
+            }
+            input[type="submit"] {
+                background-color: #0066FF;
+                color: white;
+                padding: 10px 0px 10px 0px;
+                margin: 3px 0 0 5px;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                opacity: 0.9;
+                border-radius: 10px;
+                box-shadow: 3px 3px 3px #b0b0b0;
+            }
+            textarea {
+                width: 100%;
+                margin: 0px 0px 0px 20px;
+                max-width: 700px;
+                border:1px solid black;
+                border-radius: 10px;
+                height: 95px;
+            }
             </style>
               <meta charset="utf-8">
           </head>
@@ -645,16 +711,26 @@ function main_template(current,boardlist,search_title){
                 ${current}
             </ul>
         </nav>
-              <h1>작성하기</h1>
-              <form action="/board/write/" method="post">
-                  <p><input type"text" name="title" placeholder="title"></p>
-                  <p><select name="category">
-                      <option value="정보 공유">정보 공유</option>
-                      <option value="산책 메이트">산책 메이트</option>
-                  </select></p>
-                  <p><textarea name="content"></textarea></p>
-                  <p><input type="submit" value="등록"></p>
-              </form>
+              <div class="container">
+                <form action="/board/write/" method="post">
+                <div class="row">
+                    <label for="title">제목</label>
+                    <p><input type="text" name="title" placeholder="title"></p>
+                </div>
+                <div class="row">
+                    <label for="category">카테고리</label>
+                    <p><select id="category" name="category">
+                        <option value="정보 공유">정보 공유</option>
+                        <option value="산책 메이트">산책 메이트</option>
+                    </select></p>
+                </div>
+                <div class="row">
+                    <label for="content">내용</label>
+                    <p><textarea id="content" name="content"></textarea></p>
+                </div>
+                <p><input type="submit" value="등록하기"></p>
+                </form>
+                </div>
           </body>
       </html>
       `;
@@ -737,6 +813,73 @@ function main_template(current,boardlist,search_title){
             .nav_selected{
                 color: blue;
             }
+            .container {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            form {
+                max-width: 500px;
+                width: 100%;
+            }
+            .row {
+                flex: 1;
+                display: flex;
+                max-width: 500px;
+                width: 100%;
+            }
+            label {
+                align-self: center;
+                width: 20%;
+            }
+            p {
+                display: flex;
+                flex: 1;
+                margin: 10px 0px;
+            }
+            input[type=text], #title {
+                width: 100%;
+                padding: 10px;
+                margin: 3px 0 0 20px;
+                display: flex;
+                border: 1px solid #000000;
+                border-radius: 10px;
+                background: none;   
+                align-self: flex-end;
+            }
+            #category {
+                width: 30%;
+                padding: 10px;
+                margin: 3px 0 0 20px;
+                display: flex;
+                border: 1px solid #000000;
+                border-radius: 10px;
+                background: none;   
+                align-self: flex-end;
+            }
+            input[type="submit"], button {
+                background-color: #0066FF;
+                color: white;
+                padding: 10px 0px 10px 0px;
+                margin: 3px 0 0 5px;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                opacity: 0.9;
+                border-radius: 10px;
+                box-shadow: 3px 3px 3px #b0b0b0;
+            }
+            textarea {
+                width: 100%;
+                margin: 0px 0px 0px 20px;
+                max-width: 700px;
+                border:1px solid black;
+                border-radius: 10px;
+                height: 95px;
+            }
             </style>
               <meta charset="utf-8">
           </head>
@@ -764,15 +907,28 @@ function main_template(current,boardlist,search_title){
                         ${current}
                     </ul>
                 </nav>
-              <form action="/board/written/${board_id}/update_process/" method="post">
-                  <h1><input type="text" name="title" value="${board_title}"></h1>
-                  <p><textarea name="content">${board_content}</textarea></p>
-                  <p><select name="category" value="${board_category}">
-                    <option value="정보 공유">정보 공유</option>
-                    <option value="산책 메이트">산책 메이트</option>
-                  </select></p>
-                  <p><input type="submit" value="수정"></p>
-              </form>
+              <div class="container">
+                <form action="/board/written/${board_id}/update_process/" method="post">
+                <div class="row">
+                    <label for="title">제목</label>
+                    <p><input type"text" id="title" name="title" value="${board_title}"></p>
+                </div>
+                <p>
+                <div class="row">
+                    <label for="category">카테고리</label>
+                    <p><select id="category" name="category" value="${board_category}">
+                        <option value="정보 공유">정보 공유</option>
+                        <option value="산책 메이트">산책 메이트</option>
+                    </select></p>
+                </div>
+                <div class="row">
+                    <label for="content">내용</label>    
+                    <p><textarea id="content" name="content">${board_content}</textarea></p>
+                </div>
+                <p><input type="submit" value="수정하기"></p>
+                </form>
+                </div>
+
           </body>
       </html>
       `;
@@ -916,7 +1072,7 @@ function main_template(current,boardlist,search_title){
                   if (req.session.user_id === board[0].user_id) {
                       auth_btn = `
                         <p><input type="submit" value="수정" onClick="location.href='/board/written/${board_id}/update/'"></p>
-                        <p><input type="submit" value="삭제" onClick="location.href='/board/written/${board_id}/delete/'"></p>   
+                        <p><input type="submit" value="삭제" id="delete_btn" onClick="location.href='/board/written/${board_id}/delete/'"></p>   
                       `
                   }
   
@@ -951,7 +1107,19 @@ function main_template(current,boardlist,search_title){
         
             if (Object.keys(boards).length > 0) {
                 for (var i = 0; i < Object.keys(boards).length; i++) {
-                    board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}</a><p>`;
+                    const qdate = String(boards[0].date).split(" ");
+                    var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
+
+                    board_list += `
+                        <div class="board_row">
+                            <a id="underline" href="/board/written/${boards[i].board_number}">[ ${boards[i].category} ] ${boards[i].title}</a>
+                            <div class="auth_date_row">
+                                <p class="user_id">${boards[i].user_id}<p>
+                                <p>${formating_qdate}</p>
+                            </div>
+                        </div>
+                        <hr/>
+                        `;
                 }
             } else {
                 board_list = `<p> 검색 결과가 없습니다. </p>`
@@ -979,8 +1147,13 @@ function main_template(current,boardlist,search_title){
               res.send(error);
               throw error;
           }
+          /*else if (content1.length < 1) {
+            res.send('<script type="text/javascript">alert("댓글을 입력해주세요.");location.href=/board/written/${board_id}";</script>');
+          }*/
+          else {
           console.log(comments);
           res.redirect(`/board/written/${board_id}`);
+          }
       })
   });
   
