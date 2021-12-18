@@ -517,9 +517,101 @@ function care_service_template(care_service_list) {
         <head>
             <title>care service</title>
             <meta charset="utf-8">
+            <style>
+            form {
+                display: flex;
+                flex-direction: column;
+                max-width: 1000px;
+                width: 100%;
+                margin-top: 10%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .containers {
+                width: 100%;
+            }
+
+            .containers {
+                display: flex;
+                flex-direction: row;
+                float: right;
+                justify-content: space-between;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+                margin-left: 10px;
+            }
+
+            .container2 {
+                width: 20%;
+                display: flex;
+                flex-direction: row;
+            }
+    
+            #name, #category {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
+
+            #date, #account {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
+
+            .a {
+                background-color: #0066FF;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 40%;
+                height: 25%;
+                border-radius: 15px;
+                box-shadow: 3px 3px grey;
+                margin-top: 40%;
+                text-aglin: center;
+            }
+
+            .b {
+                background-color: white;
+                color: #0066FF;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 40%;
+                height: 25%;
+                border-radius: 15px;
+                box-shadow: 3px 3px grey;
+                margin-left: 5%;
+                margin-top: 40%;
+                text-aglin: center;
+            }
+
+            button:hover {
+                opacity: 0.8;
+            }
+            </style>
         </head>
-        <body> 
-        ${care_service_list}
+        <body>
+        <form>
+            <h3>케어서비스 정보 조회</h3>
+            ${care_service_list}
+        </form>
         </body>
     </html>
     `;
@@ -532,15 +624,62 @@ function care_service_update_template(care_service_name, care_service_category, 
         <head>
             <title>care service update</title>
             <meta charset="utf-8">
+            <style>
+            form {
+                display: flex;
+                flex-direction: column;
+                max-width: 500px;
+                width: 100%;
+                margin-top: 10%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            input[type=date] {
+                width: 60%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
+
+            textarea[name=note] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+                text-aglin: center;
+            }
+
+            button {
+                background-color: #0066FF;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                border-radius: 15px;
+            }
+        
+            button:hover {
+                opacity: 0.8;
+            }
+            </style>
         </head>
         <body>
-            <p>${care_service_name}</p>
-            <p>${care_service_category}</p>
-
             <form action="/mypage/care_service_information/update_process/?id=${care_service_number}" method="post">
-            <p><input type="date" name="mail_date" min="1990-01-01" max="2022-12-31" value=${care_service_date}></p>
-            <p><textarea name="note" value=${care_service_account}></textarea></p>
-            <p><input type="submit" value="수정"></p>
+                <h1>케어서비스 정보 수정</h1>
+                <p>${care_service_name}</p>
+                <p>${care_service_category}</p>
+                <p><input type="date" name="mail_date" min="1990-01-01" max="2022-12-31" value=${care_service_date}></p>
+                <p><textarea name="note" value=${care_service_account}></textarea></p>
+                <button type="submit">수정</button>
             </form>
         </body>
     </html>
@@ -923,7 +1062,7 @@ app.post('/user_information/nickname_update/', function(request,response){
 app.get('/care_service_information/', function(req, res) {
     const id = req.session.user_id;
     var care_service_list = ``;
-    var care_service_date_list = ``;
+    var date_list_display = ``;
 
     db.query(`SELECT * FROM care_service WHERE owner_id = ?`,[id],
     function(err, care_service){
@@ -937,21 +1076,33 @@ app.get('/care_service_information/', function(req, res) {
                         for (var j=0; j<Object.keys(care_service_date).length; j++) {
                             if (care_service_date[j].mail_number == care_service[i].mail_number)
                             {
-                                care_service_date_list += care_service_date[j].mail_date;
-                                care_service_date_list += '<br/>';
+                                const rdate = String(care_service_date[j].mail_date).split(" ");
+                                var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2];
+
+                                date_list_display += formating_rdate;
+                                date_list_display += '<br/>';
                             }
                         }
 
                         care_service_list += `
-                        <p>${care_service[i].name}</p>
-                        <p>${care_service[i].mail_category}</p>
-                        <p>${care_service_date_list}</p>
-                        <p>${care_service[i].account}</p>
-                        <p><input type="submit" value="수정" onClick="location.href='/mypage/care_service_information/update/?id=${care_service[i].mail_number}'">
-                        <input type="submit" value="삭제" onClick="location.href='/mypage/care_service_information/delete/?id=${care_service[i].mail_number}'"></p>       
+                        <div class="hrline">
+                        <div class="containers">
+                        <div class="container">
+                        <p><label for="name">이름: ${care_service[i].name}</label></p>
+                        <p><label for="category">카테고리: ${care_service[i].mail_category}</label></p>
+                        <p><label for="date">날짜: ${date_list_display}</label></p>
+                        <p><label for="account">특이사항: ${care_service[i].account}</label></p>
+                        </div>
+                        <div class="container2">
+                        <button class="button a" type="button" onClick="location.href='/mypage/care_service_information/update/?id=${care_service[i].mail_number}';">수정</button>
+                        <button class="button b" type="button" onClick="location.href='/mypage/care_service_information/delete/?id=${care_service[i].mail_number}';">삭제</button>
+                        </div>
+                        </div>
+                        <hr color="black" size="2">
+                        </div>
                         `;
 
-                        care_service_date_list = ``;
+                        date_list_display = ``;
                     }
                     res.end(care_service_template(care_service_list));
                 }
@@ -1027,7 +1178,7 @@ app.get('/care_service_information/delete/', function(req, res) {
             throw err;
         }
  
-        res.redirect('/mypage/');
+        res.redirect('/mypage/care_service_information/');
     });
 });
 
