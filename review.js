@@ -1003,7 +1003,18 @@ app.get('/search', function(req, res) {
 
         if (reviews.length > 0) {
             for (var i = 0; i < reviews.length; i++) {
-                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a></p>`;
+                const rdate = String(reviews[i].date).split(" ");
+                var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
+                review_list += 
+                    `<div class="review_row">
+                        <a href="/review/${reviews[i].review_number}">${reviews[i].title}</a>
+                        <div class="auth_date_row">
+                            <p class="user_id">${reviews[i].user_id}<p>
+                            <p>${formating_rdate}</p>
+                        </div>
+                    </div>
+                    <hr/>
+                    `;
             }
         } else {
             reivew_list = `<p> 검색 결과가 없습니다. </p>`;
