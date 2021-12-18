@@ -25,7 +25,7 @@ function main_template(review_list, search_title) {
     <!doctype html>
     <html>
         <head>
-            <title>Q&A</title>
+            <title>리뷰</title>
             <meta charset="utf-8">
             <style>
                 .container {
@@ -159,7 +159,7 @@ function review_detail_template(review_number, title, content, date, price, prod
     <!doctype html>
     <html>
         <head>
-            <title>Q&A</title>
+            <title>리뷰 보기</title>
             <meta charset="utf-8">
             <style>
                 .container {
@@ -365,7 +365,7 @@ function review_detail_no_photo_template(review_number, title, content, date, pr
     <!doctype html>
     <html>
         <head>
-            <title>Q&A</title>
+            <title>리뷰 보기</title>
             <meta charset="utf-8">
             <style>
                 .container {
@@ -696,7 +696,7 @@ function review_update_template(review_id, title, category, content, price, prod
     <!doctype html>
     <html>
         <head>
-            <title>리뷰 작성하기</title>
+            <title>리뷰 수정하기</title>
             <meta charset="utf-8">
             <script>
                 function remove_img() {
@@ -847,7 +847,7 @@ function review_update_no_photo_template(review_id, title, category, content, pr
     <!doctype html>
     <html>
         <head>
-            <title>리뷰 작성하기</title>
+            <title>리뷰 수정하기</title>
             <meta charset="utf-8">
             <style>
                 .container {
@@ -1017,7 +1017,7 @@ app.get('/search', function(req, res) {
                     `;
             }
         } else {
-            reivew_list = `<p> 검색 결과가 없습니다. </p>`;
+            review_list = `<p> 검색 결과가 없습니다. </p>`;
         }
 
         res.send(main_template(review_list));
@@ -1299,16 +1299,19 @@ app.post('/write_comment/', function(req, res) {
     const user_id = req.session.user_id;
 
     if (req.session.loggedin) {
-        db.query(`INSERT INTO review_comment (review_number, content, user_id) VALUES (?, ?, ?)`,
-        [review_number, content, user_id],
-        function(err, comment) {
-            if (err) {
-                res.send(err);
-                throw err;
-            }
-            console.log(comment);
-            res.redirect(`/review/${review_number}`);
-        });
+        if (content === '') res.send(`<script type="text/javascript">alert("내용을 입력해주세요.");location.href="/review/${review_number}";</script>`);
+        else {
+            db.query(`INSERT INTO review_comment (review_number, content, user_id) VALUES (?, ?, ?)`,
+            [review_number, content, user_id],
+            function(err, comment) {
+                if (err) {
+                    res.send(err);
+                    throw err;
+                }
+                console.log(comment);
+                res.redirect(`/review/${review_number}`);
+            });
+        }   
     } else {
         res.send('<script type="text/javascript">alert("로그인이 필요한 서비스입니다.");location.href="/login";</script>')
     }

@@ -16,19 +16,133 @@ function main_template(question_list, search_title, search_content) {
         <head>
             <title>Q&A</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                .row {
+                    flex-direction: row;
+                    flex: 1;
+                    justify-content: center;
+                    display: flex;
+                    max-width: 500px;
+                    width: 100%;
+                }
+                label {
+                    align-self: center;
+                    width: 20%;
+                    font-size: 15px;
+                }
+                #search_title, #search_content {
+                    width: 80%;
+                    padding: 10px;
+                    margin: 3px 0 0 0;
+                    display: inline-block;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 10px 10px 10px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 20%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    float: right;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                button {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 5px 0 0 0;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 500px;
+                    width: 80%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    float: right;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                .question_list {
+                    flex-direction: column;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                #list_txt {
+                    align-self: start;
+                    font-weight: bolder;
+                    margin: 10px 0px 5px 0px;
+                }
+                .question_row {
+                    flex-direction: row;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .auth_date_row {
+                    flex-direction: row;
+                    flex: 1;
+                    display: flex;
+                    justify-content: right;;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .user_id {
+                    align-self: center;
+                    margin: 0px 20px 0px 0px;
+                }
+                a {
+                    color: black;
+                    text-decoration: none;
+                    align-self: center;
+                    width: 50%;
+                }
+                a:hover {
+                    border-bottom: 3px solid blue;
+                    width: auto;
+                }
+                hr {
+                    margin: 0px;
+                    max-width: 800px;
+                    width: 100%;
+                }
+            </style>
         </head>
         <body>
+        <div class="container">
             <h1>Q&A</h1>
-            <form action="/qna/search?q_title=${search_title}" method="get">
-                <p><input type="text" name="search_title" placeholder="검색어를 입력하세요.">
+            <form class="row" action="/qna/search?q_title=${search_title}" method="get">
+                <label for="search_title">질문 검색</label>
+                <input type="text" id="search_title" name="search_title" placeholder="질문 검색 내용을 입력하세요.">
                 <input type="submit" value="검색"></p>
             </form>
-            <form action="/qna/search?a_content=${search_content}" method="get">
-                <p><input type="text" name="search_content" placeholder="답변 검색 내용을 입력하세요.">
+            <form class="row" action="/qna/search?a_content=${search_content}" method="get">
+                <label for="search_content">답변 검색</label>
+                <input type="text" id="search_content" name="search_content" placeholder="답변 검색 내용을 입력하세요.">
                 <input type="submit" value="검색"></p>
             </form>
-            <a href="/qna/write_question/">질문하기</a>
-            ${question_list}
+            <button type="button" onclick="location.href='/qna/write_question/'">질문하기</button>
+            <div class="question_list">
+                <p id="list_txt">질문 목록</p>
+                ${question_list}
+            </div>
+        </div>
         </body>
     </html>
     `;
@@ -40,24 +154,161 @@ function detail_template(question_id, question_title, question_content, question
     <!doctype html>
     <html>
         <head>
-            <title>create question</title>
+            <title>질문 보기</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto; 
+                    max-width: 800px;
+                    width: 100%; 
+                }
+                hr {
+                    width: 100%;
+                }
+                p {
+                    margin: 5px 0px;
+                }
+                .question {
+                    flex-direction: column;
+                    flex: 1;
+                    display: flex;
+                    padding: 10px 10px 10px 10px;
+                    background: rgba(196, 196, 196, 0.15);
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                    max-width: 780px;
+                    width: 100%;
+                }
+                .title_row {
+                    flex-direction: row;
+                    justify-content: space-between;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                #title {
+                    font-size: 20px;
+                    align-self: flex-start;
+                }
+                #user {
+                    align-self: center;
+                }
+                #date {
+                    align-self: flex-end;
+                    margin-top: auto;
+                }
+                #content {
+                    margin: 30px 0 10px 0;
+                }
+                .auth_btn {
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .answer {
+                    flex-direction: column;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .write_answer {
+                    flex-direction: row;
+                    flex: 1;
+                    display: flex;
+                    margin: 20px 0px 0px 0px;
+                    justify-content: space-between;
+                }
+                textarea {
+                    width: 100%;
+                    max-width: 700px;
+                    border:1px solid #0066FF;
+                    border-radius: 10px;
+                    height: 95px;
+                }
+                #write_answer_btn {
+                    width: 100%;
+                    max-width: 90px;
+                }
+                .answer_list {
+                    margin: 10px 0 0 0;
+                }
+                #answer_user_id, #answer_category {
+                    color: #0066FF;
+                    margin: 5px 0px 0px 0px;
+                }
+                .answer_date {
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-top: auto;
+                }
+                #answer_hr {
+                    border: 1px solid #0066FF;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 10px 10px 10px;
+                    margin: 0px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 50px;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                #delete_btn {
+                    background-color: white;
+                    color: #0066FF;
+                    padding: 10px 10px 10px 10px;
+                    margin: 0px 0 0 10px;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 50px;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+            </style>
         </head>
         <body>
-            <h1>${question_title}</h1>
-            <p>${question_category}</p>
-            <p>${question_content}</p>
-            <p>${question_user}</p>
-            <p>${question_date}</p>
-            ${auth_btn}
-            <hr/>
-            <h3>답변</h3>
-            <form action="/qna/write_answer/" method="post">
-                <input type="hidden" name="question_id" value="${question_id}">
-                <p><textarea name="content"></textarea></p>
-                <p><input type="submit" value="답변 등록하기"></p>
-            </form>
-            ${answer}
+        <div class="container">
+            <div class="question">
+                <div class="title_row">
+                    <p id="title">${question_title}</p>
+                    <p id="user">작성자: ${question_user}</p>
+                </div>
+                <hr/>
+                <p id="date">${question_date}</p>
+                <p id="category">종: ${question_category}</p>
+                <p id="content">${question_content}</p>
+                <div class="auth_btn">
+                    ${auth_btn}
+                </div>
+            </div>
+            <div class="answer">
+                <form action="/qna/write_answer/" method="post">
+                    <input type="hidden" name="question_id" value="${question_id}">
+                    <div class="write_answer">
+                        <textarea name="content"></textarea>
+                        <input type="submit" id="write_answer_btn" value="답변하기">
+                    </div>
+                </form>
+                <div class="answer_list">
+                    ${answer}
+                </div>
+            </div>
+        </div>
         </body>
     </html>
     `
@@ -68,27 +319,106 @@ function question_template() {
     <!doctype html>
     <html>
         <head>
-            <title>create question</title>
+            <title>질문 작성하기</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                form {
+                    max-width: 500px;
+                    width: 100%;
+                }
+                .row {
+                    flex: 1;
+                    display: flex;
+                    max-width: 500px;
+                    width: 100%;
+                }
+                label {
+                    align-self: center;
+                    width: 20%;
+                }
+                p {
+                    display: flex;
+                    flex: 1;
+                    margin: 10px 0px;
+                }
+                input[type=text], #title {
+                    width: 100%;
+                    padding: 10px;
+                    margin: 3px 0 0 20px;
+                    display: flex;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;   
+                    align-self: flex-end;
+                }
+                #category {
+                    width: 30%;
+                    padding: 10px;
+                    margin: 3px 0 0 20px;
+                    display: flex;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;   
+                    align-self: flex-end;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                textarea {
+                    width: 100%;
+                    margin: 0px 0px 0px 20px;
+                    max-width: 700px;
+                    border:1px solid black;
+                    border-radius: 10px;
+                    height: 95px;
+                }
+            </style>
         </head>
         <body>
-            <h1>질문하기</h1>
-            <form action="/qna/write_question/" method="post">
-                <p><input type"text" name="title" placeholder="title"></p>
-                <p><select name="category">
-                    <option value="개">개</option>
-                    <option value="고양이">고양이</option>
-                    <option value="토끼">토끼</option>
-                    <option value="햄스터">햄스터</option>
-                    <option value="앵무새">앵무새</option>
-                    <option value="기니피그">기니피그</option>
-                    <option value="페럿">페럿</option>
-                    <option value="고슴도치">고슴도치</option>
-                    <option value="기타">기타</option>
-                </select></p>
-                <p><textarea name="content"></textarea></p>
-                <p><input type="submit" value="질문 등록하기"></p>
-            </form>
+            <div class="container">
+                <form action="/qna/write_question/" method="post">
+                    <div class="row">
+                        <label for="title">제목</label>
+                        <p><input type"text" name="title" id="title" placeholder="제목"></p>
+                    </div>
+                    <div class="row">
+                        <label for="category">종</label>
+                        <p><select name="category" id="category">
+                            <option value="개">개</option>
+                            <option value="고양이">고양이</option>
+                            <option value="토끼">토끼</option>
+                            <option value="햄스터">햄스터</option>
+                            <option value="앵무새">앵무새</option>
+                            <option value="기니피그">기니피그</option>
+                            <option value="페럿">페럿</option>
+                            <option value="고슴도치">고슴도치</option>
+                            <option value="기타">기타</option>
+                        </select></p>
+                    </div>
+                    <div class="row">
+                        <label for="content">내용</label>
+                        <p><textarea name="content" id="content"></textarea></p>
+                    </div>
+                    <p><input type="submit" value="질문 등록하기"></p>
+                </form>
+            </body>
         </body>
     </html>
     `;
@@ -99,26 +429,98 @@ function question_update_template(question_id, question_title, question_content,
     <!doctype html>
     <html>
         <head>
-            <title>create question</title>
+            <title>질문 수정하기</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                form {
+                    max-width: 500px;
+                    width: 100%;
+                }
+                .row {
+                    flex: 1;
+                    display: flex;
+                    max-width: 500px;
+                    width: 100%;
+                }
+                #category {
+                    width: 30%;
+                    padding: 10px;
+                    margin: 3px 0 0 20px;
+                    display: flex;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;   
+                    align-self: flex-end;
+                }
+                label {
+                    align-self: center;
+                    width: 20%;
+                }
+                p {
+                    display: flex;
+                    flex: 1;
+                    margin: 10px 0px;
+                }
+                input[type=text], #title {
+                    width: 100%;
+                    padding: 10px;
+                    margin: 3px 0 0 20px;
+                    display: flex;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;   
+                    align-self: flex-end;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                textarea {
+                    width: 100%;
+                    margin: 0px 0px 0px 20px;
+                    max-width: 700px;
+                    border:1px solid black;
+                    border-radius: 10px;
+                    height: 95px;
+                }
+            </style>
         </head>
         <body>
-            <form action="/qna/question/${question_id}/update_process/" method="post">
-                <h1><input type="text" name="title" value="${question_title}"></h1>
-                <p><textarea name="content">${question_content}</textarea></p>
-                <p><select name="category" value="${question_category}">
-                    <option value="개">개</option>
-                    <option value="고양이">고양이</option>
-                    <option value="토끼">토끼</option>
-                    <option value="햄스터">햄스터</option>
-                    <option value="앵무새">앵무새</option>
-                    <option value="기니피그">기니피그</option>
-                    <option value="페럿">페럿</option>
-                    <option value="고슴도치">고슴도치</option>
-                    <option value="기타">기타</option>
-                </select></p>
+            <div class="container">
+                <form action="/qna/question/${question_id}/update_process/" method="post">
+                <div class="row">
+                        <label for="title">제목</label>    
+                    <p><input type="text" id="title" name="title" value="${question_title}"></p>
+                </div>
+                <div class="row">
+                    <label for="category">종</label>
+                        <p><select id="category" name="category">
+                            ${question_category}
+                        </select></p>
+                </div>
+                <div class="row">
+                    <label for="content">내용</label>
+                    <p><textarea id="content" name="content">${question_content}</textarea></p>
+                </div>
                 <p><input type="submit" value="수정"></p>
-            </form>
+                </form>
+            </div>
         </body>
     </html>
     `;
@@ -129,7 +531,18 @@ app.get('/', function(req, res) {
     db.query(`SELECT * FROM question ORDER BY date DESC`, function(error, questions) {
         if (Object.keys(questions).length > 0) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
-                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+                const qdate = String(questions[0].date).split(" ");
+                var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
+                question_list += 
+                `<div class="question_row">
+                    <a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a>
+                    <div class="auth_date_row">
+                        <p class="user_id">${questions[i].user_id}<p>
+                        <p>${formating_qdate}</p>
+                    </div>
+                </div>
+                <hr/>
+                `;
             }
         } else {
             question_list = `아직 올라온 질문이 없습니다.`;
@@ -139,7 +552,11 @@ app.get('/', function(req, res) {
 });
 
 app.get('/write_question/', function(req, res) {
-    res.end(question_template());
+    if(req.session.loggedin) {
+        res.end(question_template());
+    } else {
+        res.send('<script type="text/javascript">alert("로그인이 필요한 서비스입니다.");location.href="/login";</script>')
+    }
 })
 
 app.post('/write_question/', function(req, res) {
@@ -149,15 +566,18 @@ app.post('/write_question/', function(req, res) {
     const category = body.category;
     const user = req.session.user_id;
     
-    db.query(`INSERT INTO question (user_id, title, content, category) VALUES(?, ?, ?, ?)`,
-    [user, title, content, category],
-    function(error, result) {
-        if (error) {
-            res.send(error);
-            throw error;
-        }
-        res.redirect('/qna');
-    })
+    if (title === '' || content === '' || category === '') res.send(`<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/qna/write_question/";</script>`);
+    else {
+        db.query(`INSERT INTO question (user_id, title, content, category) VALUES(?, ?, ?, ?)`,
+        [user, title, content, category],
+        function(error, result) {
+            if (error) {
+                res.send(error);
+                throw error;
+            }
+            res.redirect(`/qna/question/${result.insertId}`);
+        });
+    }
 })
 
 app.get('/question/:question_id', function(req, res) {
@@ -187,20 +607,34 @@ app.get('/question/:question_id', function(req, res) {
 
                     if (req.session.user_id === answers[i].user_id) {
                         answer_list += `
+                            <div class="title_row">
+                                <p id="answer_user_id">${answers[i].user_id}</p>
+                                <p id="answer_category">${answers[i].category}</p>
+                            </div>
+                            <hr id="answer_hr"/>
+                            <div class="answer_date">
+                                <p>${formating_adate}</p>
+                            </div>
                             <p>${answers[i].content}</p>
-                            <p>${answers[i].user_id}</p>
-                            <p>${formating_adate}</p>
-                            <p>${answers[i].category}</p>
-                            <p><input type="submit" value="삭제" onClick="location.href='answer/${answers[i].answer_number}/delete/'"></p>
-                            <hr/>
+                            <div class="auth_btn">
+                                <form action="/qna/answer_delete/" method="post">
+                                    <input type="hidden" name="question_number" value="${question_id}">
+                                    <input type="hidden" name="answer_number" value="${answers[i].answer_number}">
+                                    <input type="submit" value="삭제" id="delete_btn"></p>
+                                </form>
+                            </div>
                         `
                     } else {
                         answer_list += `
-                            <p>${answers[i].content}</p>
-                            <p>${answers[i].user_id}</p>
+                        <div class="title_row">
+                        <p id="answer_user_id">${answers[i].user_id}</p>
+                        <p id="answer_category">${answers[i].category}</p>
+                        </div>
+                        <hr id="answer_hr"/>
+                        <div class="answer_date">
                             <p>${formating_adate}</p>
-                            <p>${answers[i].category}</p>
-                            <hr/>
+                        </div>
+                        <p>${answers[i].content}</p>
                         `
                     }
                 }
@@ -212,8 +646,11 @@ app.get('/question/:question_id', function(req, res) {
                 if (req.session.user_id === question[0].user_id) {
                     auth_btn = `
                         <p><input type="submit" value="수정" onClick="location.href='/qna/question/${question_id}/update/'"></p>
-                        <p><input type="submit" value="삭제" onClick="location.href='/qna/question/${question_id}/delete/'"></p>
-                    `
+                        <form action="/qna/delete/" method="post">
+                            <input type="hidden" name="question_number" value="${question_id}">
+                            <p><input type="submit" value="삭제" id="delete_btn"></p>
+                        </form>
+                        `;
                 }
 
                 res.send(detail_template(question_id, question[0].title, question[0].content, question[0].user_id, formating_qdate, question[0].category, answer_list, auth_btn));
@@ -242,7 +679,18 @@ app.get('/search/', function(req, res) {
     
             if (Object.keys(questions).length > 0) {
                 for (var i = 0; i < Object.keys(questions).length; i++) {
-                    question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+                    const qdate = String(questions[0].date).split(" ");
+                    var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
+                    question_list += 
+                    `<div class="question_row">
+                        <a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a>
+                        <div class="auth_date_row">
+                            <p class="user_id">${questions[i].user_id}<p>
+                            <p>${formating_qdate}</p>
+                        </div>
+                    </div>
+                    <hr/>
+                    `;
                 }
             } else {
                 question_list = `<p> 검색 결과가 없습니다. </p>`
@@ -258,7 +706,18 @@ app.get('/search/', function(req, res) {
         function(err, answers) {
             if (Object.keys(answers).length > 0) {
                 for (var i = 0; i < Object.keys(answers).length; i++) {
-                    question_list += `<p><a href="/qna/question/${answers[i].question_number}">${answers[i].content}</a><p>`;
+                    const qdate = String(answers[0].date).split(" ");
+                    var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
+                    question_list += 
+                    `<div class="question_row">
+                        <a href="/qna/question/${answers[i].question_number}">${answers[i].content}</a>
+                        <div class="auth_date_row">
+                            <p class="user_id">${answers[i].user_id}<p>
+                            <p>${formating_qdate}</p>
+                        </div>
+                    </div>
+                    <hr/>
+                `;
                 }
             } else {
                 question_list = `<p> 검색 결과가 없습니다. </p>`
@@ -280,31 +739,39 @@ app.post('/write_answer/', function(req, res) {
     const user = req.session.user_id;
     var category = "일반인";
 
-    db.query(`SELECT * FROM user WHERE id = ?`, 
-    [user],
-    function(err, result) {
-        if (!result[0].is_normal) {
-            category = "전문가";
-        }
+    if (req.session.loggedin) {
+        if (content === '') res.send(`<script type="text/javascript">alert("내용을 입력해주세요.");location.href="/qna/question/${question_id}";</script>`);
+        else {
+            db.query(`SELECT * FROM user WHERE id = ?`, 
+            [user],
+            function(err, result) {
+                if (!result[0].is_normal) {
+                    category = "전문가";
+                }
 
-        db.query(`INSERT INTO answer (user_id, content, question_number, category) VALUES (?, ?, ?, ?)`,
-        [user, content, question_id, category],
-        function(error, answer) {
-            if (error) {
-                res.send(error);
-                throw error;
-            }
-            console.log(answer);
-            res.redirect(`/qna/question/${question_id}`);
-        })
-    })
+                db.query(`INSERT INTO answer (user_id, content, question_number, category) VALUES (?, ?, ?, ?)`,
+                [user, content, question_id, category],
+                function(error, answer) {
+                    if (error) {
+                        res.send(error);
+                        throw error;
+                    }
+                    console.log(answer);
+                    res.redirect(`/qna/question/${question_id}`);
+                })
+            });
+        }
+    } else {
+        res.send('<script type="text/javascript">alert("로그인이 필요한 서비스입니다.");location.href="/login";</script>')
+    }
 
     console.log(category);
 });
 
 app.get('/question/:question_id/update/', function(req, res) {
     const question_id = req.params.question_id;
-    console.log(question_id);
+    const category = ['개', '고양이', '토끼', '햄스터', '앵무새', '기니피그', '패럿', '고슴도치', '기타'];
+    let category_list = '';
 
     db.query(`SELECT * FROM question WHERE question_number = ?`,
     [question_id],
@@ -313,8 +780,12 @@ app.get('/question/:question_id/update/', function(req, res) {
             res.send(err);
             throw err;
         }
-        console.log(question);
-        res.send(question_update_template(question_id, question[0].title, question[0].content, question[0].category));
+        for (let i = 0; i < category.length; i++) {
+            let selected = '';
+            if (category[i] === question[0].category) selected = 'selected';
+            category_list += `<option value="${category[i]}" ${selected}>${category[i]}</option>`
+        }
+        res.send(question_update_template(question_id, question[0].title, question[0].content, category_list));
     })
 });
 
@@ -338,8 +809,10 @@ app.post('/question/:question_id/update_process/', function(req, res) {
     })
 });
 
-app.get('/question/:question_id/delete/', function(req, res) {
-    const question_id = req.params.question_id;
+app.post('/delete/', function(req, res) {
+    const body = req.body;
+    const question_id = body.question_number;
+    console.log(question_id);
 
     db.query(`DELETE FROM question WHERE question_number = ?`,
     [question_id],
@@ -353,8 +826,10 @@ app.get('/question/:question_id/delete/', function(req, res) {
     });
 });
 
-app.get('/question/answer/:answer_id/delete/', function(req, res) {
-    const answer_id = req.params.answer_id;
+app.post('/answer_delete/', function(req, res) {
+    const body = req.body;
+    const question_id = body.question_number;
+    const answer_id = body.answer_number;
 
     db.query(`DELETE FROM answer WHERE answer_number = ?`,
     [answer_id],
@@ -365,7 +840,7 @@ app.get('/question/answer/:answer_id/delete/', function(req, res) {
         }
         console.log(result);
 
-        res.redirect('/qna/');
+        res.redirect(`/qna/question/${question_id}`);
     });
 });
 
