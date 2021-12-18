@@ -16,19 +16,133 @@ function main_template(question_list, search_title, search_content) {
         <head>
             <title>Q&A</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                .row {
+                    flex-direction: row;
+                    flex: 1;
+                    justify-content: center;
+                    display: flex;
+                    max-width: 500px;
+                    width: 100%;
+                }
+                label {
+                    align-self: center;
+                    width: 20%;
+                    font-size: 15px;
+                }
+                #search_title, #search_content {
+                    width: 80%;
+                    padding: 10px;
+                    margin: 3px 0 0 0;
+                    display: inline-block;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 10px 10px 10px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 20%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    float: right;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                button {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 5px 0 0 0;
+                    border: none;
+                    cursor: pointer;
+                    max-width: 500px;
+                    width: 80%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    float: right;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                .question_list {
+                    flex-direction: column;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                #list_txt {
+                    align-self: start;
+                    font-weight: bolder;
+                    margin: 10px 0px 5px 0px;
+                }
+                .question_row {
+                    flex-direction: row;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .auth_date_row {
+                    flex-direction: row;
+                    flex: 1;
+                    display: flex;
+                    justify-content: right;;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .user_id {
+                    align-self: center;
+                    margin: 0px 20px 0px 0px;
+                }
+                a {
+                    color: black;
+                    text-decoration: none;
+                    align-self: center;
+                    width: 20%;
+                }
+                a:hover {
+                    border-bottom: 3px solid blue;
+                    width: auto;
+                }
+                hr {
+                    margin: 0px;
+                    max-width: 800px;
+                    width: 100%;
+                }
+            </style>
         </head>
         <body>
+        <div class="container">
             <h1>Q&A</h1>
-            <form action="/qna/search?q_title=${search_title}" method="get">
-                <p><input type="text" name="search_title" placeholder="검색어를 입력하세요.">
+            <form class="row" action="/qna/search?q_title=${search_title}" method="get">
+                <label for="search_title">질문 검색</label>
+                <input type="text" id="search_title" name="search_title" placeholder="질문 검색 내용을 입력하세요.">
                 <input type="submit" value="검색"></p>
             </form>
-            <form action="/qna/search?a_content=${search_content}" method="get">
-                <p><input type="text" name="search_content" placeholder="답변 검색 내용을 입력하세요.">
+            <form class="row" action="/qna/search?a_content=${search_content}" method="get">
+                <label for="search_content">답변 검색</label>
+                <input type="text" id="search_content" name="search_content" placeholder="답변 검색 내용을 입력하세요.">
                 <input type="submit" value="검색"></p>
             </form>
-            <a href="/qna/write_question/">질문하기</a>
-            ${question_list}
+            <button type="button" onclick="location.href='/qna/write_question/'">질문하기</button>
+            <div class="question_list">
+                <p id="list_txt">질문 목록</p>
+                ${question_list}
+            </div>
+        </div>
         </body>
     </html>
     `;
@@ -129,7 +243,18 @@ app.get('/', function(req, res) {
     db.query(`SELECT * FROM question ORDER BY date DESC`, function(error, questions) {
         if (Object.keys(questions).length > 0) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
-                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+                const qdate = String(questions[0].date).split(" ");
+                var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
+                question_list += 
+                `<div class="question_row">
+                    <a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a>
+                    <div class="auth_date_row">
+                        <p class="user_id">${questions[i].user_id}<p>
+                        <p>${formating_qdate}</p>
+                    </div>
+                </div>
+                <hr/>
+                `;
             }
         } else {
             question_list = `아직 올라온 질문이 없습니다.`;
