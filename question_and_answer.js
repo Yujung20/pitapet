@@ -494,15 +494,18 @@ app.post('/write_question/', function(req, res) {
     const category = body.category;
     const user = req.session.user_id;
     
-    db.query(`INSERT INTO question (user_id, title, content, category) VALUES(?, ?, ?, ?)`,
-    [user, title, content, category],
-    function(error, result) {
-        if (error) {
-            res.send(error);
-            throw error;
-        }
-        res.redirect('/qna');
-    })
+    if (title === '' || content === '' || category === '') res.send(`<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/qna/write_question/";</script>`);
+    else {
+        db.query(`INSERT INTO question (user_id, title, content, category) VALUES(?, ?, ?, ?)`,
+        [user, title, content, category],
+        function(error, result) {
+            if (error) {
+                res.send(error);
+                throw error;
+            }
+            res.redirect(`/qna/question/${result.insertId}`);
+        });
+    }
 })
 
 app.get('/question/:question_id', function(req, res) {
