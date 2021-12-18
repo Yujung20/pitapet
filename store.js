@@ -85,6 +85,97 @@ function main_template(current,marker_list,info_list,search_name){
             .nav_selected{
                 color: blue;
             }
+            .container{
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .row {
+                flex-direction: row;
+                flex: 1;
+                justify-content: center;
+                display: flex;
+                max-width: 500px;
+                width: 100%;
+            }
+            .store_row {
+                flex-direction: row;
+                flex: 1;
+                justify-content: space-between;
+                display: flex;
+                max-width: 1000px;
+                width: 100%;
+            }
+            .pet_row{
+                flex-direction: row;
+                    flex: 1;
+                    display: flex;
+                    justify-content: right;;
+                    max-width: 1000px;
+                    width: 100%;
+            }
+            .pet{
+                align-self: center;
+                margin: 0px 20px 0px 0px;
+            }
+            label {
+                align-self: center;
+                width: 20%;
+                font-size: 15px;
+            }
+            a {
+                color: black;
+                text-decoration: none;
+                align-self: center;
+                width: 20%;
+            }
+            a:hover {
+                border-bottom: 3px solid blue;
+                width: auto;
+            }
+            hr {
+                margin: 0 0 15px 0;
+                max-width: 1000px;
+                width: 100%;
+            }
+            #search_name {
+                width: 80%;
+                padding: 10px;
+                margin: 3px 0 0 0;
+                display: inline-block;
+                border: 1px solid #000000;
+                border-radius: 10px;
+                background: none;
+            }
+            .store_list {
+                flex-direction: column;
+                flex: 1;
+                justify-content: space-between;
+                display: flex;
+                max-width: 1000px;
+                width: 100%;
+            }
+            #list_txt {
+                align-self: start;
+                font-weight: bolder;
+                margin: 10px 0px 5px 0px;
+            }
+            input[type="submit"] {
+                background-color: #0066FF;
+                color: white;
+                padding: 10px 10px 10px 10px;
+                margin: 3px 0 0 5px;
+                border: none;
+                cursor: pointer;
+                width: 20%;
+                opacity: 0.9;
+                border-radius: 10px;
+                float: right;
+                box-shadow: 3px 3px 3px #b0b0b0;
+            }
             </style>
             <meta charset="utf-8">
         </head>
@@ -112,11 +203,19 @@ function main_template(current,marker_list,info_list,search_name){
                 ${current}
             </ul>
         </nav>
-        <form action="/store/search?h_name=${search_name}"method="get">
-                <p><input type="text" name="search_name" placeholder="검색어를 입력하세요.">
-                <input type="submit" value="검색"></p>
-        </form>
-        <div id="map" style="width:700px;height:400px;"></div>
+        <div class="container">
+            <form class="row" action="/store/search?h_name=${search_name}">
+                    <label for="search_name">매장 검색</label>
+                    <input type="text" id="search_name" name="search_name" placeholder="검색어를 입력하세요.">
+                    <input type="submit" value="검색">
+            </form>
+            <br>
+            <div id="map" style="width:1000px;height:500px;"></div>
+            <div class="store_list">
+                <h3><p id="list_txt">매장 목록</p></h3>
+                ${info_list}
+            </div>
+        </div>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	e4410d501aa08cb040f89f52b5ee63d2"></script>
 	<script>
 		var container = document.getElementById('map');
@@ -156,8 +255,6 @@ function main_template(current,marker_list,info_list,search_name){
             };
         }
 	</script>
-    <h6>
-    ${info_list}</h6>
         </body>
     </html>
     `;
@@ -322,7 +419,10 @@ app.get('/', function (req, res) {
                 if(H!=stores[i+1].store_name){
                     marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                     `;
-                    info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
+                    info_list+=`<div class="store_row">
+                    <a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a>
+                    <div class="pet_row">
+                    <p class="pet">${pet_list}</p></div></div><hr/>`;
                 if(i+1!=(stores).length){
                     pet_list=` `;
                     day_list=` `;
@@ -332,7 +432,10 @@ app.get('/', function (req, res) {
             }
             marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                 `;
-            info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
+            info_list+=`<div class="store_row">
+                <a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a>
+                <div class="pet_row">
+                <p class="pet">${pet_list}</p></div></div><hr/>`;
             res.end(main_template(current,marker_list,info_list));
         }
         
@@ -389,7 +492,10 @@ app.get('/search/', function (req, res) {
                 if(H!=stores[i+1].store_name){
                     marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                     `;
-                    info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
+                    info_list+=`<div class="store_row">
+                    <a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a>
+                    <div class="pet_row">
+                    <p class="pet">${pet_list}</p></div></div><hr/>`;
                 if(i+1!=(stores).length){
                     pet_list=` `;
                     day_list=` `;
@@ -399,7 +505,10 @@ app.get('/search/', function (req, res) {
             }
             marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                 `;
-            info_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a><p>`;
+            info_list+=`<div class="store_row">
+            <a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a>
+            <div class="pet_row">
+            <p class="pet">${pet_list}</p></div></div><hr/>`;
             console.log(marker_list);
             res.end(main_template(current, marker_list,info_list));
         }
@@ -457,7 +566,7 @@ app.get('/info/',function(req,res){
                     }
                 }
                 if(H!=stores[i+1].store_name){
-                    detail_list+=`<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>`;
+                    detail_list+=`<div class="detail_info"><h2>${stores[i].store_name}</h2><h3>${pet_list}</h3><h4>${day_list}</h4></div>`;
                 if(i+1!=(stores).length){
                     pet_list=` `;
                     day_list=` `;
@@ -465,7 +574,7 @@ app.get('/info/',function(req,res){
                 }
                 }
             }
-            detail_list+=`<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>`;
+            detail_list+=`<div class="detail_info"><h2>${stores[i].store_name}</h2><h3>${pet_list}</h3><h4>${day_list}</h4></div>`;
             console.log(stores);
             res.send(detail_template(current,detail_list));
         })
