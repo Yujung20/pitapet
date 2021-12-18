@@ -251,7 +251,7 @@ app.get('/search/', function(req, res) {
     
             res.send(main_template(question_list));
         })
-    } if (a_keyword) {
+    } else if (a_keyword) {
         console.log(a_keyword);
         db.query(`SELECT * FROM answer WHERE content LIKE ? ORDER BY date DESC`,
         ['%' + a_keyword + '%'],
@@ -269,7 +269,7 @@ app.get('/search/', function(req, res) {
         })
     }
     else {
-        res.send('<script type="text/javascript">alert("검색어를 입력해주세요.");location.href="/qna";</script>')
+        res.send('<script type="text/javascript">alert("검색어를 입력해주세요.");location.href="/qna";</script>');
     }
 })
 

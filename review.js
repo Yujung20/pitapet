@@ -187,6 +187,8 @@ function review_detail_template(review_number, title, content, date, price, prod
                     padding: 10px 10px 10px 10px;
                     background: rgba(196, 196, 196, 0.15);
                     box-shadow: 3px 3px 3px #b0b0b0;
+                    max-width: 800px;
+                    width: 100%;
                 }
                 .comment {
                     flex-direction: column;
