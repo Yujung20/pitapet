@@ -570,30 +570,111 @@ function review_create_template() {
         <head>
             <title>리뷰 작성하기</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                form {
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .row {
+                    flex-direction: row;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                label {
+                    align-self: center;
+                    width: 10%;
+                    text-align: right;
+                }
+                p {
+                    margin: 10px 0px;
+                }
+                input[type=text], #photo, #category, #title {
+                    max-width: 700px;
+                    padding: 10px;
+                    margin: 3px 0 0 30px;
+                    display: flex;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;   
+                    align-self: flex-end;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                textarea {
+                    width: 100%;
+                    margin: 0px 0px 0px 30px;
+                    max-width: 700px;
+                    border:1px solid black;
+                    border-radius: 10px;
+                    height: 95px;
+                }
+            </style>
         </head>
         <body>
-            <h1>리뷰 작성하기</h1>
+            <div class="container">
             <form action="/review/write_review/" method="post" enctype="multipart/form-data">
-                <p><input type"text" name="title" placeholder="title"></p>
-                <p><select name="category">
-                    <option value="개">개</option>
-                    <option value="고양이">고양이</option>
-                    <option value="토끼">토끼</option>
-                    <option value="햄스터">햄스터</option>
-                    <option value="앵무새">앵무새</option>
-                    <option value="기니피그">기니피그</option>
-                    <option value="페럿">페럿</option>
-                    <option value="고슴도치">고슴도치</option>
-                    <option value="기타">기타</option>
-                </select></p>
-                <p><textarea name="content" placeholder="내용"></textarea></p>
-                <p><input type="text" oninput="this.value=this.value.replace(/[^0-9]/g,'');" name="price" placeholder="가격" onkeyup="numberWithCommas(this.vale)"></p>
-                <p><input type="text" name="product_name" placeholder="제품명"></p>
-                <p><input type="text" name="brand" placeholder="브랜드명"></p>
-                <p><input type="file" name="photo"></p>
+                <div class="row">
+                    <label for="title">제목</label>
+                    <p><input type"text" name="title" id="title" placeholder="제목"></p>
+                </div>
+                <div class="row">
+                    <label for="category">종</label>
+                    <p><select id="category" name="category">
+                        <option value="개">개</option>
+                        <option value="고양이">고양이</option>
+                        <option value="토끼">토끼</option>
+                        <option value="햄스터">햄스터</option>
+                        <option value="앵무새">앵무새</option>
+                        <option value="기니피그">기니피그</option>
+                        <option value="페럿">페럿</option>
+                        <option value="고슴도치">고슴도치</option>
+                        <option value="기타">기타</option>
+                    </select></p>
+                </div>
+                <div class="row">
+                    <label for="price">가격</label>
+                    <p><input type="text" id="price" oninput="this.value=this.value.replace(/[^0-9]/g,'');" name="price" placeholder="가격" onkeyup="numberWithCommas(this.vale)"></p>
+                </div>
+                <div class="row">
+                    <label for="product_name">제품명</label>
+                    <p><input type="text" id="product_name" name="product_name" placeholder="제품명"></p>
+                </div>
+                <div class="row">
+                    <label for="brand">브랜드명</label>
+                    <p><input type="text" id="brand" name="brand" placeholder="브랜드명"></p>
+                </div>
+                <div class="row">
+                    <label for="content">내용</label>
+                    <p><textarea id="content" name="content" placeholder="내용"></textarea></p>
+                </div>
+                <div class="row">
+                    <label for="photo">사진</label>
+                    <p><input type="file" id="photo" name="photo"></p>
+                </div>
                 <p><input type="submit" value="리뷰 등록하기"></p>
             </form>
         </body>
+        </div>
     </html>
     `;
 }
