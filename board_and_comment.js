@@ -284,11 +284,14 @@ function main_template(current,boardlist,search_title){
            td.font_size {
                font-size: 20px;
            }
+           td.underlined_blue {
+            border-top: 2px solid blue;
+           }
             .nav_selected{
                 color: blue;
             }
             .comment_textarea {
-                width: 60%;
+                width: 51%;
                 margin: 3px 0 0 0;
                 padding: 42px;
                 display: inline-blue;
@@ -308,26 +311,14 @@ function main_template(current,boardlist,search_title){
                 border-radius: 10px;
                 box-shadow: 3px 3px 3px #b0b0b0;
             }
-            .auth_btn1 {
+            .auth_btn {
                 background-color: #0066FF;
                 color: white;
-                padding: 20px;
+                padding: 18px;
                 margin: 3px 0 0 5px;
                 border: none;
                 cursor: pointer;
-                width: 10%;
-                opacity: 0.9;
-                border-radius: 10px;
-                box-shadow: 3px 3px 3px #b0b0b0;
-            }
-            .auth_btn2 {
-                background-color: #0066FF;
-                color: white;
-                padding: 20px;
-                margin: 3px 0 0 5px;
-                border: none;
-                cursor: pointer;
-                width: 10%;
+                width: 13%;
                 opacity: 0.9;
                 border-radius: 10px;
                 box-shadow: 3px 3px 3px #b0b0b0;
@@ -361,17 +352,19 @@ function main_template(current,boardlist,search_title){
         </nav>
         <table align="center" class="detail_table" bgcolor="#F4F4F4";>
                 <tr align="center">
-                    <td align="left"><h2>[ ${board_category} ]</h2></td>
-                    <td align="left"><h2>${board_title}</h2></td>
-                    <td width=76% align="right"><p>${board_user}</p></td>
+                    <td align="left"><h2>&nbsp;[ ${board_category} ]</h2></td>
+                    <td align="left"><h2>&nbsp;${board_title}</h2></td>
+                    <td width=80% align="right"><p>${board_user}&nbsp;</p></td>
                 </tr>
                 <tr align="center">
-                    <td class="underlined" width=38% align="right" colspan="3"><p>${board_date}</p></td>
+                    <td class="underlined" width=38% align="right" colspan="3"><p>${board_date}&nbsp;</p></td>
                 </tr>
                 <tr align="center">
-                    <td class="font_size" align="left"><p>&nbsp;&nbsp;${board_content}</p></td>
+                    <td class="font_size" align="left"><p>&nbsp;&nbsp;&nbsp;${board_content}</p></td>
+                    </tr>
               </table>
               ${auth_btn}
+              <div style="padding: 2% 0 2% 0; text-align="center"'></div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <form action="/board/write_comment/" method="post">
                 <input type="hidden" name="board_id" value="${board_id}">
@@ -644,11 +637,12 @@ function main_template(current,boardlist,search_title){
             for (var i = 0; i < Object.keys(boards).length; i++) {
                 const qdate = String(boards[i].date).split(" ");
                 var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
-                board_list += `<tr align="center"><td class="tableline" align="left" width="50%">`
-                board_list += `<a href="/board/written/${boards[i].board_number}">[ ${boards[i].category} ] ${boards[i].title}</a></td>`;
-                board_list += `<td class="tableline" align="right">${boards[i].user_id}</td>`
-                board_list += `<td class="tableline" align="right">`
-                board_list += `<p>${formating_qdate}</p></td></tr>`
+                board_list += `<tr align="center"><td class="tableline" align="left" width="50%">
+                                <a href="/board/written/${boards[i].board_number}">[ ${boards[i].category} ] ${boards[i].title}</a></td>
+                                <td class="tableline" align="right">${boards[i].user_id}</td>
+                                <td class="tableline" align="right">
+                                <p>${formating_qdate}</p></td></tr>
+                                `
             }
             } else {
                 board_list = '0개의 게시물이 있습니다.';
@@ -726,16 +720,18 @@ function main_template(current,boardlist,search_title){
   
                       if (req.session.user_id === comments[i].user_id) {
                           comments_list += `
-                              <p>${comments[i].content}</p>
-                              <p>${comments[i].user_id}</p>
-                              <p>${formating_adate}</p>
-                              <form action="/board/comment_delete/" method="post">
-                                <input type="hidden" name="comment_number" value="${comments[i].comment_number}">
-                                <input type="hidden" name="board_number" value="${board_id}">
-                                <p><input type="submit" value="삭제"></p>
-                            </form>
-                              <hr/>
-                          `
+                          <<table align="center" class="detail_table";>
+                          <tr align="center" >
+                              <td align="left"><h2 style="color: blue;">&nbsp;${comments[i].user_id}</h2></td>
+                          </tr>
+                          <tr align="center">
+                              <td class="underlined_blue" width=950px align="right" colspan="3"><p style="color: blue;">${formating_adate}&nbsp;</p></td>
+                          </tr>
+                          <tr align="center">
+                              <td class="font_size" align="left" style="color: blue;"><p>&nbsp;&nbsp;&nbsp;${comments[i].content}</p></td>
+                              </tr>
+                        </table>
+                                `
                       } else {
                           comments_list += `
                               <p>${comments[i].content}</p>
@@ -753,12 +749,13 @@ function main_template(current,boardlist,search_title){
                   if (req.session.user_id === board[0].user_id) {
                       auth_btn = `
                       <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                      <tr align="right">
-                      <td aiign="right'>
-                          <input class="auth_btn1" type="submit" value="수정" onClick="location.href='/board/written/${board_id}/update/'">
-                          <input class="auth_btn2" type="submit" value="삭제" onClick="location.href='/board/written/${board_id}/delete/'">
-                        </td>
-                        </tr>
+                      <tr align="center">
+                      <td width=55%><p>&nbsp</p></td>
+                      <td border-right=20% aiign="right">
+                          <input class="auth_btn" type="submit" value="수정" onClick="location.href='/board/written/${board_id}/update/'">
+                          <input class="auth_btn" type="submit" value="삭제" onClick="location.href='/board/written/${board_id}/delete/'">
+                      </td>
+                      </tr>
                         </table>
                       `
                   }
