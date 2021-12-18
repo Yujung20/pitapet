@@ -35,8 +35,8 @@ app.use(session({
     saveUninitialized: true,
     store: new MySQLStore({
         host: 'localhost',
-        user: 'dldms',
-        password: 'password!',
+        user: 'root',
+        password: 'password',
         database: 'pit_a_pet'
     })
 }))
@@ -781,7 +781,7 @@ const transporter = nodemailer.createTransport(smtpTransport({
   }
   
   //매일 오전 10시에 실행
-  cron.schedule('30 15 1-31 * *', function() {
+  cron.schedule('32 23 1-31 * *', function() {
     var mail_number_array = [];
     var owner_id_array = [];
     var name_array = [];
