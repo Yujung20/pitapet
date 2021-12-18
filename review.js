@@ -580,28 +580,38 @@ function review_create_template() {
                     margin-right: auto;
                 }
                 form {
-                    max-width: 800px;
+                    max-width: 500px;
                     width: 100%;
                 }
                 .row {
-                    flex-direction: row;
                     flex: 1;
                     display: flex;
-                    max-width: 800px;
+                    max-width: 500px;
                     width: 100%;
                 }
                 label {
                     align-self: center;
-                    width: 10%;
-                    text-align: right;
+                    width: 20%;
                 }
                 p {
+                    display: flex;
+                    flex: 1;
                     margin: 10px 0px;
                 }
-                input[type=text], #photo, #category, #title {
-                    max-width: 700px;
+                input[type=text], #photo, #title {
+                    width: 100%;
                     padding: 10px;
-                    margin: 3px 0 0 30px;
+                    margin: 3px 0 0 20px;
+                    display: flex;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;   
+                    align-self: flex-end;
+                }
+                #category {
+                    width: 30%;
+                    padding: 10px;
+                    margin: 3px 0 0 20px;
                     display: flex;
                     border: 1px solid #000000;
                     border-radius: 10px;
@@ -622,7 +632,7 @@ function review_create_template() {
                 }
                 textarea {
                     width: 100%;
-                    margin: 0px 0px 0px 30px;
+                    margin: 0px 0px 0px 20px;
                     max-width: 700px;
                     border:1px solid black;
                     border-radius: 10px;
@@ -665,7 +675,7 @@ function review_create_template() {
                 </div>
                 <div class="row">
                     <label for="content">내용</label>
-                    <p><textarea id="content" name="content" placeholder="내용"></textarea></p>
+                    <p><textarea id="content" name="content"></textarea></p>
                 </div>
                 <div class="row">
                     <label for="photo">사진</label>
