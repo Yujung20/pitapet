@@ -154,7 +154,7 @@ function detail_template(question_id, question_title, question_content, question
     <!doctype html>
     <html>
         <head>
-            <title>create question</title>
+            <title>질문 보기</title>
             <meta charset="utf-8">
             <style>
                 .container {
@@ -180,7 +180,7 @@ function detail_template(question_id, question_title, question_content, question
                     padding: 10px 10px 10px 10px;
                     background: rgba(196, 196, 196, 0.15);
                     box-shadow: 3px 3px 3px #b0b0b0;
-                    max-width: 800px;
+                    max-width: 780px;
                     width: 100%;
                 }
                 .title_row {
@@ -429,26 +429,98 @@ function question_update_template(question_id, question_title, question_content,
     <!doctype html>
     <html>
         <head>
-            <title>create question</title>
+            <title>질문 수정하기</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                form {
+                    max-width: 500px;
+                    width: 100%;
+                }
+                .row {
+                    flex: 1;
+                    display: flex;
+                    max-width: 500px;
+                    width: 100%;
+                }
+                #category {
+                    width: 30%;
+                    padding: 10px;
+                    margin: 3px 0 0 20px;
+                    display: flex;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;   
+                    align-self: flex-end;
+                }
+                label {
+                    align-self: center;
+                    width: 20%;
+                }
+                p {
+                    display: flex;
+                    flex: 1;
+                    margin: 10px 0px;
+                }
+                input[type=text], #title {
+                    width: 100%;
+                    padding: 10px;
+                    margin: 3px 0 0 20px;
+                    display: flex;
+                    border: 1px solid #000000;
+                    border-radius: 10px;
+                    background: none;   
+                    align-self: flex-end;
+                }
+                input[type="submit"] {
+                    background-color: #0066FF;
+                    color: white;
+                    padding: 10px 0px 10px 0px;
+                    margin: 3px 0 0 5px;
+                    border: none;
+                    cursor: pointer;
+                    width: 100%;
+                    opacity: 0.9;
+                    border-radius: 10px;
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                textarea {
+                    width: 100%;
+                    margin: 0px 0px 0px 20px;
+                    max-width: 700px;
+                    border:1px solid black;
+                    border-radius: 10px;
+                    height: 95px;
+                }
+            </style>
         </head>
         <body>
-            <form action="/qna/question/${question_id}/update_process/" method="post">
-                <h1><input type="text" name="title" value="${question_title}"></h1>
-                <p><textarea name="content">${question_content}</textarea></p>
-                <p><select name="category" value="${question_category}">
-                    <option value="개">개</option>
-                    <option value="고양이">고양이</option>
-                    <option value="토끼">토끼</option>
-                    <option value="햄스터">햄스터</option>
-                    <option value="앵무새">앵무새</option>
-                    <option value="기니피그">기니피그</option>
-                    <option value="페럿">페럿</option>
-                    <option value="고슴도치">고슴도치</option>
-                    <option value="기타">기타</option>
-                </select></p>
+            <div class="container">
+                <form action="/qna/question/${question_id}/update_process/" method="post">
+                <div class="row">
+                        <label for="title">제목</label>    
+                    <p><input type="text" id="title" name="title" value="${question_title}"></p>
+                </div>
+                <div class="row">
+                    <label for="category">종</label>
+                        <p><select id="category" name="category">
+                            ${question_category}
+                        </select></p>
+                </div>
+                <div class="row">
+                    <label for="content">내용</label>
+                    <p><textarea id="content" name="content">${question_content}</textarea></p>
+                </div>
                 <p><input type="submit" value="수정"></p>
-            </form>
+                </form>
+            </div>
         </body>
     </html>
     `;
@@ -676,7 +748,8 @@ app.post('/write_answer/', function(req, res) {
 
 app.get('/question/:question_id/update/', function(req, res) {
     const question_id = req.params.question_id;
-    console.log(question_id);
+    const category = ['개', '고양이', '토끼', '햄스터', '앵무새', '기니피그', '패럿', '고슴도치', '기타'];
+    let category_list = '';
 
     db.query(`SELECT * FROM question WHERE question_number = ?`,
     [question_id],
@@ -685,8 +758,12 @@ app.get('/question/:question_id/update/', function(req, res) {
             res.send(err);
             throw err;
         }
-        console.log(question);
-        res.send(question_update_template(question_id, question[0].title, question[0].content, question[0].category));
+        for (let i = 0; i < category.length; i++) {
+            let selected = '';
+            if (category[i] === question[0].category) selected = 'selected';
+            category_list += `<option value="${category[i]}" ${selected}>${category[i]}</option>`
+        }
+        res.send(question_update_template(question_id, question[0].title, question[0].content, category_list));
     })
 });
 
