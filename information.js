@@ -86,6 +86,26 @@ function main_template(current, type_list) {
             .nav_selected{
                 color: blue;
             }
+            .container {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto; 
+                width: 800px; 
+            }
+            #underline {
+                color: black;
+                text-decoration: none;
+                align-self: center;
+                width: 40%;
+            }
+            #underline:hover {
+                border-bottom: 3px solid blue;
+                width: auto;
+            }
+
             </style>
             <meta charset="utf-8">
         </head>
@@ -113,10 +133,9 @@ function main_template(current, type_list) {
                 ${current}
             </ul>
         </nav>
-
-        <h1>종류</h1>
+        <div class="container" text-align="center">
         ${type_list}
-            
+        </div>
         </body>
     </html>
     `;
@@ -265,7 +284,10 @@ app.get('/', function(req, res) {
         if (err) throw err;
         else{
             for (var i=0; i<Object.values(informations).length;i++){
-                type_list+=`<p><a href="/information/type/?id=${informations[i].id}">${informations[i].type}     ></a> <p>`;
+                type_list+=`
+                <a id="underline" href="/information/type/?id=${informations[i].id}">${informations[i].type}</a>
+
+                `;
             }
             res.end(main_template(current, type_list));
         }
