@@ -161,19 +161,109 @@ function review_detail_template(review_number, title, content, date, price, prod
         <head>
             <title>Q&A</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                    align-items: center;
+                    margin-left: auto;
+                    margin-right: auto; 
+                    max-width: 800px;
+                    width: 100%; 
+                }
+                .title_row {
+                    flex-direction: row;
+                    justify-content: space-between;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .review {
+                    flex-direction: column;
+                    flex: 1;
+                    display: flex;
+                    padding: 10px 10px 10px 10px;
+                    background: rgba(196, 196, 196, 0.15);
+                    box-shadow: 3px 3px 3px #b0b0b0;
+                }
+                .info_row {
+                    flex-direction: row;
+                    justify-content: space-between;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .category_price {
+                    flex-direction: column;
+                    justify-content: space-between;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                .name_brand {
+                    flex-direction: column;
+                    justify-content: space-between;
+                    flex: 1;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                }
+                p {
+                    margin: 5px 0px;
+                }
+                img {
+                    width: 100%;
+                    object-fit: cover;
+                }
+                hr {
+                    width: 100%;
+                }
+                #title, #user {
+                    margin: 0;
+                }
+                #title {
+                    font-size: 20px;
+                    align-self: flex-start;
+                }
+                #user {
+                    align-self: center;
+                }
+                #date {
+                    align-self: flex-end;
+                    margin-top: auto;
+                }
+                #content {
+                    margin: 20px 0 10px 0;
+                }
+            </style>
         </head>
         <body>
-            <h1>${title}</h1>
-            <p>${date}</p>
-            <p>가격: ${price}</p>
-            <p>상품명: ${product_name}</p>
-            <p>브랜드명: ${brand}</p>
-            <p>카테고리: ${category}</p>
-            <p>작성자: ${user_id}</p>
-            <p>${content}</p>
-            <p><img src="${photo}"></p>
-            ${auth_btn}
-            <hr/>
+        <div class="container">
+            <div class="review">
+                <div class="title_row">
+                    <p id="title">${title}</p>
+                    <p id="user">작성자: ${user_id}</p>
+                </div>
+                <hr/>
+                <p id="date">${date}</p>
+                <div class="info_row">
+                    <div class="category_price">
+                    <p>카테고리: ${category}</p>
+                    <p>가격: ${price}</p>
+                    </div>
+                    <div class="name_brand">
+                    <p>상품명: ${product_name}</p>
+                    <p>브랜드명: ${brand}</p>
+                    </div>
+                </div>
+                <p id="content">${content}</p>
+                <p><img src="${photo}"></p>
+                ${auth_btn}
+            </div>
             <h3>댓글</h3>
             <form action="/review/write_comment/" method="post">
                 <input type="hidden" name="review_number" value="${review_number}"">
@@ -181,6 +271,7 @@ function review_detail_template(review_number, title, content, date, price, prod
                 <p><input type="submit" value="댓글 달기"></p>
             </form>
             ${comment_list}
+        </div>
         </body>
     </html>
     `
