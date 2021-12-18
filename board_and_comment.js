@@ -1072,7 +1072,7 @@ function main_template(current,boardlist,search_title){
                   if (req.session.user_id === board[0].user_id) {
                       auth_btn = `
                         <p><input type="submit" value="수정" onClick="location.href='/board/written/${board_id}/update/'"></p>
-                        <p><input type="submit" value="삭제" onClick="location.href='/board/written/${board_id}/delete/'"></p>   
+                        <p><input type="submit" value="삭제" id="delete_btn" onClick="location.href='/board/written/${board_id}/delete/'"></p>   
                       `
                   }
   
@@ -1147,8 +1147,13 @@ function main_template(current,boardlist,search_title){
               res.send(error);
               throw error;
           }
+          /*else if (content1.length < 1) {
+            res.send('<script type="text/javascript">alert("댓글을 입력해주세요.");location.href=/board/written/${board_id}";</script>');
+          }*/
+          else {
           console.log(comments);
           res.redirect(`/board/written/${board_id}`);
+          }
       })
   });
   
