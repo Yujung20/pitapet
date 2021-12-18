@@ -91,21 +91,36 @@ function main_template(current, type_list) {
                 flex-direction: column;
                 flex: 1;
                 align-items: center;
-                margin-left: auto;
-                margin-right: auto; 
                 width: 800px; 
+                position: absolute;
             }
             #underline {
                 color: black;
                 text-decoration: none;
-                align-self: center;
                 width: 40%;
+                align-self: center;
             }
             #underline:hover {
                 border-bottom: 3px solid blue;
                 width: auto;
             }
-
+            p {
+                display: flex;
+                flex: 1;
+                margin: 25px 0px;
+            }
+            .row {
+                flex: 1;
+                display: flex;
+                max-width: 500px;
+                width: 100%;
+                align: center;
+            }
+            hr {
+                margin: 0px;
+                max-width: 800px;
+                width: 100%;
+            }
             </style>
             <meta charset="utf-8">
         </head>
@@ -133,6 +148,7 @@ function main_template(current, type_list) {
                 ${current}
             </ul>
         </nav>
+        <hr/>
         <div class="container" text-align="center">
         ${type_list}
         </div>
@@ -285,8 +301,10 @@ app.get('/', function(req, res) {
         else{
             for (var i=0; i<Object.values(informations).length;i++){
                 type_list+=`
-                <a id="underline" href="/information/type/?id=${informations[i].id}">${informations[i].type}</a>
-
+                    <div class="row">
+                    <p><a id="underline" href="/information/type/?id=${informations[i].id}">${informations[i].type}</a></p>
+                    </div>
+                    <hr/>
                 `;
             }
             res.end(main_template(current, type_list));
