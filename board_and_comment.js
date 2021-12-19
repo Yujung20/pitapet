@@ -916,9 +916,8 @@ function main_template(current,boardlist,search_title){
                 <p>
                 <div class="row">
                     <label for="category">카테고리</label>
-                    <p><select id="category" name="category" value="${board_category}">
-                        <option value="정보 공유">정보 공유</option>
-                        <option value="산책 메이트">산책 메이트</option>
+                    <p><select id="category" name="category">
+                        ${board_category}
                     </select></p>
                 </div>
                 <div class="row">
@@ -977,12 +976,15 @@ function main_template(current,boardlist,search_title){
         current=`<li> <a href="/logout">로그아웃</a> </li>
         <li> <a href="/mypage">${id}--마이페이지</a> </li>`
         console.log(id)
+        res.end(board_template());
     }
     else{
         current=`<li> <a href="/login">로그인</a> </li>
         <li> <a href="/signup">회원가입</a> </li>`
+        res.send('<script type="text/javascript">alert("로그인이 필요한 서비스입니다.");location.href="/login";</script>');
     }
       res.end(board_template(current));
+
   })
   
   app.post('/write/', function(req, res) {
@@ -1165,6 +1167,9 @@ function main_template(current,boardlist,search_title){
   
   app.get('/written/:board_id/update/', function(req, res) {
       const board_id = req.params.board_id;
+      const category = ['정보 공유', '산책 메이트'];
+      let category_list = '';
+
       console.log(board_id);
       var current=``;
       if(req.session.user_id){//로그인 한 경우
@@ -1184,8 +1189,12 @@ function main_template(current,boardlist,search_title){
               res.send(err);
               throw err;
           }
-          console.log(board);
-          res.send(board_update_template(current,board_id, board[0].title, board[0].content, board[0].category));
+          for (let i = 0; i <category.length; i++) {
+              let selected = '';
+              if (category[i] === board[0].category) selected = 'selected';
+              category_list += `<option value="${category[i]}" ${selected}>${category[i]}</option>`
+          }
+          res.send(board_update_template(current,board_id, board[0].title, board[0].content, category_list));
         })
   });
   
