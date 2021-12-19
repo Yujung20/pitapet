@@ -100,7 +100,6 @@ function main_template(current, review_list, search_title) {
             }
             </style>
             <style>
-            
                 .container {
                     display: flex;
                     flex-direction: column;
@@ -142,13 +141,13 @@ function main_template(current, review_list, search_title) {
                     width: 20%;
                     font-size: 15px;
                 }
-                a {
+                #reviews {
                     color: black;
                     text-decoration: none;
                     align-self: center;
                     width: 20%;
                 }
-                a:hover {
+                #reviews:hover {
                     border-bottom: 3px solid blue;
                     width: auto;
                 }
@@ -1556,7 +1555,7 @@ app.get('/', function(req, res) {
             var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
             review_list += 
                 `<div class="review_row">
-                    <a href="/review/${reviews[i].review_number}">${reviews[i].title}</a>
+                    <a id="reviews" href="/review/${reviews[i].review_number}">${reviews[i].title}</a>
                     <div class="auth_date_row">
                         <p class="user_id">${reviews[i].user_id}<p>
                         <p>${formating_rdate}</p>
@@ -1598,7 +1597,7 @@ app.get('/search', function(req, res) {
                 var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
                 review_list += 
                     `<div class="review_row">
-                        <a href="/review/${reviews[i].review_number}">${reviews[i].title}</a>
+                        <a id="reviews" href="/review/${reviews[i].review_number}">${reviews[i].title}</a>
                         <div class="auth_date_row">
                             <p class="user_id">${reviews[i].user_id}<p>
                             <p>${formating_rdate}</p>

@@ -179,13 +179,13 @@ function main_template(current,question_list, search_title, search_content) {
                     align-self: center;
                     margin: 0px 20px 0px 0px;
                 }
-                a {
+                #questions {
                     color: black;
                     text-decoration: none;
                     align-self: center;
                     width: 50%;
                 }
-                a:hover {
+                #questions:hover {
                     border-bottom: 3px solid blue;
                     width: auto;
                 }
@@ -926,7 +926,7 @@ app.get('/', function(req, res) {
                 var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
                 question_list += 
                 `<div class="question_row">
-                    <a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a>
+                    <a id="questions" href="/qna/question/${questions[i].question_number}">${questions[i].title}</a>
                     <div class="auth_date_row">
                         <p class="user_id">${questions[i].user_id}<p>
                         <p>${formating_qdate}</p>
@@ -1105,7 +1105,7 @@ app.get('/search/', function(req, res) {
                     var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
                     question_list += 
                     `<div class="question_row">
-                        <a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a>
+                        <a id="questions" href="/qna/question/${questions[i].question_number}">${questions[i].title}</a>
                         <div class="auth_date_row">
                             <p class="user_id">${questions[i].user_id}<p>
                             <p>${formating_qdate}</p>
@@ -1132,7 +1132,7 @@ app.get('/search/', function(req, res) {
                     var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
                     question_list += 
                     `<div class="question_row">
-                        <a href="/qna/question/${answers[i].question_number}">${answers[i].content}</a>
+                        <a id="questions" href="/qna/question/${answers[i].question_number}">${answers[i].content}</a>
                         <div class="auth_date_row">
                             <p class="user_id">${answers[i].user_id}<p>
                             <p>${formating_qdate}</p>
