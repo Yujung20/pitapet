@@ -363,7 +363,32 @@ function detail_template(current,detail_list){
                 color: blue;
             }
             .detail_list{
-                padding-left: 50px
+                position: absolute;
+                height: 70%;
+                top: 15%;
+                padding-left: 5%;
+            }
+            .detail_name{
+                font-size: 50px;
+                font-weight: bold;
+                height: 10vh;
+                display: inline-block;
+                margin-bottom: 2%;
+            }
+            .detail_pet{
+                font-size:20px;                
+                line-height:2.5;
+
+            }
+            .detail_day{
+                font-size:20px;                
+                line-height:2.5;
+            }
+            hr{
+                width:30vw;
+                color:black;
+                text-align:center;
+                left:5%;
             }
             </style>
             <meta charset="utf-8">
@@ -597,7 +622,10 @@ app.get('/info/',function(req,res){
                     }
                 }
                 if(H!=hospitals[i+1].hospital_name){
-                    detail_list+=`<h2>${hospitals[i].hospital_name}</h2><h3>${pet_list}</h3><h4>${day_list}</h4>`;
+                    detail_list+=`
+                    <div class="detail_name">${hospitals[i].hospital_name}</div>
+                    <div class="detail_pet">${pet_list}</div>
+                    <div calss="detail_day">${day_list}</div>`;
                 if(i+1!=(hospitals).length){
                     pet_list=` `;
                     day_list=` `;
@@ -605,7 +633,10 @@ app.get('/info/',function(req,res){
                 }
                 }
             }
-            detail_list+=`<h2>${hospitals[i].hospital_name}</h2><h3>${pet_list}</h3><h4>${day_list}</h4>`;
+            detail_list+=`
+            <div class="detail_name">${hospitals[i].hospital_name}</div><hr/>
+            <div class="detail_pet">${pet_list}</div><hr/>
+            <div calss="detail_day">${day_list}</div>`;
             console.log(hospitals);
             res.send(detail_template(current, detail_list));
         })
