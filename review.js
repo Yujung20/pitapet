@@ -145,7 +145,7 @@ function main_template(current, review_list, search_title) {
                     color: black;
                     text-decoration: none;
                     align-self: center;
-                    width: 20%;
+                    width: 50%;
                 }
                 #reviews:hover {
                     border-bottom: 3px solid blue;
