@@ -526,7 +526,7 @@ function main_template(current,boardlist,search_title){
                 <form action="/board/write_comment/" method="post">
                     <input type="hidden" name="board_id" value="${board_id}">
                     <div class="write_comment">
-                        <textarea name="content"></textarea>
+                        <textarea name="content" maxlength="1000"></textarea>
                         <input type="submit" id="write_comment_btn" value="댓글 달기">
                     </div>
                 </form>
@@ -715,7 +715,7 @@ function main_template(current,boardlist,search_title){
                 <form action="/board/write/" method="post">
                 <div class="row">
                     <label for="title">제목</label>
-                    <p><input type="text" name="title" placeholder="제목"></p>
+                    <p><input type="text" name="title" placeholder="제목" maxlength="200"></p>
                 </div>
                 <div class="row">
                     <label for="category">카테고리</label>
@@ -726,7 +726,7 @@ function main_template(current,boardlist,search_title){
                 </div>
                 <div class="row">
                     <label for="content">내용</label>
-                    <p><textarea id="content" name="content"></textarea></p>
+                    <p><textarea id="content" name="content" maxlength="2000"></textarea></p>
                 </div>
                 <p><input type="submit" value="등록하기"></p>
                 </form>
@@ -911,7 +911,7 @@ function main_template(current,boardlist,search_title){
                 <form action="/board/written/${board_id}/update_process/" method="post">
                 <div class="row">
                     <label for="title">제목</label>
-                    <p><input type"text" id="title" name="title" value="${board_title}"></p>
+                    <p><input type"text" id="title" name="title" value="${board_title}" maxlength="200"></p>
                 </div>
                 <p>
                 <div class="row">
@@ -922,7 +922,7 @@ function main_template(current,boardlist,search_title){
                 </div>
                 <div class="row">
                     <label for="content">내용</label>    
-                    <p><textarea id="content" name="content">${board_content}</textarea></p>
+                    <p><textarea id="content" name="content" maxlength="2000">${board_content}</textarea></p>
                 </div>
                 <p><input type="submit" value="수정하기"></p>
                 </form>
@@ -936,7 +936,7 @@ function main_template(current,boardlist,search_title){
   app.get('/', function(req, res) {
       var board_list = ``;
       var current=``;
-            if(req.session.user_id){//로그인 한 경우
+            if(req.session.user_id){
                 var id=req.session.user_id;
                 current=`<li> <a href="/logout">로그아웃</a> </li>
                 <li> <a href="/mypage">${id}--마이페이지</a> </li>`
@@ -976,7 +976,7 @@ function main_template(current,boardlist,search_title){
   
   app.get('/write/', function(req, res) {
     var current=``;
-    if(req.session.user_id){//로그인 한 경우
+    if(req.session.user_id){
         var id=req.session.user_id;
         current=`<li> <a href="/logout">로그아웃</a> </li>
         <li> <a href="/mypage">${id}--마이페이지</a> </li>`
@@ -1022,7 +1022,7 @@ function main_template(current,boardlist,search_title){
       const board_id = req.params.board_id;
       var comments_list = ``;
       var current=``;
-      if(req.session.user_id){//로그인 한 경우
+      if(req.session.user_id){
           var id=req.session.user_id;
           current=`<li> <a href="/logout">로그아웃</a> </li>
           <li> <a href="/mypage">${id}--마이페이지</a> </li>`
@@ -1102,7 +1102,7 @@ function main_template(current,boardlist,search_title){
         const b_keyword = req.query.search_title;
         var board_list = ``;
         var current=``;
-        if(req.session.user_id){//로그인 한 경우
+        if(req.session.user_id){
             var id=req.session.user_id;
             current=`<li> <a href="/logout">로그아웃</a> </li>
             <li> <a href="/mypage">${id}--마이페이지</a> </li>`
@@ -1184,7 +1184,7 @@ function main_template(current,boardlist,search_title){
 
       console.log(board_id);
       var current=``;
-      if(req.session.user_id){//로그인 한 경우
+      if(req.session.user_id){
           var id=req.session.user_id;
           current=`<li> <a href="/logout">로그아웃</a> </li>
           <li> <a href="/mypage">${id}--마이페이지</a> </li>`
