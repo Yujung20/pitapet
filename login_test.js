@@ -66,11 +66,94 @@ app.get('/login',(req,res)=> { zz
 });*/
 
 app.get('/login',(req,res)=> { 
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var id=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${id}--마이페이지</a> </li>`
+                console.log(id)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     var output=`
         
         <head>
         <title>login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+        <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
         <style>
             form {
             border: 3px
@@ -181,7 +264,29 @@ app.get('/login',(req,res)=> {
             </style>
         </head>
         <body>
-            
+            <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
             <div class="imgcontainer">
                 <img src="https://s3.ap-northeast-2.amazonaws.com/elasticbeanstalk-ap-northeast-2-176213403491/media/magazine_img/magazine_262/%EC%8D%B8%EB%84%A4%EC%9D%BC.jpg" alt="Avatar" class="avatar">
                 <div class="text"> Pit-a-Pet Login </div>
@@ -376,12 +481,83 @@ function main_template(current,question_list,review_list,board_list,hospital_lis
     `;
 }
 
-function id_found_template(found_id){
+function id_found_template(current,found_id){
     return `
     <!doctype html>
     <html>
         <head>
             <title>ID found</title>
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
             <meta charset="utf-8">
             <style>
             form {
@@ -430,6 +606,29 @@ function id_found_template(found_id){
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
             <div class="find_id">
                 <h1>아이디 찾기</h1>
                 <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
@@ -451,7 +650,9 @@ app.get('/', function (req, res, next) {
     db.query(`SELECT * FROM question ORDER BY date DESC`, function(error, questions) {
         if (Object.keys(questions).length > 0) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
-                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}, ${questions[i].date}</a><p>`;
+                const qdate = String(questions[i].date).split(" ");
+                var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
+                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}, ${formating_qdate}</a><p>`;
                 if(i==4){break;}
             }
         } else {
@@ -462,7 +663,9 @@ app.get('/', function (req, res, next) {
     db.query(`SELECT * FROM review ORDER BY date DESC`, function(error, reviews) {
         if (Object.keys(reviews).length > 0) {
             for (var i = 0; i < Object.keys(reviews).length; i++) {
-                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}, ${reviews[i].date}</a><p>`;
+                const rdate = String(reviews[i].date).split(" ");
+                var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
+                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}, ${formating_rdate}</a><p>`;
                 if(i==4){break;}
             }
         } else {
@@ -559,7 +762,9 @@ app.get('/', function (req, res, next) {
         db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
             if (Object.keys(boards).length > 0) {
                 for (var i = 0; i < Object.keys(boards).length; i++) {
-                    board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}, ${boards[i].date}</a><p>`;
+                    const bdate = String(boards[i].date).split(" ");
+                    var formating_bdate = bdate[3] + "-" + bdate[1] + "-" + bdate[2] + "-" + bdate[4];
+                    board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}, ${formating_bdate}</a><p>`;
                     if(i==4){break;}
                 }
             } else {
@@ -641,12 +846,96 @@ app.get('/logout',(req,res)=>{
 })
 
 app.get('/find_id', (req, res)=>{
+    var current=``;
+    if(req.session.user_id){//로그인 한 경우
+        var id=req.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${id}--마이페이지</a> </li>`
+        console.log(id)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
     var output = `
     <!doctype html>
     <html>
         <head>
             <title>Find ID</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
+
             <style>
             form {
                 display: flex;
@@ -685,6 +974,29 @@ app.get('/find_id', (req, res)=>{
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
             <form action="/find_id" method="post">
                 <h1>아이디 찾기</h1>
                 <label for="nickname">닉네임</label>
@@ -734,12 +1046,94 @@ app.post('/find_id', function(req,res) {
 })
 
 app.get('/find_password', (req, res)=>{
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var id=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${id}--마이페이지</a> </li>`
+                console.log(id)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     var output = `
     <!doctype html>
     <html>
         <head>
             <title>Find Password</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }</style>
             <style>
             form {
                 display: flex;
@@ -778,6 +1172,29 @@ app.get('/find_password', (req, res)=>{
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
             <form action="/find_password" method="post">
                 <h1>비밀번호 찾기</h1>
                 <label for="id">아이디</label>
