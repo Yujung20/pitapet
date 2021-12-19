@@ -160,7 +160,7 @@ function template(current,animal_name, name_check_txt) {
             <form action="/create_care_service/create_mail" method="post">
                 <h1>케어서비스 등록하기</h1>
                 <label for="pet_name">이름</label>
-                <p><input type="text" name="pet_name" placeholder="이름"></textarea></p>
+                <p><input type="text" name="pet_name" maxlength="10" placeholder="이름"></textarea></p>
                 <label for="category">카테고리</label>
                 <p><select name="category"> 
                     <option value="건강 검진일">건강 검진일</option>
@@ -171,7 +171,7 @@ function template(current,animal_name, name_check_txt) {
                 <label for="mail_date">날짜</label>
                 <p><input type="date" name="mail_date" min="1990-01-01" max="2022-12-31" value="2021-12-01"></p>
                 <label for="note">특이사항</label>
-                <p><textarea name="note"></textarea></p>
+                <p><textarea name="note" maxlength="20"></textarea></p>
                 <button type="submit">등록하기</button>
             </form>
         </body>
