@@ -118,7 +118,7 @@ function main_template(nickname) {
             <div class="mypage_resign mypage_">
                 <a class="atag" href="/mypage/resign_check/"> 회원 탈퇴</a>  
             </div>           
-            </div>
+        </div>
         </body>
     </html>
     `;
@@ -751,12 +751,87 @@ function qna_template(question_list, answer_list) {
         <head>
             <title>Q&A</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    position: absolute;
+                    height:70%;
+                    top:15%;
+                    padding-left:5%;
+                    width:80vw;
+                }
+                .question_list {
+                    flex-direction: column;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    width: 100%;
+                    height:35vh;
+                    overflow:auto;
+                    overflow-x:hidden;
+
+                }
+                .question_list::-webkit-scrollbar {
+                    width: 10px;
+                }
+                .question_list::-webkit-scrollbar-thumb {
+                background-color: #2f3542;
+                border-radius: 10px;
+                background-clip: padding-box;
+                border: 2px solid transparent;
+                }
+                .question_list::-webkit-scrollbar-track {
+                background-color: grey;
+                border-radius: 10px;
+                box-shadow: inset 0px 0px 5px white;
+                }
+                
+                #list_txt {
+                    align-self: start;
+                    font-size:30px;
+                    font-weight: bold;
+                    height: 5vh;
+                    
+                    
+                    
+                }
+                .question_row {
+                    flex-direction: row;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                    padding: 1% 0;
+                }
+                a {
+                    color: black;
+                    text-decoration: none;
+                    align-self: center;
+                    width: 50%;
+                }
+                a:hover {
+                    text-shadow: 2px 2px 2px gray;
+                    width: auto;
+                }
+                hr {
+                    color:black;
+
+                    margin: 0px;
+                    width:95vw;
+                }
+            </style>
         </head>
         <body> 
-        
-        <p><h3>작성한 질문</h3>${question_list}</p>
-        <p><h3>작성한 대답</h3>${answer_list}</p>
-        
+        <div class="container">
+            <div class="question_list">
+                <p id="list_txt">내가 쓴 질문 조회-Q&A</p>
+                ${question_list}
+            </div>
+            <div class="question_list">
+                <p id="list_txt">내가 쓴 답변 조회-Q&A</p>
+                ${answer_list}
+            </div>
+        </div>        
         </body>
     </html>
     `;
@@ -769,12 +844,88 @@ function review_template(review_list,comment_list){
         <head>
             <title>Q&A</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    position: absolute;
+                    height:70%;
+                    top:15%;
+                    padding-left:5%;
+                    width:80vw;
+                }
+                .review_list {
+                    flex-direction: column;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    width: 100%;
+                    height:35vh;
+                    overflow:auto;
+                    overflow-x:hidden;
+
+                }
+                .review_list::-webkit-scrollbar {
+                    width: 10px;
+                }
+                .review_list::-webkit-scrollbar-thumb {
+                background-color: #2f3542;
+                border-radius: 10px;
+                background-clip: padding-box;
+                border: 2px solid transparent;
+                }
+                .review_list::-webkit-scrollbar-track {
+                background-color: grey;
+                border-radius: 10px;
+                box-shadow: inset 0px 0px 5px white;
+                }
+                
+                #list_txt {
+                    align-self: start;
+                    font-size:30px;
+                    font-weight: bold;
+                    height: 5vh;
+                    
+                    
+                    
+                }
+                .review_row {
+                    flex-direction: row;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                    padding: 1% 0;
+                    
+                }
+                a {
+                    color: black;
+                    text-decoration: none;
+                    align-self: center;
+                    width: 50%;
+                }
+                a:hover {
+                    text-shadow: 2px 2px 2px gray;
+                    width: auto;
+                }
+                hr {
+                    color:black;
+
+                    margin: 0px;
+                    width:95vw;
+                }
+            </style>
         </head>
         <body> 
-        
-        <p><h3>작성한 리뷰</h3>${review_list}</p>
-        <p><h3>작성한 댓글</h3>${comment_list}</p>
-        
+        <div class="container">
+            <div class="review_list">
+                <p id="list_txt">내가 쓴 리뷰 조회-Review</p>
+                ${review_list}
+            </div>
+            <div class="review_list">
+                <p id="list_txt">내가 쓴 댓글 조회-Review</p>
+                ${comment_list}
+            </div>
+        </div>        
         </body>
     </html>
     `;
@@ -787,12 +938,87 @@ function board_template(board_list, comment_list) {
         <head>
             <title>Q&A</title>
             <meta charset="utf-8">
+            <style>
+                .container {
+                    position: absolute;
+                    height:70%;
+                    top:15%;
+                    padding-left:5%;
+                    width:80vw;
+                }
+                .board_list {
+                    flex-direction: column;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    width: 100%;
+                    height:35vh;
+                    overflow:auto;
+                    overflow-x:hidden;
+
+                }
+                .board_list::-webkit-scrollbar {
+                    width: 10px;
+                }
+                .board_list::-webkit-scrollbar-thumb {
+                background-color: #2f3542;
+                border-radius: 10px;
+                background-clip: padding-box;
+                border: 2px solid transparent;
+                }
+                .board_list::-webkit-scrollbar-track {
+                background-color: grey;
+                border-radius: 10px;
+                box-shadow: inset 0px 0px 5px white;
+                }
+                
+                #list_txt {
+                    align-self: start;
+                    font-size:30px;
+                    font-weight: bold;
+                    height: 5vh;
+                    
+                    
+                    
+                }
+                .board_row {
+                    flex-direction: row;
+                    flex: 1;
+                    justify-content: space-between;
+                    display: flex;
+                    max-width: 800px;
+                    width: 100%;
+                    padding: 1% 0;
+                }
+                a {
+                    color: black;
+                    text-decoration: none;
+                    align-self: center;
+                    width: 50%;
+                }
+                a:hover {
+                    text-shadow: 2px 2px 2px gray;
+                    width: auto;
+                }
+                hr {
+                    color:black;
+
+                    margin: 0px;
+                    width:95vw;
+                }
+            </style>
         </head>
         <body> 
-        
-        <p><h3>작성한 커뮤니티</h3>${board_list}</p>
-        <p><h3>작성한 답변</h3>${comment_list}</p>
-        
+        <div class="container">
+            <div class="board_list">
+                <p id="list_txt">내가 쓴 리뷰 조회-커뮤니티</p>
+                ${board_list}
+            </div>
+            <div class="board_list">
+                <p id="list_txt">내가 쓴 댓글 조회-커뮤니티</p>
+                ${comment_list}
+            </div>
+        </div> 
         </body>
     </html>
     `;
@@ -1189,7 +1415,11 @@ app.get('/qna/',function(req,res){
     db.query(`SELECT * FROM question WHERE user_id=?`,[id], function(error, questions) {
         if (Object.keys(questions).length > 0) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
-                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a><p>`;
+                question_list += 
+                `<div class="question_row">
+                    <a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a>
+                </div>
+                <hr/>`;
             }
         } else {
             question_list = `작성한 질문이 없습니다.`;
@@ -1199,7 +1429,12 @@ app.get('/qna/',function(req,res){
     db.query(`SELECT * FROM answer WHERE user_id=?`,[id], function(error, answers) {
         if (Object.keys(answers).length > 0) {
             for (var i = 0; i < Object.keys(answers).length; i++) {
-                answer_list += `<p><a href="/qna/question/${answers[i].question_number}">${answers[i].content}</a><p>`;
+                answer_list += 
+                `<div class="question_row">
+                    <a href="/qna/question/${answers[i].question_number}">${answers[i].content}</a>
+                </div>
+                <hr/>              
+                 `;
             }
         } else {
             answer_list = `작성한 대답이 없습니다.`;
@@ -1216,7 +1451,11 @@ app.get('/review/',function(req,res){
     db.query(`SELECT * FROM review WHERE user_id=?`,[id], function(error, reviews) {
         if (Object.keys(reviews).length > 0) {
             for (var i = 0; i < Object.keys(reviews).length; i++) {
-                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a><p>`;
+                review_list += 
+                `<div class="review_row">                
+                    <a href="/review/${reviews[i].review_number}">${reviews[i].title}</a>
+                </div>
+                <hr/>    `;
             }
         } else {
             review_list = `작성한 리뷰가 없습니다.`;
@@ -1226,7 +1465,11 @@ app.get('/review/',function(req,res){
     db.query(`SELECT * FROM review_comment WHERE user_id=?`,[id], function(error, comments) {
         if (Object.keys(comments).length > 0) {
             for (var i = 0; i < Object.keys(comments).length; i++) {
-                comment_list += `<p><a href="/review/${comments[i].review_number}">${comments[i].content}</a><p>`;
+                comment_list += 
+                `<div class="review_row">     
+                <a href="/review/${comments[i].review_number}">${comments[i].content}</a>
+                </div>
+                <hr/>`;
             }
         } else {
             comment_list = `작성한 댓글이 없습니다.`;
@@ -1243,8 +1486,15 @@ app.get('/board/',function(req,res){
     db.query(`SELECT * FROM board WHERE user_id=?`,[id], function(error, boards) {
         if (Object.keys(boards).length > 0) {
             for (var i = 0; i < Object.keys(boards).length; i++) {
-                board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}</a><p>`;
+                board_list += 
+                `<div class="board_row">
+                
+                <a href="/board/written/${boards[i].board_number}">${boards[i].title}</a>
+                </div>
+                <hr/>
+                `;
             }
+
         } else {
             board_list = `작성한 커뮤니티가 없습니다.`;
         }
@@ -1253,7 +1503,11 @@ app.get('/board/',function(req,res){
     db.query(`SELECT * FROM board_comment WHERE user_id=?`,[id], function(error, comments) {
         if (Object.keys(comments).length > 0) {
             for (var i = 0; i < Object.keys(comments).length; i++) {
-                comment_list += `<p><a href="/board/written/${comments[i].board_number}">${comments[i].content}</a><p>`;
+                comment_list += 
+                `<div class="board_row">
+                <a href="/board/written/${comments[i].board_number}">${comments[i].content}</a>
+                </div>
+                <hr/>`;
             }
         } else {
             comment_list = `작성한 답변이 없습니다.`;
