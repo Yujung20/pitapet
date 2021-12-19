@@ -2793,7 +2793,7 @@ app.get('/qna/',function(req,res){
                  `;
             }
         } else {
-            answer_list = `작성한 대답이 없습니다.`;
+            answer_list = `작성한 답변이 없습니다.`;
         }
         res.send(qna_template(current,question_list,answer_list));                       
 
@@ -2888,7 +2888,7 @@ app.get('/board/',function(req,res){
                 <hr/>`;
             }
         } else {
-            comment_list = `작성한 답변이 없습니다.`;
+            comment_list = `작성한 댓글이 없습니다.`;
         }
         res.send(board_template(current,board_list,comment_list));                       
 
