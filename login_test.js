@@ -602,6 +602,9 @@ function id_found_template(current,found_id){
                 margin-left: auto;
                 margin-right: auto;
             }
+            #found_id {
+                font-size: 20px;
+            }
             </style>
         </head>
         <body>
@@ -630,7 +633,7 @@ function id_found_template(current,found_id){
         </nav>
             <div class="find_id">
                 <h1>아이디 찾기</h1>
-                <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
+                <p id="found_id">귀하의 아이디는 <strong>[ ${found_id} ]</strong> 입니다!</p>
                 <button type="button" onclick="location.href='/login'">로그인</button>
             </div>
         </body>
