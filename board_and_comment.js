@@ -991,15 +991,21 @@ function main_template(current,boardlist,search_title){
       const content = body.content;
       const category = body.category;
       const user = req.session.user_id;
-      db.query(`INSERT INTO board (user_id, title, content, category) VALUES(?, ?, ?, ?)`,
-      [user, title, content, category],
-      function(error, result) {
+
+      if(title === '' || content === '' || category === '') {
+        res.send('<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/board/write";</script>');
+      }
+      else {
+        db.query(`INSERT INTO board (user_id, title, content, category) VALUES(?, ?, ?, ?)`,
+        [user, title, content, category],
+        function(error, result) {
           if (error) {
               res.send(error);
               throw error;
           }
           res.redirect('/board');
-      })
+        })
+    }
   })
   
   app.get('/written/:board_id', function(req, res) {
@@ -1140,21 +1146,21 @@ function main_template(current,boardlist,search_title){
       const content1 = body.content;
       const user1 = req.session.user_id;
   
-      db.query(`INSERT INTO board_comment (user_id, content, board_number) VALUES (?, ?, ?)`,
-      [user1, content1, board_id],
-      function(error, comments) {
-          if (error) {
-              res.send(error);
-              throw error;
-          }
-          /*else if (content1.length < 1) {
-            res.send('<script type="text/javascript">alert("댓글을 입력해주세요.");location.href=/board/written/${board_id}";</script>');
-          }*/
-          else {
-          console.log(comments);
-          res.redirect(`/board/written/${board_id}`);
-          }
-      })
+      if(content1 === '') {
+        res.send(`<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/board/written/${board_id}";</script>`);     
+      }
+      else {
+        db.query(`INSERT INTO board_comment (user_id, content, board_number) VALUES (?, ?, ?)`,
+        [user1, content1, board_id],
+        function(error, comments) {
+            if (error) {
+                res.send(error);
+                throw error;
+            }
+            console.log(comments);
+            res.redirect(`/board/written/${board_id}`);
+        })
+      }
   });
   
   app.get('/written/:board_id/update/', function(req, res) {
@@ -1171,16 +1177,16 @@ function main_template(current,boardlist,search_title){
           current=`<li> <a href="/login">로그인</a> </li>
           <li> <a href="/signup">회원가입</a> </li>`
       }
-      db.query(`SELECT * FROM board WHERE board_number = ?`,
-      [board_id],
-      function(err, board) {
+        db.query(`SELECT * FROM board WHERE board_number = ?`,
+        [board_id],
+        function(err, board) {
           if (err) {
               res.send(err);
               throw err;
           }
           console.log(board);
           res.send(board_update_template(current,board_id, board[0].title, board[0].content, board[0].category));
-      })
+        })
   });
   
   app.post('/written/:board_id/update_process/', function(req, res) {
@@ -1191,9 +1197,13 @@ function main_template(current,boardlist,search_title){
       const content = body.content;
       const category = body.category;
   
-      db.query(`UPDATE board SET title=?, content=?, category=? WHERE board_number = ?`,
-      [title, content, category, board_id],
-      function(err, board) {
+      if(title === '' || content === '' || category === '') {
+          res.send(`<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/board/written/${board_id}/update";</script>`);
+      }
+      else {
+        db.query(`UPDATE board SET title=?, content=?, category=? WHERE board_number = ?`,
+        [title, content, category, board_id],
+        function(err, board) {
           if(err) {
               res.send(err);
               throw err;
@@ -1201,6 +1211,7 @@ function main_template(current,boardlist,search_title){
           console.log(board);
           res.redirect(`/board/written/${board_id}/`);
       })
+    }
   });
   
   app.get('/written/:board_id/delete/', function(req, res) {

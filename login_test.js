@@ -77,7 +77,7 @@ app.get('/login',(req,res)=> {
             backgroung-color:#C4D6F238;
             border-radius: 10px;
             position: absolute;
-            width: 20vw;
+            width: 25vw;
             height: 15vh;
             left: 50%;
             top: 35%;
@@ -383,11 +383,66 @@ function id_found_template(found_id){
         <head>
             <title>ID found</title>
             <meta charset="utf-8">
+<<<<<<< HEAD
+            <style>
+            form {
+                display: flex;
+                flex-direction: column;
+                max-width: 500px;
+                width: 100%;
+                margin-top: 10%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+    
+            input[type=text] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
+
+            button {
+                background-color: #0066FF;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                border-radius: 15px;
+            }
+        
+            button:hover {
+                opacity: 0.8;
+            }
+            .find_id {
+                display: flex;
+                flex-direction: column;
+                max-width: 500px;
+                width: 100%;
+                margin-top: 10%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            </style>
+        </head>
+        <body>
+            <div class="find_id">
+                <h1>아이디 찾기</h1>
+                <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
+                <button type="button" onclick="location.href='/login'">로그인</button>
+            </div>
+=======
         </head>
         <body>
         <h1>아이디찾기</h1>
             <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
             <a href="/login">로그인</a>
+>>>>>>> 7a11d49f63b35a3b23e9a9da8eef5cdeb46b8b5b
         </body>
     </html>
     `;
@@ -600,6 +655,53 @@ app.get('/find_id', (req, res)=>{
         <head>
             <title>Find ID</title>
             <meta charset="utf-8">
+<<<<<<< HEAD
+            <style>
+            form {
+                display: flex;
+                flex-direction: column;
+                max-width: 500px;
+                width: 100%;
+                margin-top: 10%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+    
+            input[type=text] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
+
+            button {
+                background-color: #0066FF;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                border-radius: 15px;
+            }
+        
+            button:hover {
+                opacity: 0.8;
+            }
+            </style>
+        </head>
+        <body>
+            <form action="/find_id" method="post">
+                <h1>아이디 찾기</h1>
+                <label for="nickname">닉네임</label>
+                <p><input type="text" name="nickname" placeholder="nickname"></p>
+                <label for="email">이메일</label>
+                <p><input type="text" name="email" placeholder="email"></p>
+                <button type="submit">확인</button>
+=======
         </head>
         <body>
         <h1>아이디찾기</h1>
@@ -607,6 +709,7 @@ app.get('/find_id', (req, res)=>{
                 <p><input type="text" name="nickname" placeholder="nickname"></p>
                 <p><input type="text" name="email" placeholder="email"></p>
                 <p><input type="submit" value="확인"></p>
+>>>>>>> 7a11d49f63b35a3b23e9a9da8eef5cdeb46b8b5b
             </form>
         </body>
     </html>
