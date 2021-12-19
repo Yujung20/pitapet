@@ -204,7 +204,7 @@ function main_template(current,question_list, search_title, search_content) {
             </div>
 
             <ul class="navbar_menu">
-                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/qna" class="nav_selected">Q&A</a> </li>
                 <li> <a href="/review">리뷰</a> </li>
                 <li> <a href="/information">기본 정보</a> </li>
                 <li> <a href="/hospital">동반 정보</a>
@@ -456,7 +456,7 @@ function detail_template(current,question_id, question_title, question_content, 
             </div>
 
             <ul class="navbar_menu">
-                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/qna" class="nav_selected">Q&A</a> </li>
                 <li> <a href="/review">리뷰</a> </li>
                 <li> <a href="/information">기본 정보</a> </li>
                 <li> <a href="/hospital">동반 정보</a>
@@ -661,7 +661,7 @@ function question_template(current) {
             </div>
 
             <ul class="navbar_menu">
-                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/qna" class="nav_selected">Q&A</a> </li>
                 <li> <a href="/review">리뷰</a> </li>
                 <li> <a href="/information">기본 정보</a> </li>
                 <li> <a href="/hospital">동반 정보</a>
@@ -866,7 +866,7 @@ function question_update_template(current,question_id, question_title, question_
             </div>
 
             <ul class="navbar_menu">
-                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/qna" class="nav_selected">Q&A</a> </li>
                 <li> <a href="/review">리뷰</a> </li>
                 <li> <a href="/information">기본 정보</a> </li>
                 <li> <a href="/hospital">동반 정보</a>
