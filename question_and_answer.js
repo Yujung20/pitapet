@@ -490,7 +490,7 @@ function detail_template(current,question_id, question_title, question_content, 
                 <form action="/qna/write_answer/" method="post">
                     <input type="hidden" name="question_id" value="${question_id}">
                     <div class="write_answer">
-                        <textarea name="content"></textarea>
+                        <textarea maxlength="2000" name="content"></textarea>
                         <input type="submit" id="write_answer_btn" value="답변하기">
                     </div>
                 </form>
@@ -681,7 +681,7 @@ function question_template(current) {
                 <form action="/qna/write_question/" method="post">
                     <div class="row">
                         <label for="title">제목</label>
-                        <p><input type"text" name="title" id="title" placeholder="제목"></p>
+                        <p><input maxlength="50" type"text" name="title" id="title" placeholder="제목"></p>
                     </div>
                     <div class="row">
                         <label for="category">종</label>
@@ -699,7 +699,7 @@ function question_template(current) {
                     </div>
                     <div class="row">
                         <label for="content">내용</label>
-                        <p><textarea name="content" id="content"></textarea></p>
+                        <p><textarea maxlength="2000" name="content" id="content"></textarea></p>
                     </div>
                     <p><input type="submit" value="질문 등록하기"></p>
                 </form>
@@ -886,7 +886,7 @@ function question_update_template(current,question_id, question_title, question_
                 <form action="/qna/question/${question_id}/update_process/" method="post">
                 <div class="row">
                         <label for="title">제목</label>    
-                    <p><input type="text" id="title" name="title" value="${question_title}"></p>
+                    <p><input maxlength="50" type="text" id="title" name="title" value="${question_title}"></p>
                 </div>
                 <div class="row">
                     <label for="category">종</label>
@@ -896,7 +896,7 @@ function question_update_template(current,question_id, question_title, question_
                 </div>
                 <div class="row">
                     <label for="content">내용</label>
-                    <p><textarea id="content" name="content">${question_content}</textarea></p>
+                    <p><textarea maxlength="2000" id="content" name="content">${question_content}</textarea></p>
                 </div>
                 <p><input type="submit" value="수정"></p>
                 </form>
