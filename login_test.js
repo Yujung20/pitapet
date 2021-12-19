@@ -1218,7 +1218,7 @@ app.get('/find_password', (req, res)=>{
     res.send(output);
 })
 
-app.post('/find_password', async (req, res, next) => {
+app.post('/find_password', async (req, res) => {
     const written = req.body;
     const id = written.id;
     const email = written.email;
@@ -1272,7 +1272,6 @@ app.post('/find_password', async (req, res, next) => {
                             console.log(result);
                             req.session.destroy(function(err){
                                 if (err) throw err;
-                                res.redirect('/');
                             });
                         }                
                     });
@@ -1295,8 +1294,10 @@ app.post('/find_password', async (req, res, next) => {
                         console.log('Email sent: ' + info.response);
                     }
                 });
+
+                return res.send('<script type="text/javascript">alert("이메일을 전송했습니다. 메일함을 확인해주세요");location.href="/";</script>');
             } else {
-                res.send('<script type="text/javascript">alert("존재하지 않는 회원입니다. 아이디 또는 이메일을 확인해주세요.");location.href="/find_password";</script>');
+                return res.send('<script type="text/javascript">alert("존재하지 않는 회원입니다. 아이디 또는 이메일을 확인해주세요.");location.href="/find_password";</script>');
             }
         } 
     })
