@@ -2429,7 +2429,10 @@ app.post('/user_information/password_update/', function(req,res){
     const id=req.session.user_id;
     if (pwd1 !== pwd2) {
         res.send('<script type="text/javascript">alert("비밀번호가 일치하지 않습니다."); document.location.href="/mypage/user_information/password/";</script>');
-    } else {
+    } else if(pwd1 ===''|| pwd2===''){
+        res.send('<script type="text/javascript">alert("비밀번호를 입력해주세요."); document.location.href="/mypage/user_information/password/";</script>');
+
+    } else{
         bcrypt.hash(pwd1, 10, function(error, hash) {
             db.query(`UPDATE user SET password=? WHERE id = ?`,
             [hash, id], 
@@ -2790,7 +2793,7 @@ app.get('/qna/',function(req,res){
                  `;
             }
         } else {
-            answer_list = `작성한 대답이 없습니다.`;
+            answer_list = `작성한 답변이 없습니다.`;
         }
         res.send(qna_template(current,question_list,answer_list));                       
 
@@ -2885,7 +2888,7 @@ app.get('/board/',function(req,res){
                 <hr/>`;
             }
         } else {
-            comment_list = `작성한 답변이 없습니다.`;
+            comment_list = `작성한 댓글이 없습니다.`;
         }
         res.send(board_template(current,board_list,comment_list));                       
 
