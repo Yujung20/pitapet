@@ -894,7 +894,7 @@ function email_template(current,email_check_txt, check_email) {
             <label for="email">새 이메일</label>
 
             <div class="row">
-                <p><input type="email" name="email" placeholder="email" value="${check_email}" formaction="/mypage/user_information/email_check"> </p>
+                <p><input type="email" maxlength="30" name="email" placeholder="email" value="${check_email}" formaction="/mypage/user_information/email_check"> </p>
                 <input type="submit" id="email" value="이메일 중복 확인" formaction="/mypage/user_information/email_check"></p>
                 </div>
                 <label id="email_check">${email_check_txt}</label>
@@ -1078,7 +1078,7 @@ function nickname_template(current, nickname_check_txt, check_nickname) {
     <label for="nickname">새 닉네임</label>
 
     <div class="row">
-        <p><input type="nickname" name="nickname" placeholder="nickname" value="${check_nickname}" formaction="/mypage/user_information/nickname_check"> </p>
+        <p><input type="nickname" maxlength="10" name="nickname" placeholder="nickname" value="${check_nickname}" formaction="/mypage/user_information/nickname_check"> </p>
         <input type="submit" id="nickname" value="닉네임 중복 확인" formaction="/mypage/user_information/nickname_check"></p>
         </div>
         <label id="nickname_check">${nickname_check_txt}</label>
@@ -1090,7 +1090,6 @@ function nickname_template(current, nickname_check_txt, check_nickname) {
         </html>
     `;
 }
-
 
 function care_service_template(current,care_service_list) {
     return `
@@ -1177,7 +1176,7 @@ function care_service_template(current,care_service_list) {
                 flex-direction: column;
                 max-width: 1000px;
                 width: 100%;
-                margin-top: 10%;
+                margin-top: 3%;
                 margin-left: auto;
                 margin-right: auto;
             }
@@ -1294,7 +1293,31 @@ function care_service_template(current,care_service_list) {
     `;
 }
 
-function care_service_update_template(current,care_service_name, care_service_category, care_service_number, care_service_date, care_service_account) {
+function care_service_update_template(current, care_service_name, care_service_category, care_service_number, care_service_date, care_service_account) {
+    
+    function change_month (eng) {
+        if (eng == 'Jan') { return "01";}
+        else if (eng == 'Feb') { return "02";}
+        else if (eng == 'Mar') { return "03";}
+        else if (eng == 'Apr') { return "04";}
+        else if (eng == 'May') { return "05";}
+        else if (eng == 'Jun') { return "06";}
+        else if (eng == 'Jul') { return "07";}
+        else if (eng == 'Aug') { return "08";}
+        else if (eng == 'Sep') { return "09";}
+        else if (eng == 'Oct') { return "10";}
+        else if (eng == 'Nov') { return "11";}
+        else if (eng == 'Dec') { return "12";}
+        else { console.log("월 형태가 아닙니다!"); }
+    }
+    
+    const rdate = String(care_service_date).split(" ");
+    const month = change_month(rdate[1]);
+    const dateString = rdate[3] + '-' + month + '-' + rdate[2];
+
+    console.log(dateString);
+    
+    
     return `
     <!doctype html>
     <html>
@@ -1379,7 +1402,7 @@ function care_service_update_template(current,care_service_name, care_service_ca
                 flex-direction: column;
                 max-width: 500px;
                 width: 100%;
-                margin-top: 10%;
+                margin-top: 3%;
                 margin-left: auto;
                 margin-right: auto;
             }
@@ -1449,8 +1472,8 @@ function care_service_update_template(current,care_service_name, care_service_ca
                 <h1>케어서비스 정보 수정</h1>
                 <p>${care_service_name}</p>
                 <p>${care_service_category}</p>
-                <p><input type="date" name="mail_date" min="1990-01-01" max="2022-12-31" value=${care_service_date}></p>
-                <p><textarea name="note" value=${care_service_account}></textarea></p>
+                <p><input type="date" name="mail_date" min="1990-01-01" max="2022-12-31" value="${dateString}"></p>
+                <p><textarea name="note" maxlength="20">${care_service_account}</textarea></p>
                 <button type="submit">수정</button>
             </form>
         </body>
@@ -2418,9 +2441,9 @@ app.get('/user_information/password/',function(req,res){
     <form action="/mypage/user_information/password_update/" method="post">
         <div class="text"><b> 비밀번호 변경하기</b> </div>
         <label for="pwd">새 비밀번호</label>
-        <p><input type="password" name="pwd1" placeholder="password"></p>
+        <p><input maxlength="8" type="password" name="pwd1" placeholder="password"></p>
         <label for="pwd">새 비밀번호 확인</label>
-        <p><input type="password" name="pwd2" placeholder="password check"></p>    
+        <p><input maxlength="8" type="password" name="pwd2" placeholder="password check"></p>    
         <p><input type="submit" value="확인"></p>
         
     </form>
@@ -2673,7 +2696,7 @@ app.get('/care_service_information/', function(req, res) {
 
                         date_list_display = ``;
                     }
-                    res.end(care_service_template(current,care_service_list));
+                    res.end(care_service_template(current, care_service_list));
                 }
             });
             
@@ -2708,7 +2731,7 @@ app.get('/care_service_information/update', function(req, res) {
                 throw error;
             }
 
-            res.end(care_service_update_template(current,result1[0].name, result1[0].mail_category, care_service_number,
+            res.end(care_service_update_template(current, result1[0].name, result1[0].mail_category, care_service_number,
                 result2[0].mail_date, result1[0].account));
             })
         })
