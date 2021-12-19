@@ -1113,71 +1113,76 @@ app.post('/:review_id/update_process', upload.single('photo'), function(req, res
     const brand = body.brand;
     let photo = undefined;
 
-    if(body.photo_delete) {
-        photo_path = body.photo_delete;
-        if (Array.isArray(photo_path)) photo_path = photo_path[0];
-        console.log(photo_path);
-        photo_path = photo_path.split('/');
-        photo_path = './upload/' + photo_path[photo_path.length - 2] + '/' + photo_path[photo_path.length - 1];
-        console.log(photo_path);
-        fs.unlinkSync(decodeURI(photo_path));
-
-        if(req.file) {
-            photo = req.file.path;
-        } else {
-            photo = null;
-        }
+    if (title === '' || category === '' || content === '' || price === '' || product_name === '' || brand === '') {
+        res.send(`<script type="text/javascript">alert("모든 정보를 입력해주세요.");location.href="/review/update/${review_id}";</script>`);
     } else {
-        if (req.file) {
-            if (!body.photo_delete && body.img_src) {
-                res.send("<script>alert('사진을 먼저 지워주세요.');</script>")
+        if(body.photo_delete) {
+            photo_path = body.photo_delete;
+            if (Array.isArray(photo_path)) photo_path = photo_path[0];
+            console.log(photo_path);
+            photo_path = photo_path.split('/');
+            photo_path = './upload/' + photo_path[photo_path.length - 2] + '/' + photo_path[photo_path.length - 1];
+            console.log(photo_path);
+            fs.unlinkSync(decodeURI(photo_path));
+    
+            if(req.file) {
+                photo = req.file.path;
+            } else {
+                photo = null;
             }
-            photo = req.file.path;
         } else {
-            db.query(`UPDATE review SET title=?, category=?, content=?, price=?, product_name=?, brand=? WHERE review_number=?`,
-            [title, category, content, price, product_name, brand, review_id],
-            function(err, result) {
-                if (err) {
-                    res.send(err);
-                    throw err;
+            if (req.file) {
+                if (!body.photo_delete && body.img_src) {
+                    res.send(`<script type="text/javascript">alert("사진은 한 장만 올릴 수 있습니다.");location.href="/review/update/${review_id}";</script>`)
+                    return;
                 }
-                console.log(result);
-                res.redirect(`/review/${review_id}`);
-            })
-            return;
-
-            // if (body.img_src) {
-            //     photo = body.img_src;
-            //     if (Array.isArray(photo)) photo = photo[0];
-            //     console.log(photo);
-            //     photo = photo.split('/');
-            //     photo = '/upload/' + photo[photo.length - 2] + '/' + photo[photo.length - 1];
-            //     console.log(photo);
-            // } else {
-            //     photo = null;
-            // }
-            
-        }
-    }
-
-    console.log(body);
-
-    // let photo_path = body.img_src;
-    // console.log(photo_path);
-    // photo_path = photo_path.split('/');
-    // photo_path = './upload/' + photo_path[photo_path.length - 2] + '/' + photo_path[photo_path.length - 1];
-    // console.log(photo_path);
-
-    db.query(`UPDATE review SET title=?, category=?, content=?, price=?, product_name=?, brand=?, photo=? WHERE review_number=?`,
-    [title, category, content, price, product_name, brand, photo, review_id],
-    function(err, result) {
-        if (err) {
-            res.send(err);
-            throw err;
+                photo = req.file.path;
+            } else {
+                db.query(`UPDATE review SET title=?, category=?, content=?, price=?, product_name=?, brand=? WHERE review_number=?`,
+                [title, category, content, price, product_name, brand, review_id],
+                function(err, result) {
+                    if (err) {
+                        res.send(err);
+                        throw err;
+                    }
+                    console.log(result);
+                    res.redirect(`/review/${review_id}`);
+                })
+                return;
+    
+                // if (body.img_src) {
+                //     photo = body.img_src;
+                //     if (Array.isArray(photo)) photo = photo[0];
+                //     console.log(photo);
+                //     photo = photo.split('/');
+                //     photo = '/upload/' + photo[photo.length - 2] + '/' + photo[photo.length - 1];
+                //     console.log(photo);
+                // } else {
+                //     photo = null;
+                // }
+                
             }
-        console.log(result);
-        res.redirect(`/review/${review_id}`);
-    })
+        }
+    
+        console.log(body);
+    
+        // let photo_path = body.img_src;
+        // console.log(photo_path);
+        // photo_path = photo_path.split('/');
+        // photo_path = './upload/' + photo_path[photo_path.length - 2] + '/' + photo_path[photo_path.length - 1];
+        // console.log(photo_path);
+    
+        db.query(`UPDATE review SET title=?, category=?, content=?, price=?, product_name=?, brand=?, photo=? WHERE review_number=?`,
+        [title, category, content, price, product_name, brand, photo, review_id],
+        function(err, result) {
+            if (err) {
+                res.send(err);
+                throw err;
+                }
+            console.log(result);
+            res.redirect(`/review/${review_id}`);
+        })
+    }
 })
 
 app.post('/delete', function(req, res) {
