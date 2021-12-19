@@ -92,7 +92,7 @@ function template(current,animal_name, name_check_txt) {
                 flex-direction: column;
                 max-width: 500px;
                 width: 100%;
-                margin-top: 10%;
+                margin-top: 3%;
                 margin-left: auto;
                 margin-right: auto;
             }
@@ -203,34 +203,37 @@ app.post('/create_mail', function(req, res) {
     const date = body.mail_date;
     const note = body.note;
     var mail_num;
-    
-    db.query(`INSERT INTO care_service (owner_id, name, mail_category, account) VALUES(?, ?, ?, ?)`,
-    [owner, pet_name, category, note],
-    function(error, result) {
-        if (error) {
-            res.send(error);
-            throw error;
-        }
-        console.log(result);
-    });
-
-    db.query('SELECT mail_number FROM care_service order by mail_number desc limit 1', (error, result) => {
-        if (error) throw error;
-        else mail_num = result[0].mail_number;
-        console.log(mail_num);
-
-        db.query('INSERT INTO care_service_date (mail_number, mail_date) VALUES(?, ?)',
-        [mail_num, date],
+    if (pet_name.length < 1) {
+        res.send('<script type="text/javascript">alert("반려동물 이름을 입력해주세요.");location.href="/create_care_service";</script>');
+    } else {
+        db.query(`INSERT INTO care_service (owner_id, name, mail_category, account) VALUES(?, ?, ?, ?)`,
+        [owner, pet_name, category, note],
         function(error, result) {
             if (error) {
                 res.send(error);
                 throw error;
             }
             console.log(result);
-            res.redirect('/mypage/');
-            res.end();
         });
-    });
+
+        db.query('SELECT mail_number FROM care_service order by mail_number desc limit 1', (error, result) => {
+            if (error) throw error;
+            else mail_num = result[0].mail_number;
+            console.log(mail_num);
+
+            db.query('INSERT INTO care_service_date (mail_number, mail_date) VALUES(?, ?)',
+            [mail_num, date],
+            function(error, result) {
+                if (error) {
+                    res.send(error);
+                    throw error;
+                }
+                console.log(result);
+                res.redirect('/mypage/');
+                res.end();
+            });
+        });
+    } 
 });
 
 db.query(`SELECT * FROM care_service`, function(error, care_services) {
