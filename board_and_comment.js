@@ -715,7 +715,7 @@ function main_template(current,boardlist,search_title){
                 <form action="/board/write/" method="post">
                 <div class="row">
                     <label for="title">제목</label>
-                    <p><input type="text" name="title" placeholder="title"></p>
+                    <p><input type="text" name="title" placeholder="제목"></p>
                 </div>
                 <div class="row">
                     <label for="category">카테고리</label>
@@ -976,14 +976,17 @@ function main_template(current,boardlist,search_title){
         current=`<li> <a href="/logout">로그아웃</a> </li>
         <li> <a href="/mypage">${id}--마이페이지</a> </li>`
         console.log(id)
-        res.end(board_template());
     }
     else{
         current=`<li> <a href="/login">로그인</a> </li>
         <li> <a href="/signup">회원가입</a> </li>`
+    }
+    if(req.session.loggedin) {
+        res.end(board_template(current));
+    }
+    else {
         res.send('<script type="text/javascript">alert("로그인이 필요한 서비스입니다.");location.href="/login";</script>');
     }
-      res.end(board_template(current));
 
   })
   
