@@ -133,7 +133,13 @@ function main_template(current, marker_list,info_list,search_name){
                 align-self: center;
                 width: 20%;
             }
-            a:hover {
+            #underline {
+                color: black;
+                text-decoration: none;
+                align-self: center;
+                width: 20%;
+            }
+            #underline:hover {
                 border-bottom: 3px solid blue;
                 width: auto;
             }
@@ -441,7 +447,7 @@ app.get('/', function (req, res) {
                     `;
                     info_list+=
                     `<div class="hospital_row">
-                        <a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
+                        <a id-"underline" href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
                         <div class="pet_row">
                         <p class="pet">${pet_list}</p></div></div><hr/>`;
                 if(i+1!=(hospitals).length){
@@ -455,7 +461,7 @@ app.get('/', function (req, res) {
                 `;
                 info_list+=
                     `<div class="hospital_row">
-                        <a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
+                        <a id="underline" href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
                         <div class="pet_row">
                         <p class="pet">${pet_list}</p></div></div><hr/>`;
             res.end(main_template(current,marker_list,info_list));
@@ -515,7 +521,7 @@ app.get('/search/',function(req,res){
                     marker_list+=`content:'<div><h6>${hospitals[i].hospital_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                     `;
                     info_list+=`<div class="hospital_row">
-                        <a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
+                        <a id="underline" href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
                         <div class="pet_row">
                         <p class="pet">${pet_list}</p></div></div><hr/>`;
                 if(i+1!=(hospitals).length){
@@ -529,7 +535,7 @@ app.get('/search/',function(req,res){
                 `;
                 info_list+=
                     `<div class="hospital_row">
-                        <a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
+                        <a id="underline" href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
                         <div class="pet_row">
                         <p class="pet">${pet_list}</p></div></div><hr/>`;
             console.log(marker_list);

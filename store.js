@@ -132,10 +132,18 @@ function main_template(current,marker_list,info_list,search_name){
                 align-self: center;
                 width: 20%;
             }
-            a:hover {
+            
+            #underline {
+                color: black;
+                text-decoration: none;
+                align-self: center;
+                width: 20%;
+            }
+            #underline:hover {
                 border-bottom: 3px solid blue;
                 width: auto;
             }
+
             hr {
                 margin: 0 0 15px 0;
                 max-width: 1000px;
@@ -420,7 +428,7 @@ app.get('/', function (req, res) {
                     marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                     `;
                     info_list+=`<div class="store_row">
-                    <a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a>
+                    <a id="underline" href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a>
                     <div class="pet_row">
                     <p class="pet">${pet_list}</p></div></div><hr/>`;
                 if(i+1!=(stores).length){
@@ -433,7 +441,7 @@ app.get('/', function (req, res) {
             marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                 `;
             info_list+=`<div class="store_row">
-                <a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a>
+                <a id="underline" href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a>
                 <div class="pet_row">
                 <p class="pet">${pet_list}</p></div></div><hr/>`;
             res.end(main_template(current,marker_list,info_list));
@@ -493,7 +501,7 @@ app.get('/search/', function (req, res) {
                     marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                     `;
                     info_list+=`<div class="store_row">
-                    <a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a>
+                    <a id="underline" href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a>
                     <div class="pet_row">
                     <p class="pet">${pet_list}</p></div></div><hr/>`;
                 if(i+1!=(stores).length){
@@ -506,7 +514,7 @@ app.get('/search/', function (req, res) {
             marker_list+=`content:'<div><h6>${stores[i].store_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                 `;
             info_list+=`<div class="store_row">
-            <a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a>
+            <a id="underline" href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a>
             <div class="pet_row">
             <p class="pet">${pet_list}</p></div></div><hr/>`;
             console.log(marker_list);
