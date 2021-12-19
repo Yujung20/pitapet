@@ -797,16 +797,20 @@ app.post('/question/:question_id/update_process/', function(req, res) {
     const content = body.content;
     const category = body.category;
 
-    db.query(`UPDATE question SET title=?, content=?, category=? WHERE question_number = ?`,
-    [title, content, category, question_id],
-    function(err, question) {
-        if(err) {
-            res.send(err);
-            throw err;
-        }
-        console.log(question);
-        res.redirect(`/qna/question/${question_id}/`);
-    })
+    if (title === '' || content === '' || category === '') {
+        res.send(`<script type="text/javascript">alert("모든 정보를 입력해주세요.");location.href="/qna/question/${question_id}/update";</script>`);
+    } else {
+        db.query(`UPDATE question SET title=?, content=?, category=? WHERE question_number = ?`,
+        [title, content, category, question_id],
+        function(err, question) {
+            if(err) {
+                res.send(err);
+                throw err;
+            }
+            console.log(question);
+            res.redirect(`/qna/question/${question_id}/`);
+        })
+    }
 });
 
 app.post('/delete/', function(req, res) {
