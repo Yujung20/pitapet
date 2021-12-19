@@ -1,6 +1,5 @@
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-pool');
-//const cron = require('node-cron');
 
 var mysql = require('mysql');
 var db = require('./db');
@@ -31,10 +30,6 @@ function send_mail(address, name, category) {
   });
 }
 
-// 오늘 날짜의 pet_name, mail_category, mail_number을 추출하기 위해 사용한다.
-//var query1 = 'SELECT * FROM care_service WHERE care_service.mail_number IN (SELECT mail_number FROM care_service_date WHERE DATE_FORMAT(mail_date, "%Y-%m-%d") = CURDATE())';
-
-//cron.schedule('10 * * * * *', function() {
   var mail_number_array = [];
   var owner_id_array = [];
   var name_array = [];
@@ -68,5 +63,3 @@ function send_mail(address, name, category) {
 
     db.end();
   });
-//});
-//db.end();
