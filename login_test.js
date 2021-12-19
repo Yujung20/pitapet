@@ -383,7 +383,6 @@ function id_found_template(found_id){
         <head>
             <title>ID found</title>
             <meta charset="utf-8">
-<<<<<<< HEAD
             <style>
             form {
                 display: flex;
@@ -436,13 +435,6 @@ function id_found_template(found_id){
                 <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
                 <button type="button" onclick="location.href='/login'">로그인</button>
             </div>
-=======
-        </head>
-        <body>
-        <h1>아이디찾기</h1>
-            <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
-            <a href="/login">로그인</a>
->>>>>>> 7a11d49f63b35a3b23e9a9da8eef5cdeb46b8b5b
         </body>
     </html>
     `;
@@ -655,7 +647,6 @@ app.get('/find_id', (req, res)=>{
         <head>
             <title>Find ID</title>
             <meta charset="utf-8">
-<<<<<<< HEAD
             <style>
             form {
                 display: flex;
@@ -701,15 +692,6 @@ app.get('/find_id', (req, res)=>{
                 <label for="email">이메일</label>
                 <p><input type="text" name="email" placeholder="email"></p>
                 <button type="submit">확인</button>
-=======
-        </head>
-        <body>
-        <h1>아이디찾기</h1>
-            <form action="/find_id" method="post">
-                <p><input type="text" name="nickname" placeholder="nickname"></p>
-                <p><input type="text" name="email" placeholder="email"></p>
-                <p><input type="submit" value="확인"></p>
->>>>>>> 7a11d49f63b35a3b23e9a9da8eef5cdeb46b8b5b
             </form>
         </body>
     </html>
