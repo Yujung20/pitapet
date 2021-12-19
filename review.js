@@ -20,14 +20,87 @@ const upload = multer({
 });
 
 
-function main_template(review_list, search_title) {
+function main_template(current, review_list, search_title) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>리뷰</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
             <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
+            <style>
+            
                 .container {
                     display: flex;
                     flex-direction: column;
@@ -136,6 +209,29 @@ function main_template(review_list, search_title) {
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review" class="nav_selected">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <div class="container">
             <h1>Review</h1>
             <form class="row" action="/review/search?title=${search_title}">
@@ -154,13 +250,85 @@ function main_template(review_list, search_title) {
     `
 }
 
-function review_detail_template(review_number, title, content, date, price, product_name, brand, category, photo, user_id, comment_list, auth_btn) {
+function review_detail_template(current, review_number, title, content, date, price, product_name, brand, category, photo, user_id, comment_list, auth_btn) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>리뷰 보기</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
                 .container {
                     display: flex;
@@ -318,6 +486,29 @@ function review_detail_template(review_number, title, content, date, price, prod
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review" class="nav_selected">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <div class="container">
             <div class="review">
                 <div class="title_row">
@@ -360,13 +551,85 @@ function review_detail_template(review_number, title, content, date, price, prod
     `
 }
 
-function review_detail_no_photo_template(review_number, title, content, date, price, product_name, brand, category, user_id, comment_list, auth_btn) {
+function review_detail_no_photo_template(current,review_number, title, content, date, price, product_name, brand, category, user_id, comment_list, auth_btn) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>리뷰 보기</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
                 .container {
                     display: flex;
@@ -524,6 +787,29 @@ function review_detail_no_photo_template(review_number, title, content, date, pr
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review" class="nav_selected">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <div class="container">
             <div class="review">
                 <div class="title_row">
@@ -565,13 +851,85 @@ function review_detail_no_photo_template(review_number, title, content, date, pr
     `
 }
 
-function review_create_template() {
+function review_create_template(current) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>리뷰 작성하기</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
                 .container {
                     display: flex;
@@ -643,6 +1001,29 @@ function review_create_template() {
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review" class="nav_selected">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
             <div class="container">
             <form action="/review/write_review/" method="post" enctype="multipart/form-data">
                 <div class="row">
@@ -691,13 +1072,85 @@ function review_create_template() {
     `;
 }
 
-function review_update_template(review_id, title, category, content, price, product_name, brand, photo) {
+function review_update_template(current,review_id, title, category, content, price, product_name, brand, photo) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>리뷰 수정하기</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <script>
                 function remove_img() {
                     var photo = document.getElementById('photo');
@@ -799,6 +1252,29 @@ function review_update_template(review_id, title, category, content, price, prod
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review" class="nav_selected">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
             <div class="container">
             <form action="/review/${review_id}/update_process/" method="post" enctype="multipart/form-data" id="update_review" onclick="photo_src()">
                 <div class="row">
@@ -842,13 +1318,85 @@ function review_update_template(review_id, title, category, content, price, prod
     `;
 }
 
-function review_update_no_photo_template(review_id, title, category, content, price, product_name, brand) {
+function review_update_no_photo_template(current,review_id, title, category, content, price, product_name, brand) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>리뷰 수정하기</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
                 .container {
                     display: flex;
@@ -920,6 +1468,29 @@ function review_update_no_photo_template(review_id, title, category, content, pr
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review" class="nav_selected">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
             <div class="container">
             <form action="/review/${review_id}/update_process/" method="post" enctype="multipart/form-data" id="update_review" onclick="photo_src()">
                 <div class="row">
@@ -963,7 +1534,17 @@ function review_update_no_photo_template(review_id, title, category, content, pr
 
 app.get('/', function(req, res) {
     var review_list = '';
-    
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     db.query(`SELECT * FROM review ORDER BY date DESC`,
     function(error, reviews) {
         if (error) {
@@ -984,14 +1565,24 @@ app.get('/', function(req, res) {
                 <hr/>
                 `;
         }
-        res.send(main_template(review_list));
+        res.send(main_template(current,review_list));
     })
 })
 
 app.get('/search', function(req, res) {
     const keyword = req.query.search_title;
     var review_list = ``;
-
+    var current=``;
+    if(req.session.user_id){//로그인 한 경우
+        var uid=req.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+        console.log(uid)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
     if (keyword) {
     db.query(`SELECT * FROM review WHERE title LIKE ? ORDER BY date DESC`,
     ['%' + keyword + '%'],
@@ -1020,7 +1611,7 @@ app.get('/search', function(req, res) {
             review_list = `<p> 검색 결과가 없습니다. </p>`;
         }
 
-        res.send(main_template(review_list));
+        res.send(main_template(current,review_list));
     })
     }
     else {
@@ -1029,9 +1620,20 @@ app.get('/search', function(req, res) {
 })
 
 app.get('/write_review/', function(req, res) {
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     const user_login = req.session.loggedin;
     if (user_login) {
-        res.send(review_create_template());
+        res.send(review_create_template(current));
     } else {
         res.send('<script type="text/javascript">alert("로그인이 필요한 서비스입니다.");location.href="/login";</script>')
     }
@@ -1075,7 +1677,17 @@ app.get('/update/:review_id/', function(req, res) {
     const review_id = req.params.review_id;
     const category = ['개', '고양이', '토끼', '햄스터', '앵무새', '기니피그', '패럿', '고슴도치', '기타'];
     let category_list = '';
-
+    var current=``;
+    if(req.session.user_id){//로그인 한 경우
+        var uid=req.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+        console.log(uid)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
     db.query(`SELECT * FROM review WHERE review_number = ?`,
     [review_id],
     function (err, result) {
@@ -1095,9 +1707,9 @@ app.get('/update/:review_id/', function(req, res) {
             let photo = review.photo.toString('utf8')
             photo = photo.replace('upload/', '/')
             console.log(photo);
-            res.send(review_update_template(review_id, review.title, category_list, review.content, review.price, review.product_name, review.brand, photo))
+            res.send(review_update_template(current,review_id, review.title, category_list, review.content, review.price, review.product_name, review.brand, photo))
         } else {
-            res.send(review_update_no_photo_template(review_id, review.title, category_list, review.content, review.price, review.product_name, review.brand))
+            res.send(review_update_no_photo_template(current,review_id, review.title, category_list, review.content, review.price, review.product_name, review.brand))
         }
     })
 })
@@ -1218,7 +1830,17 @@ app.post('/delete', function(req, res) {
 app.get('/:review_id', function(req, res) {
     const review_id = req.params.review_id;
     let comment_list = ``;
-
+    var current=``;
+    if(req.session.user_id){//로그인 한 경우
+        var uid=req.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+        console.log(uid)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
     db.query(`SELECT * FROM review WHERE review_number = ?`, 
     [review_id],
     function(err, result) {
@@ -1289,9 +1911,9 @@ app.get('/:review_id', function(req, res) {
             if (review.photo !== null) {
                 let photo = review.photo.toString('utf8')
                 photo = photo.replace('upload/', '/')
-                res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list, auth_btn));
+                res.send(review_detail_template(current,review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list, auth_btn));
             } else {
-                res.send(review_detail_no_photo_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, review.user_id, comment_list, auth_btn));
+                res.send(review_detail_no_photo_template(current,review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, review.user_id, comment_list, auth_btn));
             }
         });
     })
@@ -1328,7 +1950,17 @@ app.post('/comment_update/:comment_number', function(req, res) {
     const review_id = body.review_number;
 
     let comment_list = ``;
-
+    var current=``;
+    if(req.session.user_id){//로그인 한 경우
+        var uid=req.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+        console.log(uid)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
     db.query(`SELECT * FROM review WHERE review_number = ?`, 
     [review_id],
     function(err, result) {
@@ -1392,9 +2024,9 @@ app.post('/comment_update/:comment_number', function(req, res) {
             if (review.photo !== null) {
                 let photo = review.photo.toString('utf8')
                 photo = photo.replace('upload/', '/')
-                res.send(review_detail_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list, ``));
+                res.send(review_detail_template(current,review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, photo, review.user_id, comment_list, ``));
             } else {
-                res.send(review_detail_no_photo_template(review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, review.user_id, comment_list, ``));
+                res.send(review_detail_no_photo_template(current,review.review_number, review.title, review.content, formating_rdate, review.price, review.product_name, review.brand, review.category, review.user_id, comment_list, ``));
             }
         });
     })

@@ -133,7 +133,13 @@ function main_template(current, marker_list,info_list,search_name){
                 align-self: center;
                 width: 20%;
             }
-            a:hover {
+            #underline {
+                color: black;
+                text-decoration: none;
+                align-self: center;
+                width: 20%;
+            }
+            #underline:hover {
                 border-bottom: 3px solid blue;
                 width: auto;
             }
@@ -356,6 +362,9 @@ function detail_template(current,detail_list){
             .nav_selected{
                 color: blue;
             }
+            .detail_list{
+                padding-left: 50px
+            }
             </style>
             <meta charset="utf-8">
         </head>
@@ -383,7 +392,7 @@ function detail_template(current,detail_list){
                 ${current}
             </ul>
         </nav>
-        <h5>${detail_list}</h5>
+        <div class="detail_list">${detail_list}</div>
         <br>
         </body>
         </html>
@@ -441,7 +450,7 @@ app.get('/', function (req, res) {
                     `;
                     info_list+=
                     `<div class="hospital_row">
-                        <a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
+                        <a id-"underline" href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
                         <div class="pet_row">
                         <p class="pet">${pet_list}</p></div></div><hr/>`;
                 if(i+1!=(hospitals).length){
@@ -455,7 +464,7 @@ app.get('/', function (req, res) {
                 `;
                 info_list+=
                     `<div class="hospital_row">
-                        <a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
+                        <a id="underline" href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
                         <div class="pet_row">
                         <p class="pet">${pet_list}</p></div></div><hr/>`;
             res.end(main_template(current,marker_list,info_list));
@@ -515,7 +524,7 @@ app.get('/search/',function(req,res){
                     marker_list+=`content:'<div><h6>${hospitals[i].hospital_name}<br>${pet_list}<br>${day_list}</h6></div>'},
                     `;
                     info_list+=`<div class="hospital_row">
-                        <a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
+                        <a id="underline" href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
                         <div class="pet_row">
                         <p class="pet">${pet_list}</p></div></div><hr/>`;
                 if(i+1!=(hospitals).length){
@@ -529,7 +538,7 @@ app.get('/search/',function(req,res){
                 `;
                 info_list+=
                     `<div class="hospital_row">
-                        <a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
+                        <a id="underline" href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
                         <div class="pet_row">
                         <p class="pet">${pet_list}</p></div></div><hr/>`;
             console.log(marker_list);
@@ -588,7 +597,7 @@ app.get('/info/',function(req,res){
                     }
                 }
                 if(H!=hospitals[i+1].hospital_name){
-                    detail_list+=`<div class="detail_info"><h2>${hospitals[i].hospital_name}</h2><h3>${pet_list}</h3><h4>${day_list}</h4></div>`;
+                    detail_list+=`<h2>${hospitals[i].hospital_name}</h2><h3>${pet_list}</h3><h4>${day_list}</h4>`;
                 if(i+1!=(hospitals).length){
                     pet_list=` `;
                     day_list=` `;
@@ -596,7 +605,7 @@ app.get('/info/',function(req,res){
                 }
                 }
             }
-            detail_list+=`<div class="detail_info"><h2>${hospitals[i].hospital_name}</h2><h3>${pet_list}</h3><h4>${day_list}</h4></div>`;
+            detail_list+=`<h2>${hospitals[i].hospital_name}</h2><h3>${pet_list}</h3><h4>${day_list}</h4>`;
             console.log(hospitals);
             res.send(detail_template(current, detail_list));
         })

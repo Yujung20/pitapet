@@ -176,7 +176,7 @@ function main_template(current,boardlist,search_title){
                 }
                 label {
                     align-self: center;
-                    width: 20%;
+                    width: 30%;
                     font-size: 13px;
                 }
                 #underline {

@@ -20,13 +20,85 @@ const upload = multer({
     })
 });
 
-function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) { 
+function template(current,id_check_txt, check_id, email_check_txt, nickname_check_txt) { 
     return `
         <!doctype html>
         <html>
             <head>
                 <title>test</title>
                 <meta charset="utf-8">
+                <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
                 <script>
                     window.onload = function() {
                         document.getElementById("id_save").value = getSavedValue("id_save");
@@ -216,6 +288,29 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
                 </style>
             </head>
             <body>
+            <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
             <div class="container">
                 <div class="tab">
                     <button id="general_btn" onclick="open_signup(this)">일반 회원</button>
@@ -259,7 +354,18 @@ function template(id_check_txt, check_id, email_check_txt, nickname_check_txt) {
 }
 
 app.get('/', function(request, response) {
-    response.end(template("아이디 중복을 확인하세요.", '', "이메일 중복을 확인하세요.", "닉네임 중복을 확인하세요."));
+    var current=``;
+            if(request.session.user_id){//로그인 한 경우
+                var uid=request.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
+    response.end(template(current,"아이디 중복을 확인하세요.", '', "이메일 중복을 확인하세요.", "닉네임 중복을 확인하세요."));
 });
 
 app.post('/id_check', upload.single('license'), function(request, response) {
@@ -268,7 +374,17 @@ app.post('/id_check', upload.single('license'), function(request, response) {
     const email_check_txt = post.email_check_txt;
     const nickname_check_txt = post.nickname_check_txt;
     console.log(id);
-
+    var current=``;
+    if(request.session.user_id){//로그인 한 경우
+        var uid=request.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+        console.log(uid)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
     var id_check_txt = "사용할 수 있는 아이디입니다."
     db.query(`SELECT * FROM user`, function(error, users) {
         if(error) {
@@ -281,7 +397,7 @@ app.post('/id_check', upload.single('license'), function(request, response) {
                 break;
             }
         }
-        response.send(template(id_check_txt, id, email_check_txt, nickname_check_txt));
+        response.send(template(current,id_check_txt, id, email_check_txt, nickname_check_txt));
     })
 });
 
@@ -291,7 +407,17 @@ app.post('/email_check', upload.single('license'), function(req, res) {
     const nickname_check_txt = body.nickname_check_txt;
     const email = body.email;
     const id = body.id;
-
+    var current=``;
+    if(req.session.user_id){//로그인 한 경우
+        var uid=req.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+        console.log(uid)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
     var email_check_txt = "사용할 수 있는 이메일입니다."
     db.query(`SELECT * FROM user`, function(err, result) {
         if (err) {
@@ -304,7 +430,7 @@ app.post('/email_check', upload.single('license'), function(req, res) {
                 break;
             }
         }
-        res.send(template(id_check_txt, id, email_check_txt, nickname_check_txt));
+        res.send(template(current,id_check_txt, id, email_check_txt, nickname_check_txt));
     })
 })
 
@@ -314,7 +440,17 @@ app.post('/nickname_check', upload.single('license'), function(req, res) {
     const email_check_txt = body.email_check_txt;
     const nickname = body.nickname;
     const id = body.id;
-
+    var current=``;
+    if(req.session.user_id){//로그인 한 경우
+        var uid=req.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+        console.log(uid)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
     var nickname_check_txt = "사용할 수 있는 닉네임입니다."
     db.query(`SELECT * FROM user`, function(err, result) {
         if (err) {
@@ -327,7 +463,7 @@ app.post('/nickname_check', upload.single('license'), function(req, res) {
                 break;
             }
         }
-        res.send(template(id_check_txt, id, email_check_txt, nickname_check_txt));
+        res.send(template(current,id_check_txt, id, email_check_txt, nickname_check_txt));
     })
 })
 
