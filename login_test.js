@@ -35,8 +35,8 @@ app.use(session({
     saveUninitialized: true,
     store: new MySQLStore({
         host: 'localhost',
-        user: 'dldms',
-        password: 'password!',
+        user: 'root',
+        password: 'password',
         database: 'pit_a_pet'
     })
 }))
