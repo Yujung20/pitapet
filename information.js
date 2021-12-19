@@ -86,40 +86,39 @@ function main_template(current, type_list) {
             .nav_selected{
                 color: blue;
             }
-            .container {
-                display: flex;
-                flex-direction: column;
-                flex: 1;
-                align-items: center;
-                width: 800px; 
-                position: absolute;
-            }
-            #underline {
-                color: black;
-                text-decoration: none;
-                width: 40%;
-                align-self: center;
-            }
-            #underline:hover {
-                border-bottom: 3px solid blue;
-                width: auto;
-            }
-            p {
-                display: flex;
-                flex: 1;
-                margin: 25px 0px;
-            }
-            .row {
-                flex: 1;
-                display: flex;
-                max-width: 500px;
-                width: 100%;
-                align: center;
-            }
+            
             hr {
                 margin: 0px;
                 max-width: 800px;
                 width: 100%;
+            }
+            .atag{
+                font-size:20px;
+                line-height:2.5;
+            }
+            .atag:hover {
+                border-bottom: 3px solid blue;
+            }
+            .information{
+                position: absolute;
+                height:70%;
+                top:15%;
+                padding-left:5%;
+            }
+            .information_{
+                padding-left:5%;
+            }
+            hr{
+                width:75vw;
+                color:black;
+                text-align:center;
+                left:5%;
+            }
+            .animal {
+                margin-top: 2%;
+                margin-bottom: 2%;
+                padding-left: 15%;
+                font-size: 43px;
             }
             </style>
             <meta charset="utf-8">
@@ -148,9 +147,10 @@ function main_template(current, type_list) {
                 ${current}
             </ul>
         </nav>
-        <hr/>
-        <div class="container" text-align="center">
-        ${type_list}
+        <div class="information">
+            <div class="information_">
+                ${type_list}
+            </div>
         </div>
         </body>
     </html>
@@ -301,10 +301,8 @@ app.get('/', function(req, res) {
         else{
             for (var i=0; i<Object.values(informations).length;i++){
                 type_list+=`
-                    <div class="row">
-                    <p><a id="underline" href="/information/type/?id=${informations[i].id}">${informations[i].type}</a></p>
-                    </div>
-                    <hr/>
+                    <p class="animal"><a class="atag" href="/information/type/?id=${informations[i].id}">${informations[i].type}</a></p>
+                    <hr class="one">
                 `;
             }
             res.end(main_template(current, type_list));

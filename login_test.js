@@ -35,8 +35,8 @@ app.use(session({
     saveUninitialized: true,
     store: new MySQLStore({
         host: 'localhost',
-        user: 'dldms',
-        password: 'password!',
+        user: 'root',
+        password: 'password',
         database: 'pit_a_pet'
     })
 }))
@@ -384,64 +384,56 @@ function id_found_template(found_id){
             <title>ID found</title>
             <meta charset="utf-8">
             <style>
-                button {
-                    background-color: #0066FF;
-                    color: white;
-                    padding: 10px 0px 10px 0px;
-                    margin: 5px 0 0 0;
-                    border: none;
-                    cursor: pointer;
-                    max-width: 500px;
-                    width: 80%;
-                    opacity: 0.9;
-                    border-radius: 10px;
-                    float: right;
-                    box-shadow: 3px 3px 3px #b0b0b0;
-                }
+            form {
+                display: flex;
+                flex-direction: column;
+                max-width: 500px;
+                width: 100%;
+                margin-top: 10%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+    
+            input[type=text] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
 
-                table {
-                    flex: 1;
-                    display: flex;
-                    max-width: 500px;
-                    width: 100%;
-                }
-
-                .container {
-                    display: flex;
-                    flex-direction: column;
-                    flex: 1;
-                    align-items: center;
-                    margin-left: auto;
-                    margin-right: auto;
-                }
-                
-                .row {
-                    flex: 1;
-                    display: flex;
-                    max-width: 500px;
-                    width: 100%;
-                }
-
-                p {
-                    display: flex;
-                    flex: 1;
-                    margin: 10px 0px;
-                }
-
+            button {
+                background-color: #0066FF;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                border-radius: 15px;
+            }
+        
+            button:hover {
+                opacity: 0.8;
+            }
+            .find_id {
+                display: flex;
+                flex-direction: column;
+                max-width: 500px;
+                width: 100%;
+                margin-top: 10%;
+                margin-left: auto;
+                margin-right: auto;
+            }
             </style>
         </head>
         <body>
-            <div class="container">
-                <div class="row">
-                    <table>
-                    <tr align="center">
-                        <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
-                    </tr>
-                    </table>
-                </div>
-                <div class="row">
-                    <button type="button" onclick="location.href='/login'">로그인</button>
-                </div>
+            <div class="find_id">
+                <h1>아이디 찾기</h1>
+                <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
+                <button type="button" onclick="location.href='/login'">로그인</button>
             </div>
         </body>
     </html>
@@ -662,75 +654,51 @@ app.get('/find_id', (req, res)=>{
             <title>Find ID</title>
             <meta charset="utf-8">
             <style>
-                .container {
+            form {
                 display: flex;
                 flex-direction: column;
-                flex: 1;
-                align-items: center;
-                margin-left: auto;
-                margin-right: auto;
-                }
-
-                form {
                 max-width: 500px;
                 width: 100%;
-                }
+                margin-top: 10%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+    
+            input[type=text] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                border-radius: 15px;
+            }
 
-                .row {
-                    flex: 1;
-                    display: flex;
-                    max-width: 500px;
-                    width: 100%;
-                }
-
-                label {
-                align-self: center;
-                width: 20%;
-                }
-
-                p {
-                    display: flex;
-                    flex: 1;
-                    margin: 10px 0px;
-                }
-
-                input[type=text], #findid_nickname, #findid_email {
-                    width: 100%;
-                    padding: 10px;
-                    margin: 3px 0 0 20px;
-                    display: flex;
-                    border: 1px solid #000000;
-                    border-radius: 10px;
-                    background: none;   
-                    align-self: flex-end;
-                }
-                input[type="submit"] {
-                    background-color: #0066FF;
-                    color: white;
-                    padding: 10px 0px 10px 0px;
-                    margin: 3px 0 0 5px;
-                    border: none;
-                    cursor: pointer;
-                    width: 100%;
-                    opacity: 0.9;
-                    border-radius: 10px;
-                    box-shadow: 3px 3px 3px #b0b0b0;
-                }
+            button {
+                background-color: #0066FF;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                border-radius: 15px;
+            }
+        
+            button:hover {
+                opacity: 0.8;
+            }
             </style>
         </head>
         <body>
-            <div class="container">
-                <form action="/find_id" method="post">
-                <div class="row">
-                    <label for="findid_nickname">닉네임</label>
-                    <input type="text" name="nickname" placeholder="nickname" id="findid_nickname">
-                </div>
-                <div class="row">
-                    <label for="findid_email">이메일</label>
-                    <input type="text" name="email" placeholder="email" id="findid_email">
-                </div>
-                <p><input type="submit" value="아이디 찾기"></p>
-            </div>
+            <form action="/find_id" method="post">
+                <h1>아이디 찾기</h1>
+                <label for="nickname">닉네임</label>
+                <p><input type="text" name="nickname" placeholder="nickname"></p>
+                <label for="email">이메일</label>
+                <p><input type="text" name="email" placeholder="email"></p>
+                <button type="submit">확인</button>
+            </form>
         </body>
     </html>
     `;
