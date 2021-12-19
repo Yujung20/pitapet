@@ -1014,7 +1014,17 @@ app.post('/find_id', function(req,res) {
     const written = req.body;
     const nickname = written.nickname;
     const email = written.email;
-    
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     db.query(`SELECT * FROM user WHERE nickname = ? AND email = ? `,[nickname, email], function(error, users) {
         if(error) {
             throw error;
@@ -1029,7 +1039,7 @@ app.post('/find_id', function(req,res) {
                 if(nickname === users[i].nickname) {
                     if(email === users[i].email) {
                         const id = users[i].id;
-                        res.send(id_found_template(id));
+                        res.send(id_found_template(current,id));
                         found = 1;
                     }
                 }
