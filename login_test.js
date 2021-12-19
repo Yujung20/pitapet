@@ -35,15 +35,15 @@ app.use(session({
     saveUninitialized: true,
     store: new MySQLStore({
         host: 'localhost',
-        user: 'dldms',
-        password: 'password!',
+        user: 'root',
+        password: 'password',
         database: 'pit_a_pet'
     })
 }))
 
 
 /*
-app.get('/login',(req,res)=> { 
+app.get('/login',(req,res)=> { zz
     var output=`
         
             <head>
@@ -383,66 +383,11 @@ function id_found_template(found_id){
         <head>
             <title>ID found</title>
             <meta charset="utf-8">
-            <style>
-                button {
-                    background-color: #0066FF;
-                    color: white;
-                    padding: 10px 0px 10px 0px;
-                    margin: 5px 0 0 0;
-                    border: none;
-                    cursor: pointer;
-                    max-width: 500px;
-                    width: 80%;
-                    opacity: 0.9;
-                    border-radius: 10px;
-                    float: right;
-                    box-shadow: 3px 3px 3px #b0b0b0;
-                }
-
-                table {
-                    flex: 1;
-                    display: flex;
-                    max-width: 500px;
-                    width: 100%;
-                }
-
-                .container {
-                    display: flex;
-                    flex-direction: column;
-                    flex: 1;
-                    align-items: center;
-                    margin-left: auto;
-                    margin-right: auto;
-                }
-                
-                .row {
-                    flex: 1;
-                    display: flex;
-                    max-width: 500px;
-                    width: 100%;
-                }
-
-                p {
-                    display: flex;
-                    flex: 1;
-                    margin: 10px 0px;
-                }
-
-            </style>
         </head>
         <body>
-            <div class="container">
-                <div class="row">
-                    <table>
-                    <tr align="center">
-                        <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
-                    </tr>
-                    </table>
-                </div>
-                <div class="row">
-                    <button type="button" onclick="location.href='/login'">로그인</button>
-                </div>
-            </div>
+        <h1>아이디찾기</h1>
+            <p id="found_id">귀하의 아이디는 [ ${found_id} ] 입니다!</p>
+            <a href="/login">로그인</a>
         </body>
     </html>
     `;
@@ -459,9 +404,7 @@ app.get('/', function (req, res, next) {
     db.query(`SELECT * FROM question ORDER BY date DESC`, function(error, questions) {
         if (Object.keys(questions).length > 0) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
-                const qdate = String(questions[i].date).split(" ");
-                var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
-                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}, ${formating_qdate}</a><p>`;
+                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}, ${questions[i].date}</a><p>`;
                 if(i==4){break;}
             }
         } else {
@@ -472,9 +415,7 @@ app.get('/', function (req, res, next) {
     db.query(`SELECT * FROM review ORDER BY date DESC`, function(error, reviews) {
         if (Object.keys(reviews).length > 0) {
             for (var i = 0; i < Object.keys(reviews).length; i++) {
-                const rdate = String(reviews[i].date).split(" ");
-                var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
-                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}, ${formating_rdate}</a><p>`;
+                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}, ${reviews[i].date}</a><p>`;
                 if(i==4){break;}
             }
         } else {
@@ -571,9 +512,7 @@ app.get('/', function (req, res, next) {
         db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
             if (Object.keys(boards).length > 0) {
                 for (var i = 0; i < Object.keys(boards).length; i++) {
-                    const bdate = String(boards[i].date).split(" ");
-                    var formating_bdate = bdate[3] + "-" + bdate[1] + "-" + bdate[2] + "-" + bdate[4];
-                    board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}, ${formating_bdate}</a><p>`;
+                    board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}, ${boards[i].date}</a><p>`;
                     if(i==4){break;}
                 }
             } else {
@@ -661,76 +600,14 @@ app.get('/find_id', (req, res)=>{
         <head>
             <title>Find ID</title>
             <meta charset="utf-8">
-            <style>
-                .container {
-                display: flex;
-                flex-direction: column;
-                flex: 1;
-                align-items: center;
-                margin-left: auto;
-                margin-right: auto;
-                }
-
-                form {
-                max-width: 500px;
-                width: 100%;
-                }
-
-                .row {
-                    flex: 1;
-                    display: flex;
-                    max-width: 500px;
-                    width: 100%;
-                }
-
-                label {
-                align-self: center;
-                width: 20%;
-                }
-
-                p {
-                    display: flex;
-                    flex: 1;
-                    margin: 10px 0px;
-                }
-
-                input[type=text], #findid_nickname, #findid_email {
-                    width: 100%;
-                    padding: 10px;
-                    margin: 3px 0 0 20px;
-                    display: flex;
-                    border: 1px solid #000000;
-                    border-radius: 10px;
-                    background: none;   
-                    align-self: flex-end;
-                }
-                input[type="submit"] {
-                    background-color: #0066FF;
-                    color: white;
-                    padding: 10px 0px 10px 0px;
-                    margin: 3px 0 0 5px;
-                    border: none;
-                    cursor: pointer;
-                    width: 100%;
-                    opacity: 0.9;
-                    border-radius: 10px;
-                    box-shadow: 3px 3px 3px #b0b0b0;
-                }
-            </style>
         </head>
         <body>
-            <div class="container">
-                <form action="/find_id" method="post">
-                <div class="row">
-                    <label for="findid_nickname">닉네임</label>
-                    <input type="text" name="nickname" placeholder="nickname" id="findid_nickname">
-                </div>
-                <div class="row">
-                    <label for="findid_email">이메일</label>
-                    <input type="text" name="email" placeholder="email" id="findid_email">
-                </div>
-                <p><input type="submit" value="아이디 찾기"></p>
-            </div>
+        <h1>아이디찾기</h1>
+            <form action="/find_id" method="post">
+                <p><input type="text" name="nickname" placeholder="nickname"></p>
+                <p><input type="text" name="email" placeholder="email"></p>
+                <p><input type="submit" value="확인"></p>
+            </form>
         </body>
     </html>
     `;
@@ -778,51 +655,13 @@ app.get('/find_password', (req, res)=>{
         <head>
             <title>Find Password</title>
             <meta charset="utf-8">
-            <style>
-            form {
-                display: flex;
-                flex-direction: column;
-                max-width: 500px;
-                width: 100%;
-                margin-top: 10%;
-                margin-left: auto;
-                margin-right: auto;
-            }
-    
-            input[type=text] {
-                width: 100%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: inline-block;
-                border: 1px solid #ccc;
-                box-sizing: border-box;
-                border-radius: 15px;
-            }
-
-            button {
-                background-color: #0066FF;
-                color: white;
-                padding: 14px 20px;
-                margin: 8px 0;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-                border-radius: 15px;
-            }
-        
-            button:hover {
-                opacity: 0.8;
-            }
-            </style>
         </head>
         <body>
+        <h1>비밀번호 찾기</h1>
             <form action="/find_password" method="post">
-                <h1>비밀번호 찾기</h1>
-                <label for="id">아이디</label>
                 <p><input type="text" name="id" placeholder="id"></p>
-                <label for="email">이메일</label>
                 <p><input type="text" name="email" placeholder="email"></p>
-                <button type="submit">확인</button>
+                <p><input type="submit" value="확인"></p>
             </form>
         </body>
     </html>
@@ -839,78 +678,75 @@ app.post('/find_password', async (req, res, next) => {
 
     db.query(`SELECT * FROM user`, function(error, rows) {
         if (error) throw error;
-        
-        if (id.length < 1) {
-            res.send('<script type="text/javascript">alert("아이디를 입력해주세요.");location.href="/find_password";</script>');
-        } else if (email.length < 1) {
-            res.send('<script type="text/javascript">alert("이메일을 입력해주세요.");location.href="/find_password";</script>');
-        } else if (rows.length > 0) {
-            for(let i = 0; i < rows.length; i++) {
-                if (rows[i].id == id && rows[i].email == email) {
-                    find_password_user_email = rows[i].email;
-                }
+        else {
+          for(let i = 0; i < rows.length; i++) {
+            if (rows[i].id == id && rows[i].email == email) {
+                find_password_user_email = rows[i].email;
+            }
+          }
+        }
+
+        if (find_password_user_email) {
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                port: 465,
+                secure: true, // true for 465, false for other ports
+                auth: {
+                    user: '20171641@sungshin.ac.kr',
+                    pass: 'pitapet!'
+                },
+            });
+            
+            var variable = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z".split(",");
+            var randomPassword = createRandomPassword(variable, 8);
+
+            function createRandomPassword(variable, passwordLength) {
+                var randomString = "";
+                for (var j=0; j<passwordLength; j++)
+                    randomString += variable[Math.floor(Math.random()*variable.length)];
+                return randomString
             }
 
-            if (find_password_user_email) {
-                const transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    port: 465,
-                    secure: true, // true for 465, false for other ports
-                    auth: {
-                        user: '20171641@sungshin.ac.kr',
-                        pass: 'pitapet!'
-                    },
-                });
-                
-                var variable = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z".split(",");
-                var randomPassword = createRandomPassword(variable, 8);
-    
-                function createRandomPassword(variable, passwordLength) {
-                    var randomString = "";
-                    for (var j=0; j<passwordLength; j++)
-                        randomString += variable[Math.floor(Math.random()*variable.length)];
-                    return randomString
-                }
-    
-                bcrypt.hash(randomPassword, 10, function(error, hash) {
-                    db.query(`UPDATE user SET password=? WHERE id = ?`,
-                    [hash, id], 
-                    function(err, result) {
-                        if (err) {
-                            res.send(err);
-                            throw err;
-                        }
-                        else{
-                            console.log(result);
-                            req.session.destroy(function(err){
-                                if (err) throw err;
-                                res.redirect('/');
-                            });
-                        }                
-                    });
-                });
-    
-                const mailOptions = {
-                    from: '20171641@sungshin.ac.kr',
-                    to: find_password_user_email,
-                    subject: 'PitaPet에서 임시 비밀번호를 알려드립니다!',
-                    html:
-                    "<h1>PitaPet에서 새로운 비밀번호를 알려드립니다.</h1> <h2> 임시 비밀번호 : " + randomPassword
-                    + "</h2>" +'<h3 style="color: crimson;">임시 비밀번호로 로그인 하신 후, 반드시 비밀번호를 수정해 주세요!</h3>',
-                };
-              
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        console.log(error);
-                    } 
-                    else {
-                        console.log('Email sent: ' + info.response);
+            bcrypt.hash(randomPassword, 10, function(error, hash) {
+                db.query(`UPDATE user SET password=? WHERE id = ?`,
+                [hash, id], 
+                function(err, result) {
+                    if (err) {
+                        res.send(err);
+                        throw err;
                     }
+                    else{
+                        console.log(result);
+                        req.session.destroy(function(err){
+                            if (err) throw err;
+                            res.redirect('/');
+                        });
+                    }                
                 });
-            } else {
-                res.send('<script type="text/javascript">alert("존재하지 않는 회원입니다. 아이디 또는 이메일을 확인해주세요.");location.href="/find_password";</script>');
-            }
-        } 
+            });
+
+            const mailOptions = {
+                from: '20171641@sungshin.ac.kr',
+                to: find_password_user_email,
+                subject: 'PitaPet에서 임시 비밀번호를 알려드립니다!',
+                html:
+                "<h1>PitaPet에서 새로운 비밀번호를 알려드립니다.</h1> <h2> 임시 비밀번호 : " + randomPassword
+                + "</h2>" +'<h3 style="color: crimson;">임시 비밀번호로 로그인 하신 후, 반드시 비밀번호를 수정해 주세요!</h3>',
+            };
+          
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error);
+                } 
+                else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+        
+        }
+        else {
+            return res.status(403).send('존재하지 않는 회원입니다. 아이디 또는 이메일을 확인해주세요.');
+        }
     })
 });
 
@@ -945,7 +781,7 @@ const transporter = nodemailer.createTransport(smtpTransport({
   }
   
   //매일 오전 10시에 실행
-  cron.schedule('30 15 1-31 * *', function() {
+  cron.schedule('0 2 1-31 * *', function() {
     var mail_number_array = [];
     var owner_id_array = [];
     var name_array = [];
