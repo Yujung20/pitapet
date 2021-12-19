@@ -42,28 +42,7 @@ app.use(session({
 }))
 
 
-/*
-app.get('/login',(req,res)=> { zz
-    var output=`
-        
-            <head>
-                <title>test</title>
-                <meta charset="utf-8">
-            </head>
-            <body>
-                <h1>login</h1>
-                <form action="/login" method="post">
-                    <p><input type="text" name="id"  ></p>
-                    <p><input type="password" name="password" placeholder="password" ></p>
-                    <p><input type="submit" value="로그인하기"></p>
-                </form>
-                <a href="/find_id">아이디 찾기</a>
-                <a href="/find_password">비밀번호 찾기</a>
-            </body>
-        
-    `;
-    res.send(output);
-});*/
+
 
 app.get('/login',(req,res)=> { 
     var current=``;
