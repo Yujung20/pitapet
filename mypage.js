@@ -815,6 +815,11 @@ function email_template(current,email_check_txt, check_email) {
         label {
             align-self: flex-start;
             margin-left:10vw;
+            
+        }
+        #email_check{
+            font-size: 15px;
+            color: #0066FF; 
         }
         input[type=email] {
             width: 40vw;
@@ -846,6 +851,7 @@ function email_template(current,email_check_txt, check_email) {
             background-color:#0066FF;
             color: white;
         }
+       
         .text{
             margin-top:10vh;                              
             font-weight: bold;
@@ -993,7 +999,12 @@ function nickname_template(current, nickname_check_txt, check_nickname) {
         }
         label {
             align-self: flex-start;
-            margin-left:10vw;
+            margin-left:10vw;          
+        }
+        #nickname_check{
+                       
+            font-size: 15px;
+            color: #0066FF; 
         }
         input[type=nickname] {
             width: 40vw;
