@@ -77,7 +77,7 @@ app.get('/login',(req,res)=> {
             backgroung-color:#C4D6F238;
             border-radius: 10px;
             position: absolute;
-            width: 20vw;
+            width: 25vw;
             height: 15vh;
             left: 50%;
             top: 35%;
