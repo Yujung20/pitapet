@@ -1760,28 +1760,11 @@ app.post('/:review_id/update_process', upload.single('photo'), function(req, res
                     res.redirect(`/review/${review_id}`);
                 })
                 return;
-    
-                // if (body.img_src) {
-                //     photo = body.img_src;
-                //     if (Array.isArray(photo)) photo = photo[0];
-                //     console.log(photo);
-                //     photo = photo.split('/');
-                //     photo = '/upload/' + photo[photo.length - 2] + '/' + photo[photo.length - 1];
-                //     console.log(photo);
-                // } else {
-                //     photo = null;
-                // }
                 
             }
         }
     
         console.log(body);
-    
-        // let photo_path = body.img_src;
-        // console.log(photo_path);
-        // photo_path = photo_path.split('/');
-        // photo_path = './upload/' + photo_path[photo_path.length - 2] + '/' + photo_path[photo_path.length - 1];
-        // console.log(photo_path);
     
         db.query(`UPDATE review SET title=?, category=?, content=?, price=?, product_name=?, brand=?, photo=? WHERE review_number=?`,
         [title, category, content, price, product_name, brand, photo, review_id],
@@ -2009,17 +1992,6 @@ app.post('/comment_update/:comment_number', function(req, res) {
                 }
             }
             
-            // let auth_btn = ``;
-            // if (req.session.user_id === review.user_id) {
-            //     auth_btn += `
-            //     <p><input type="submit" value="수정" onClick="location.href='/review/update/${review_id}/'"></p>
-            //     <form action="/review/delete/" method="post">
-            //         <input type="hidden" name="review_number" value="${review_id}">
-            //         <p><input type="submit" value="삭제"></p>    
-            //     </form>
-            //     `
-            // }
-
             if (review.photo !== null) {
                 let photo = review.photo.toString('utf8')
                 photo = photo.replace('upload/', '/')
@@ -2064,9 +2036,5 @@ app.post('/comment_delete', function(req, res){
     })
 })
 
-// db.query(`SELECT * FROM review`, 
-//     function(error, result) {
-//         console.log(result[4].photo.toString('utf8'));
-// })
 
 module.exports = app;
