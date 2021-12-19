@@ -26,13 +26,85 @@ app.use(session({
 }))
 
 
-function main_template(nickname) {
+function main_template(current,nickname) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>mypage</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
             .mypage{
                 position: absolute;
@@ -95,6 +167,29 @@ function main_template(nickname) {
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <div class="mypage">
             <div class="row">
             <div class="text1"> My Page </div><div class="text2"> ${nickname}님</div>
@@ -124,13 +219,85 @@ function main_template(nickname) {
     `;
 }
 
-function user_check() {
+function user_check(current) {
     return `
     <!doctype html>
     <html>
     <head>
         <title>user_check</title>
         <meta charset="utf-8">
+        <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
         <style>
             form {
                 height: 100vh;
@@ -175,6 +342,29 @@ function user_check() {
             </style>
         </head>
         <body> 
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <form action="/mypage/user_check" method="post">
         <div class="text"><b> 회원 정보 조회</b> </div>
             <label for="pwd">비밀번호 확인</label>
@@ -186,13 +376,85 @@ function user_check() {
     `;
 }
 
-function resign_check(){
+function resign_check(current){
     return `
     <!doctype html>
     <html>
         <head>
             <title>resign_check</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
             form {
                 height: 100vh;
@@ -237,6 +499,29 @@ function resign_check(){
             </style>
         </head>
         <body> 
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <form action="/mypage/resign_check" method="post">
             <div class="text"><b> 회원 탈퇴</b> </div>
             <label for="pwd">비밀번호 확인</label>
@@ -249,13 +534,85 @@ function resign_check(){
     `;
 }
 
-function user_information_template(user_id,  user_email, user_nickname) {
+function user_information_template(current,user_id,  user_email, user_nickname) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>mypage_user</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
             .mypage_user{
                 position: absolute;
@@ -316,6 +673,29 @@ function user_information_template(user_id,  user_email, user_nickname) {
             </style>
         </head>
         <body> 
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <div class="mypage_user">
             <div class="row">
             <div class="text1">회원 정보 조회</div></div>
@@ -341,13 +721,85 @@ function user_information_template(user_id,  user_email, user_nickname) {
     `;
 }
 
-function email_template(email_check_txt, check_email) {
+function email_template(current,email_check_txt, check_email) {
     return `
         <!doctype html>
         <html>
         <head>
         <title>email update</title>
         <meta charset="utf-8">
+        <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
         <style>
         form {
             height: 100vh;
@@ -407,6 +859,29 @@ function email_template(email_check_txt, check_email) {
         </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
             <form action="/mypage/user_information/email_update/" method="post">
             <div class="text"><b> 이메일 변경하기</b> </div>
             <label for="email">새 이메일</label>
@@ -425,13 +900,85 @@ function email_template(email_check_txt, check_email) {
     `;
 }
 
-function nickname_template(nickname_check_txt, check_nickname) {
+function nickname_template(current, nickname_check_txt, check_nickname) {
     return `
         <!doctype html>
         <html>
         <head>
         <title>nickname update</title>
         <meta charset="utf-8">
+        <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
         <style>
         form {
             height: 100vh;
@@ -491,6 +1038,29 @@ function nickname_template(nickname_check_txt, check_nickname) {
         </style>
     </head>
     <body>
+    <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
     <form action="/mypage/user_information/nickname_update/" method="post">
     <div class="text"><b> 닉네임 변경하기</b> </div>
     <label for="nickname">새 닉네임</label>
@@ -510,13 +1080,85 @@ function nickname_template(nickname_check_txt, check_nickname) {
 }
 
 
-function care_service_template(care_service_list) {
+function care_service_template(current,care_service_list) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>care service</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
             form {
                 display: flex;
@@ -608,6 +1250,29 @@ function care_service_template(care_service_list) {
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <form>
             <h3>케어서비스 정보 조회</h3>
             ${care_service_list}
@@ -617,13 +1282,85 @@ function care_service_template(care_service_list) {
     `;
 }
 
-function care_service_update_template(care_service_name, care_service_category, care_service_number, care_service_date, care_service_account) {
+function care_service_update_template(current,care_service_name, care_service_category, care_service_number, care_service_date, care_service_account) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>care service update</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
             form {
                 display: flex;
@@ -673,6 +1410,29 @@ function care_service_update_template(care_service_name, care_service_category, 
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
             <form action="/mypage/care_service_information/update_process/?id=${care_service_number}" method="post">
                 <h1>케어서비스 정보 수정</h1>
                 <p>${care_service_name}</p>
@@ -686,13 +1446,85 @@ function care_service_update_template(care_service_name, care_service_category, 
     `;
 }
 
-function last_resign_template() {
+function last_resign_template(current) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>last resign</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
             body {
                 height: 100vh;
@@ -733,6 +1565,29 @@ function last_resign_template() {
             </style>
         </head>
         <body>
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <div class="text"><b> 정말 탈퇴하시겠습니까?</b> </div>
         <label for="caution"> 삭제된 계정은 다시 복구할 수 없고 계정의 게시물이나 정보는 완전히 삭제되는 점을 기억해주세요.</label>
         <div class="row">
@@ -744,13 +1599,85 @@ function last_resign_template() {
     `;
 }
 
-function qna_template(question_list, answer_list) {
+function qna_template(current,question_list, answer_list) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>Q&A</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
                 .container {
                     position: absolute;
@@ -822,6 +1749,29 @@ function qna_template(question_list, answer_list) {
             </style>
         </head>
         <body> 
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <div class="container">
             <div class="question_list">
                 <p id="list_txt">내가 쓴 질문 조회-Q&A</p>
@@ -837,13 +1787,85 @@ function qna_template(question_list, answer_list) {
     `;
 }
 
-function review_template(review_list,comment_list){
+function review_template(current,review_list,comment_list){
     return `
     <!doctype html>
     <html>
         <head>
             <title>Q&A</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
                 .container {
                     position: absolute;
@@ -916,6 +1938,29 @@ function review_template(review_list,comment_list){
             </style>
         </head>
         <body> 
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <div class="container">
             <div class="review_list">
                 <p id="list_txt">내가 쓴 리뷰 조회-Review</p>
@@ -931,13 +1976,85 @@ function review_template(review_list,comment_list){
     `;
 }
 
-function board_template(board_list, comment_list) {
+function board_template(current,board_list, comment_list) {
     return `
     <!doctype html>
     <html>
         <head>
             <title>Q&A</title>
             <meta charset="utf-8">
+            <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
             <style>
                 .container {
                     position: absolute;
@@ -1009,6 +2126,29 @@ function board_template(board_list, comment_list) {
             </style>
         </head>
         <body> 
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
         <div class="container">
             <div class="board_list">
                 <p id="list_txt">내가 쓴 리뷰 조회-커뮤니티</p>
@@ -1026,19 +2166,41 @@ function board_template(board_list, comment_list) {
 
 app.get('/', function(req, res) {
     const id=req.session.user_id;
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     db.query(`SELECT * FROM user WHERE id = ?`, 
     [id],function(error, user) {
         if (error) {
             throw error;
         }
         else{
-            res.end(main_template(user[0].nickname));
+            res.end(main_template(current,user[0].nickname));
         }    
     })    
 })
 
 app.get('/user_check/',function(req,res){
-    res.end(user_check());
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
+    res.end(user_check(current));
 })
 
 app.post('/user_check/', function(req, res) {
@@ -1068,21 +2230,115 @@ app.post('/user_check/', function(req, res) {
 
 app.get('/user_information/', function(req, res) {
     user_id=req.session.user_id;       
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     db.query(`SELECT * FROM user WHERE id = ?`, [user_id],
     function(error, user) {
         if (error) {
             throw error;
         }
         console.log(user);
-        res.end(user_information_template(user_id, user[0].email, user[0].nickname));
+        res.end(user_information_template(current,user_id, user[0].email, user[0].nickname));
     })
 })
 
 app.get('/user_information/password/',function(req,res){
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     var output=`
     <head>
         <title>password update</title>
         <meta charset="utf-8">
+        <script src="https://kit.fontawesome.com/9702f82de3.js" crossorigin="anonymous"></script>
+            <style>
+            body{
+                margin: 0;
+            }
+            a{
+                text-decoration: none;
+                color: black;
+            }
+            .navbar{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 12px;
+                
+            }
+            .navbar_logo{
+                font-size: 30px;
+            
+            }
+            .navbar_logo i{
+                color: blue;
+            }
+            
+            .navbar_menu{
+                display: flex;
+                list-style: none;
+                padding-left: 0;
+            }
+            
+            .navbar_menu li{
+                padding: 8px 40px;
+                font-size: 20px;
+             
+            }
+            .navbar_menu li:hover{
+                border-bottom:3px solid blue;
+            }
+            
+            .navbar_menu ul{
+                align-items: center;
+                list-style: none;
+                padding-left: 0;
+                display: none;
+            }
+            .navbar_menu ul li{
+                padding: 8px 5px;
+            }
+            .navbar_menu li:hover ul{
+                display: flex;
+                position: absolute;
+            }
+            .navbar_menu li:hover li:hover{
+                box-sizing: border-box;
+            }
+            .navbar_icons{
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding-left:0;
+            }
+            .navbar_icons li{
+                padding: 8px 12px;
+            }
+            
+            .navbar_icons li:hover{
+                border-bottom: 3px solid blue;
+            }
+            .nav_selected{
+                color: blue;
+            }
+            </style>
     </head>
     <style>
     form {
@@ -1127,6 +2383,29 @@ app.get('/user_information/password/',function(req,res){
     }     
     </style>
     <body>
+    <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="/"><i class="fas fa-paw"></i></a>
+                <a href="/">pit-a-pet</a>
+            </div>
+
+            <ul class="navbar_menu">
+                <li> <a href="/qna">Q&A</a> </li>
+                <li> <a href="/review">리뷰</a> </li>
+                <li> <a href="/information">기본 정보</a> </li>
+                <li> <a href="/hospital">동반 정보</a>
+                    <ul class="sub">
+                        <li> <a href="/hospital">병원</a> </li>
+                        <li> <a href="/store">매장</a> </li>
+                    </ul>
+                </li>
+                <li> <a href="/board">커뮤니티</a> </li>
+            </ul>
+
+            <ul class ="navbar_icons">
+                ${current}
+            </ul>
+        </nav>
     <form action="/mypage/user_information/password_update/" method="post">
         <div class="text"><b> 비밀번호 변경하기</b> </div>
         <label for="pwd">새 비밀번호</label>
@@ -1171,14 +2450,35 @@ app.post('/user_information/password_update/', function(req,res){
 })
 
 app.get('/user_information/email/',function(req,res){
-    res.end(email_template("이메일 중복을 확인하세요.", ''));
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
+    res.end(email_template(current,"이메일 중복을 확인하세요.", ''));
 });
 
 app.post('/user_information/email_check', function(request, response) {
     const post = request.body;
     const email = post.email;
     console.log(email);
-
+    var current=``;
+    if(request.session.user_id){//로그인 한 경우
+        var uid=request.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+        console.log(uid)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
     var email_check_txt = "사용할 수 있는 이메일입니다."
     db.query(`SELECT * FROM user`, function(err, result) {
         if (err) {
@@ -1191,7 +2491,7 @@ app.post('/user_information/email_check', function(request, response) {
                 break;
             }
         }
-        response.send(email_template(email_check_txt, email));
+        response.send(email_template(current,email_check_txt, email));
     })
 });
 
@@ -1228,14 +2528,35 @@ app.post('/user_information/email_update/', function(request,response){
 })
 
 app.get('/user_information/nickname/',function(req,res){
-    res.end(nickname_template("닉네임 중복을 확인하세요.", ''));
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
+    res.end(nickname_template(current,"닉네임 중복을 확인하세요.", ''));
 });
 
 app.post('/user_information/nickname_check', function(request, response) {
     const post = request.body;
     const nickname = post.nickname;
     console.log(nickname);
-
+    var current=``;
+    if(request.session.user_id){//로그인 한 경우
+        var uid=request.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+        console.log(uid)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
     var nickname_check_txt = "사용할 수 있는 닉네임입니다."
     db.query(`SELECT * FROM user`, function(error, users) {
         if(error) {
@@ -1248,7 +2569,7 @@ app.post('/user_information/nickname_check', function(request, response) {
                 break;
             }
         }
-        response.send(nickname_template(nickname_check_txt, nickname));
+        response.send(nickname_template(current,nickname_check_txt, nickname));
     })
 });
 
@@ -1289,7 +2610,17 @@ app.get('/care_service_information/', function(req, res) {
     const id = req.session.user_id;
     var care_service_list = ``;
     var date_list_display = ``;
-
+    var current=``;
+    if(req.session.user_id){//로그인 한 경우
+        var uid=req.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+        console.log(uid)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
     db.query(`SELECT * FROM care_service WHERE owner_id = ?`,[id],
     function(err, care_service){
         if (err) throw err;
@@ -1330,7 +2661,7 @@ app.get('/care_service_information/', function(req, res) {
 
                         date_list_display = ``;
                     }
-                    res.end(care_service_template(care_service_list));
+                    res.end(care_service_template(current,care_service_list));
                 }
             });
             
@@ -1340,7 +2671,17 @@ app.get('/care_service_information/', function(req, res) {
 
 app.get('/care_service_information/update', function(req, res) {
     const care_service_number = url.parse(req.url, true).query.id;
-
+    var current=``;
+    if(req.session.user_id){//로그인 한 경우
+        var uid=req.session.user_id;
+        current=`<li> <a href="/logout">로그아웃</a> </li>
+        <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+        console.log(uid)
+    }
+    else{
+        current=`<li> <a href="/login">로그인</a> </li>
+        <li> <a href="/signup">회원가입</a> </li>`
+    }
     if (care_service_number) {
         db.query(`SELECT * FROM care_service WHERE mail_number = ?`, 
         [care_service_number],
@@ -1355,7 +2696,7 @@ app.get('/care_service_information/update', function(req, res) {
                 throw error;
             }
 
-            res.end(care_service_update_template(result1[0].name, result1[0].mail_category, care_service_number,
+            res.end(care_service_update_template(current,result1[0].name, result1[0].mail_category, care_service_number,
                 result2[0].mail_date, result1[0].account));
             })
         })
@@ -1412,6 +2753,17 @@ app.get('/qna/',function(req,res){
     const id=req.session.user_id;
     var question_list = ``;
     var answer_list=``;
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     db.query(`SELECT * FROM question WHERE user_id=?`,[id], function(error, questions) {
         if (Object.keys(questions).length > 0) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
@@ -1439,7 +2791,7 @@ app.get('/qna/',function(req,res){
         } else {
             answer_list = `작성한 대답이 없습니다.`;
         }
-        res.send(qna_template(question_list,answer_list));                       
+        res.send(qna_template(current,question_list,answer_list));                       
 
     });    
 })
@@ -1448,6 +2800,17 @@ app.get('/review/',function(req,res){
     const id=req.session.user_id;
     var review_list = ``;
     var comment_list=``;
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     db.query(`SELECT * FROM review WHERE user_id=?`,[id], function(error, reviews) {
         if (Object.keys(reviews).length > 0) {
             for (var i = 0; i < Object.keys(reviews).length; i++) {
@@ -1474,7 +2837,7 @@ app.get('/review/',function(req,res){
         } else {
             comment_list = `작성한 댓글이 없습니다.`;
         }
-        res.send(review_template(review_list,comment_list));                       
+        res.send(review_template(current,review_list,comment_list));                       
 
     });    
 })
@@ -1483,6 +2846,17 @@ app.get('/board/',function(req,res){
     const id=req.session.user_id;
     var board_list = ``;
     var comment_list=``;
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
     db.query(`SELECT * FROM board WHERE user_id=?`,[id], function(error, boards) {
         if (Object.keys(boards).length > 0) {
             for (var i = 0; i < Object.keys(boards).length; i++) {
@@ -1512,14 +2886,25 @@ app.get('/board/',function(req,res){
         } else {
             comment_list = `작성한 답변이 없습니다.`;
         }
-        res.send(board_template(board_list,comment_list));                       
+        res.send(board_template(current,board_list,comment_list));                       
 
     });    
 })
 
 
 app.get('/resign_check/', function(req,res){
-    res.end(resign_check());
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
+    res.end(resign_check(current));
 })
 
 app.post('/resign_check/', function(req, res) {
@@ -1549,7 +2934,18 @@ app.post('/resign_check/', function(req, res) {
 });
 
 app.get('/last_resign/', function(req, res) {
-    res.send(last_resign_template());
+    var current=``;
+            if(req.session.user_id){//로그인 한 경우
+                var uid=req.session.user_id;
+                current=`<li> <a href="/logout">로그아웃</a> </li>
+                <li> <a href="/mypage">${uid}--마이페이지</a> </li>`
+                console.log(uid)
+            }
+            else{
+                current=`<li> <a href="/login">로그인</a> </li>
+                <li> <a href="/signup">회원가입</a> </li>`
+            }
+    res.send(last_resign_template(current));
 })
 
 
