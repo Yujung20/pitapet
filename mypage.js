@@ -643,6 +643,9 @@ function user_information_template(current,user_id,  user_email, user_nickname) 
                 font-size:20px;                
                 line-height:2.5;
             }
+            .atag:hover {
+                border-bottom: 3px solid blue;
+            }
             .atagtext{
                 font-weight:bold;
             }
@@ -655,9 +658,6 @@ function user_information_template(current,user_id,  user_email, user_nickname) 
             a:visited {
                 color: black;
                 text-shadow: 2px 2px 2px gray; 
-            }
-            a:hover {
-                border-bottom: 3px solid blue;
             }
             a:active {
             color : blue;
