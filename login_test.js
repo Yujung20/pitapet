@@ -422,6 +422,12 @@ function main_template(current,question_list,review_list,board_list,hospital_lis
               .title{
                 border-bottom: 3px solid blue;
               }
+              .qrow{
+                display: flex;
+                list-style: none;
+                padding-left:0;
+                justify-content: space-between;
+            }
             </style>
         </head>
         <body>
@@ -654,7 +660,11 @@ app.get('/', function (req, res, next) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
                 const qdate = String(questions[i].date).split(" ");
                 var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
-                question_list += `<p><a href="/qna/question/${questions[i].question_number}">${questions[i].title}, ${formating_qdate}</a><p>`;
+                question_list += `
+                <ul class="qrow">
+                <li><a href="/qna/question/${questions[i].question_number}">${questions[i].title}</a></li> 
+                <li>${formating_qdate}</li>
+                </ul>`;
                 if(i==4){break;}
             }
         } else {
@@ -667,7 +677,11 @@ app.get('/', function (req, res, next) {
             for (var i = 0; i < Object.keys(reviews).length; i++) {
                 const rdate = String(reviews[i].date).split(" ");
                 var formating_rdate = rdate[3] + "-" + rdate[1] + "-" + rdate[2] + "-" + rdate[4];
-                review_list += `<p><a href="/review/${reviews[i].review_number}">${reviews[i].title}, ${formating_rdate}</a><p>`;
+                review_list += `
+                <ul class="qrow">
+                <li><a href="/review/${reviews[i].review_number}">${reviews[i].title}</a></li> 
+                <li>${formating_rdate}</li>
+                </ul>`;
                 if(i==4){break;}
             }
         } else {
@@ -702,7 +716,12 @@ app.get('/', function (req, res, next) {
                     }
                 }
                 if(H_H!=hospitals[i+1].hospital_name){
-                    hospital_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}    ${H_pet_list}</a><p>`;
+                    hospital_list+=`
+                    <ul class="qrow">
+                    <li><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a></li> 
+                    <li>${H_pet_list}</li>
+                    </ul>
+                    `;
                     H_num1++;
                 if(i+1!=(hospitals).length){
                     H_pet_list=` `;
@@ -711,7 +730,10 @@ app.get('/', function (req, res, next) {
                 }
                 }
             }
-            hospital_list+=`<p><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}    ${H_pet_list}</a><p>`;
+            hospital_list+=`<ul class="qrow">
+            <li><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a></li> 
+            <li>${H_pet_list}</li>
+            </ul>`;
         }
     });
     
@@ -742,7 +764,12 @@ app.get('/', function (req, res, next) {
                     }
                 }
                 if(S_H!=stores[i+1].store_name){
-                    store_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}     ${S_pet_list}</a><p>`;
+                    store_list+=`
+                    <ul class="qrow">
+                    <li><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a></li> 
+                    <li>${S_pet_list}</li>
+                    </ul>
+                    `;
                     S_num1++;
                 if(i+1!=(stores).length){
                     S_pet_list=` `;
@@ -751,7 +778,11 @@ app.get('/', function (req, res, next) {
                 }
                 }
             }
-            store_list+=`<p><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}    ${S_pet_list}</a><p>`;
+            store_list+=`<ul class="qrow">
+            <li><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a></li> 
+            <li>${S_pet_list}</li>
+            </ul>
+            `;
         }
     });
     if(req.session.user_id)//로그인 한 경우
@@ -766,7 +797,12 @@ app.get('/', function (req, res, next) {
                 for (var i = 0; i < Object.keys(boards).length; i++) {
                     const bdate = String(boards[i].date).split(" ");
                     var formating_bdate = bdate[3] + "-" + bdate[1] + "-" + bdate[2] + "-" + bdate[4];
-                    board_list += `<p><a href="/board/written/${boards[i].board_number}">${boards[i].title}, ${formating_bdate}</a><p>`;
+                    board_list += `
+                    <ul class="qrow">
+                    <li><a href="/board/written/${boards[i].board_number}">${boards[i].title}</a></li> 
+                    <li>${formating_bdate}</li>
+                    </ul>
+                    `;
                     if(i==4){break;}
                 }
             } else {
