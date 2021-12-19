@@ -536,7 +536,7 @@ function review_detail_template(current, review_number, title, content, date, pr
                 <form action="/review/write_comment/" method="post">
                     <input type="hidden" name="review_number" value="${review_number}"">
                     <div class="write_comment">
-                        <textarea name="comment"></textarea>
+                        <textarea maxlength="2000" name="comment"></textarea>
                         <input type="submit" id="write_comment_btn" value="댓글 달기">
                     </div>
                 </form>
@@ -836,7 +836,7 @@ function review_detail_no_photo_template(current,review_number, title, content, 
                 <form action="/review/write_comment/" method="post">
                     <input type="hidden" name="review_number" value="${review_number}"">
                     <div class="write_comment">
-                        <textarea name="comment"></textarea>
+                        <textarea name="comment" maxlength="2000"></textarea>
                         <input type="submit" id="write_comment_btn" value="댓글 달기">
                     </div>
                 </form>
@@ -1027,7 +1027,7 @@ function review_create_template(current) {
             <form action="/review/write_review/" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <label for="title">제목</label>
-                    <p><input type"text" name="title" id="title" placeholder="제목"></p>
+                    <p><input maxlength="50" type"text" name="title" id="title" placeholder="제목"></p>
                 </div>
                 <div class="row">
                     <label for="category">종</label>
@@ -1049,15 +1049,15 @@ function review_create_template(current) {
                 </div>
                 <div class="row">
                     <label for="product_name">제품명</label>
-                    <p><input type="text" id="product_name" name="product_name" placeholder="제품명"></p>
+                    <p><input type="text" maxlength="50" id="product_name" name="product_name" placeholder="제품명"></p>
                 </div>
                 <div class="row">
                     <label for="brand">브랜드명</label>
-                    <p><input type="text" id="brand" name="brand" placeholder="브랜드명"></p>
+                    <p><input type="text" maxlength="50" id="brand" name="brand" placeholder="브랜드명"></p>
                 </div>
                 <div class="row">
                     <label for="content">내용</label>
-                    <p><textarea id="content" name="content"></textarea></p>
+                    <p><textarea id="content" maxlength="2000" name="content"></textarea></p>
                 </div>
                 <div class="row">
                     <label for="photo">사진</label>
@@ -1278,7 +1278,7 @@ function review_update_template(current,review_id, title, category, content, pri
             <form action="/review/${review_id}/update_process/" method="post" enctype="multipart/form-data" id="update_review" onclick="photo_src()">
                 <div class="row">
                     <label for="title">제목</label>
-                    <p><input type"text" id="title" name="title" value="${title}"></p>
+                    <p><input maxlength="50" type"text" id="title" name="title" value="${title}"></p>
                 </div>
                 <p>
                 <div class="row">
@@ -1293,15 +1293,15 @@ function review_update_template(current,review_id, title, category, content, pri
                 </div>
                 <div class="row">
                     <label for="product_name">제품명</label>
-                    <p><input type="text" id="product_name" name="product_name" value="${product_name}"></p>
+                    <p><input type="text" maxlength="50" id="product_name" name="product_name" value="${product_name}"></p>
                 </div>
                 <div class="row">
                     <label for="brand">브랜드명</label>
-                    <p><input type="text" id="brand" name="brand" value="${brand}"></p>
+                    <p><input type="text" maxlength="50" id="brand" name="brand" value="${brand}"></p>
                 </div>
                 <div class="row">
                     <label for="content">내용</label>    
-                    <p><textarea id="content" name="content">${content}</textarea></p>
+                    <p><textarea id="content" maxlength="2000" name="content">${content}</textarea></p>
                 </div>
                 <p><img src="${photo}" id="photo"></p>
                 <p><button type="button" onclick="remove_img()">사진 지우기</button></p>
@@ -1494,7 +1494,7 @@ function review_update_no_photo_template(current,review_id, title, category, con
             <form action="/review/${review_id}/update_process/" method="post" enctype="multipart/form-data" id="update_review" onclick="photo_src()">
                 <div class="row">
                     <label for="title">제목</label>
-                    <p><input type"text" id="title" name="title" value="${title}"></p>
+                    <p><input type"text" maxlength="50" id="title" name="title" value="${title}"></p>
                 </div>
                 <p>
                 <div class="row">
@@ -1505,19 +1505,19 @@ function review_update_no_photo_template(current,review_id, title, category, con
                 </div>
                 <div class="row">
                     <label for="price">가격</label>
-                    <p><input type="text" id="price" oninput="this.value=this.value.replace(/[^0-9]/g,'');" name="price" value="${price}"></p>
+                    <p><input type="text" maxlength="50" id="price" oninput="this.value=this.value.replace(/[^0-9]/g,'');" name="price" value="${price}"></p>
                 </div>
                 <div class="row">
                     <label for="product_name">제품명</label>
-                    <p><input type="text" id="product_name" name="product_name" value="${product_name}"></p>
+                    <p><input type="text" maxlength="50" id="product_name" name="product_name" value="${product_name}"></p>
                 </div>
                 <div class="row">
                     <label for="brand">브랜드명</label>
-                    <p><input type="text" id="brand" name="brand" value="${brand}"></p>
+                    <p><input type="text" id="brand" maxlength="50" name="brand" value="${brand}"></p>
                 </div>
                 <div class="row">
                     <label for="content">내용</label>    
-                    <p><textarea id="content" name="content">${content}</textarea></p>
+                    <p><textarea id="content" maxlength="2000" name="content">${content}</textarea></p>
                 </div>
                 <div class="row">
                     <label for="photo_new">사진</label>
