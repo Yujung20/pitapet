@@ -1701,7 +1701,6 @@ function qna_template(current,question_list, answer_list) {
                 .question_list {
                     flex-direction: column;
                     flex: 1;
-                    justify-content: space-between;
                     display: flex;
                     width: 100%;
                     height:35vh;
@@ -1889,7 +1888,6 @@ function review_template(current,review_list,comment_list){
                 .review_list {
                     flex-direction: column;
                     flex: 1;
-                    justify-content: space-between;
                     display: flex;
                     width: 100%;
                     height:35vh;
@@ -2078,7 +2076,6 @@ function board_template(current,board_list, comment_list) {
                 .board_list {
                     flex-direction: column;
                     flex: 1;
-                    justify-content: space-between;
                     display: flex;
                     width: 100%;
                     height:35vh;
