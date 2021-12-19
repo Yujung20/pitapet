@@ -371,17 +371,21 @@ app.post('/signup_process', upload.single('license'), function(request, response
         response.send('<script type="text/javascript">alert("비밀번호가 일치하지 않습니다."); document.location.href="/signup";</script>');
     } else {
         if (is_normal) {
-            bcrypt.hash(pwd, 10, function(error, hash) {
-                db.query(`INSERT INTO user (id, password, email, nickname, license, certificate, is_normal) VALUES(?, ?, ?, ?, ?, ?, ?)`,
-                [id, hash, email, nickname, photo, certificate, !is_normal], 
-                function(error, result) {
-                    if (error) {
-                        throw error;
-                    }
-                    console.log(result);
-                    response.redirect('/');
+            if (photo === null) {
+                response.send('<script type="text/javascript">alert("전문가 회원가입은 증명서가 필요합니다."); document.location.href="/signup";</script>');
+            } else {
+                bcrypt.hash(pwd, 10, function(error, hash) {
+                    db.query(`INSERT INTO user (id, password, email, nickname, license, certificate, is_normal) VALUES(?, ?, ?, ?, ?, ?, ?)`,
+                    [id, hash, email, nickname, photo, certificate, !is_normal], 
+                    function(error, result) {
+                        if (error) {
+                            throw error;
+                        }
+                        console.log(result);
+                        response.redirect('/');
+                    });
                 });
-            });
+            }
         } else {
             bcrypt.hash(pwd, 10, function(error, hash) {
                 db.query(`INSERT INTO user (id, password, email, nickname, license, certificate) VALUES(?, ?, ?, ?, ?, ?)`,
