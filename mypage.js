@@ -139,6 +139,9 @@ function main_template(current,nickname) {
             .atagtext{
                 font-weight:bold;
             }
+            .atag:hover {
+                border-bottom: 3px solid blue;
+            }
             a {
                 text-decoration:none !important
             }           
@@ -149,9 +152,7 @@ function main_template(current,nickname) {
                 color: black;
                 text-shadow: 2px 2px 2px gray; 
             }
-            a:hover {
-                border-bottom: 3px solid blue;
-            }
+            
             a:active {
             color : blue;
             }
