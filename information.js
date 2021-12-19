@@ -5,8 +5,10 @@ const url = require('url');
 
 const body_parser = require('body-parser');
 app.use(body_parser.urlencoded({ extended: false}));
+app.use(express.static('public'));
 
 var db = require('./db');
+const { fstat } = require('fs');
 
 
 function main_template(current, type_list) {
@@ -93,7 +95,7 @@ function main_template(current, type_list) {
                 width: 100%;
             }
             .atag{
-                font-size:20px;
+                font-size:30px;
                 line-height:2.5;
             }
             .atag:hover {
@@ -103,7 +105,8 @@ function main_template(current, type_list) {
                 position: absolute;
                 height:70%;
                 top:15%;
-                padding-left:5%;
+                left: 18%;
+
             }
             .information_{
                 padding-left:5%;
@@ -117,8 +120,18 @@ function main_template(current, type_list) {
             .animal {
                 margin-top: 2%;
                 margin-bottom: 2%;
-                padding-left: 15%;
-                font-size: 43px;
+                padding-left: 27%;
+                font-size: 70pt;
+                overflow: hidden;
+                height: 100%;
+            }
+            img {
+                width: 100px;
+                height: 100px;
+                float:right;
+                margin-top: 2%;
+                margin-bottom: 2%;
+                padding-right: 27%;
             }
             </style>
             <meta charset="utf-8">
@@ -236,6 +249,33 @@ function information_template(current,feedtimes, foodtype, vaccine, bathtimes, w
             .nav_selected{
                 color: blue;
             }
+            hr{
+                width:75vw;
+                color:black;
+                text-align:center;
+                left:10%;
+            }
+            .information{
+                position: absolute;
+                height:70%;
+                top:15%;
+                left:10%;
+
+            }
+            .information_{
+                padding: 0;
+            }
+            .animal {
+                margin-top: 2%;
+                margin-bottom: 2%;
+                font-size: 14pt;
+                padding-left: 100px;
+                padding-rignt:  100px;
+                overflow: hidden;
+                word-wrap:break-word;
+                height: 100%;
+                width: 900px;
+            }
             </style>
             <meta charset="utf-8">
         </head>
@@ -263,16 +303,35 @@ function information_template(current,feedtimes, foodtype, vaccine, bathtimes, w
                     ${current}
                 </ul>
             </nav>
-            <h3> 먹이 횟수  </h3>
-            <p> 하루에 ${feedtimes} 번 </p>
-            <h3> 먹이 종류 </h3>
-            ${foodtype}
-            <h3> 예방 접종 </h3>
-            ${vaccine}
-            <h3> 목욕 횟수 </h3>
-            ${bathtimes}
-            <h3> 주의 사항  </h3>
-            ${warning}
+            <div class="information">
+            <div class="information_">
+                <div class="animal">
+                    <h3> 먹이 횟수 </h3>
+                    <p> 하루에 ${feedtimes} 번 </p>
+                </div>
+                <hr>
+                <div class="animal">
+                    <h3> 먹이 종류 </h3>
+                    <p> ${foodtype} </p>
+                </div>
+                <hr>
+                <div class="animal">
+                    <h3> 예방 접종 </h3>
+                    <p> ${vaccine} </p>
+                </div>
+                <hr>
+                <div class="animal">
+                    <h3> 목욕 횟수 </h3>
+                    <p> ${bathtimes} </p>
+                </div>
+                <hr>
+                <div class="animal">
+                    <h3> 주의 사항 </h3>
+                    <p> ${warning} </p>
+                </div>
+                <hr>
+            </div>
+            </div>
         </body>
     </html>
     `;
@@ -301,7 +360,8 @@ app.get('/', function(req, res) {
         else{
             for (var i=0; i<Object.values(informations).length;i++){
                 type_list+=`
-                    <p class="animal"><a class="atag" href="/information/type/?id=${informations[i].id}">${informations[i].type}</a></p>
+                    <p class="animal"><a class="atag" href="/information/type/?id=${informations[i].id}">${informations[i].type}</a>
+                    <img src="images/book.png"></p>
                     <hr class="one">
                 `;
             }
@@ -312,7 +372,6 @@ app.get('/', function(req, res) {
     
     
 });
-
 
 app.get('/type/', function(req, res) {
     const information_id = url.parse(req.url, true).query.id;
