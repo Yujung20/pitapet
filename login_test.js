@@ -120,7 +120,6 @@ app.get('/login',(req,res)=> {
             .navbar_menu li:hover{
                 border-bottom:3px solid blue;
             }
-            
             .navbar_menu ul{
                 align-items: center;
                 list-style: none;
