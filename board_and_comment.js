@@ -1147,22 +1147,26 @@ function main_template(current,boardlist,search_title){
       const board_id = body.board_id;
       const content1 = body.content;
       const user1 = req.session.user_id;
-  
-      if(content1 === '') {
-        res.send(`<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/board/written/${board_id}";</script>`);     
-      }
-      else {
-        db.query(`INSERT INTO board_comment (user_id, content, board_number) VALUES (?, ?, ?)`,
-        [user1, content1, board_id],
-        function(error, comments) {
-            if (error) {
-                res.send(error);
-                throw error;
-            }
-            console.log(comments);
-            res.redirect(`/board/written/${board_id}`);
-        })
-      }
+      
+      if (req.session.user_id) {
+        if(content1 === '') {
+            res.send(`<script type="text/javascript">alert("모든 정보를 입력해주세요."); document.location.href="/board/written/${board_id}";</script>`);     
+        }
+        else {
+            db.query(`INSERT INTO board_comment (user_id, content, board_number) VALUES (?, ?, ?)`,
+            [user1, content1, board_id],
+            function(error, comments) {
+                if (error) {
+                    res.send(error);
+                    throw error;
+                }
+                console.log(comments);
+                res.redirect(`/board/written/${board_id}`);
+            })
+        }
+      } else {
+        res.send('<script type="text/javascript">alert("로그인이 필요한 서비스입니다.");location.href="/login";</script>')
+    }
   });
   
   app.get('/written/:board_id/update/', function(req, res) {
