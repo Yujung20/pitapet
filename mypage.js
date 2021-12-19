@@ -2429,7 +2429,10 @@ app.post('/user_information/password_update/', function(req,res){
     const id=req.session.user_id;
     if (pwd1 !== pwd2) {
         res.send('<script type="text/javascript">alert("비밀번호가 일치하지 않습니다."); document.location.href="/mypage/user_information/password/";</script>');
-    } else {
+    } else if(pwd1 ===''|| pwd2===''){
+        res.send('<script type="text/javascript">alert("비밀번호를 입력해주세요."); document.location.href="/mypage/user_information/password/";</script>');
+
+    } else{
         bcrypt.hash(pwd1, 10, function(error, hash) {
             db.query(`UPDATE user SET password=? WHERE id = ?`,
             [hash, id], 
