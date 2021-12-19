@@ -1473,7 +1473,7 @@ function care_service_update_template(current, care_service_name, care_service_c
                 <p>${care_service_name}</p>
                 <p>${care_service_category}</p>
                 <p><input type="date" name="mail_date" min="1990-01-01" max="2022-12-31" value="${dateString}"></p>
-                <p><textarea name="note">${care_service_account}</textarea></p>
+                <p><textarea name="note" maxlength="20">${care_service_account}</textarea></p>
                 <button type="submit">수정</button>
             </form>
         </body>
