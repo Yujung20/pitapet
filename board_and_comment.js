@@ -946,12 +946,13 @@ function main_template(current,boardlist,search_title){
                 current=`<li> <a href="/login">로그인</a> </li>
                 <li> <a href="/signup">회원가입</a> </li>`
             }
-      db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
-          if (Object.keys(boards).length > 0) {
-            for (var i = 0; i < Object.keys(boards).length; i++) {
-                const qdate = String(boards[i].date).split(" ");
-                var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
-                board_list += `
+            if (req.session.user_id) {
+                db.query(`SELECT * FROM board ORDER BY date DESC`, function(error, boards) {
+                if (Object.keys(boards).length > 0) {
+                    for (var i = 0; i < Object.keys(boards).length; i++) {
+                        const qdate = String(boards[i].date).split(" ");
+                        var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
+                        board_list += `
                                <div class="board_row">
                                     <a id="underline" href="/board/written/${boards[i].board_number}">[ ${boards[i].category} ] ${boards[i].title}</a>
                                     <div class="auth_date_row">
@@ -961,12 +962,16 @@ function main_template(current,boardlist,search_title){
                                 </div>
                                 <hr/>
                             `;
+                    }
+                } else {
+                    board_list = '0개의 게시물이 있습니다.';
+                }
+                    res.end(main_template(current,board_list));
+                });
             }
-            } else {
-                board_list = '0개의 게시물이 있습니다.';
+            else {
+                res.send('<script type="text/javascript">alert("로그인이 필요한 서비스입니다.");location.href="/login";</script>')
             }
-          res.end(main_template(current,board_list));
-      });
   });
   
   app.get('/write/', function(req, res) {
