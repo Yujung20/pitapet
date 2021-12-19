@@ -1008,9 +1008,9 @@ app.get('/find_id', (req, res)=>{
             <form action="/find_id" method="post">
                 <h1>아이디 찾기</h1>
                 <label for="nickname">닉네임</label>
-                <p><input type="text" name="nickname" placeholder="nickname"></p>
+                <p><input type="text" name="nickname" placeholder="nickname" maxlength="10"></p>
                 <label for="email">이메일</label>
-                <p><input type="text" name="email" placeholder="email"></p>
+                <p><input type="text" name="email" placeholder="email" maxlength="30"></p>
                 <button type="submit">확인</button>
             </form>
         </body>
