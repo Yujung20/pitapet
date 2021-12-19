@@ -698,7 +698,7 @@ app.get('/', function (req, res, next) {
             var H_pet_list=``;
             var H_count=0;
             var H_num1=0;
-            for (var i=0; H_num1<4;i++){
+            for (var i=0; H_num1<5;i++){
                 if(H_H!=hospitals[i].hospital_name){
                     H_pet_list+=`${hospitals[i].pet},`;
                     H_H=hospitals[i].hospital_name;
@@ -730,10 +730,6 @@ app.get('/', function (req, res, next) {
                 }
                 }
             }
-            hospital_list+=`<ul class="qrow">
-            <li><a href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a></li> 
-            <li>${H_pet_list}</li>
-            </ul>`;
         }
     });
     
@@ -746,7 +742,7 @@ app.get('/', function (req, res, next) {
             var S_pet_list=``;
             var S_count=0;
             var S_num1=0;
-            for (var i=0; S_num1<4;i++){
+            for (var i=0; S_num1<5;i++){
                 if(S_H!=stores[i].store_name){
                     S_pet_list+=`${stores[i].pet},`;
                     S_H=stores[i].store_name;
@@ -778,11 +774,6 @@ app.get('/', function (req, res, next) {
                 }
                 }
             }
-            store_list+=`<ul class="qrow">
-            <li><a href="/store/info/?id=${stores[i].store_name}">${stores[i].store_name}</a></li> 
-            <li>${S_pet_list}</li>
-            </ul>
-            `;
         }
     });
     if(req.session.user_id)//로그인 한 경우
