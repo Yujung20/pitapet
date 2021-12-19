@@ -1013,7 +1013,7 @@ function main_template(current,boardlist,search_title){
               res.send(error);
               throw error;
           }
-          res.redirect('/board');
+          res.redirect(`/board/written/${result.insertId}`);
         })
     }
   })
