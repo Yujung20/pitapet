@@ -475,7 +475,7 @@ app.get('/', function (req, res) {
                     `;
                     info_list+=
                     `<div class="hospital_row">
-                        <a id-"underline" href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
+                        <a id="underline" href="/hospital/info/?id=${hospitals[i].hospital_name}">${hospitals[i].hospital_name}</a>
                         <div class="pet_row">
                         <p class="pet">${pet_list}</p></div></div><hr/>`;
                 if(i+1!=(hospitals).length){
