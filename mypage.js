@@ -894,7 +894,7 @@ function email_template(current,email_check_txt, check_email) {
             <label for="email">새 이메일</label>
 
             <div class="row">
-                <p><input type="email" name="email" placeholder="email" value="${check_email}" formaction="/mypage/user_information/email_check"> </p>
+                <p><input type="email" maxlength="30" name="email" placeholder="email" value="${check_email}" formaction="/mypage/user_information/email_check"> </p>
                 <input type="submit" id="email" value="이메일 중복 확인" formaction="/mypage/user_information/email_check"></p>
                 </div>
                 <label id="email_check">${email_check_txt}</label>
@@ -1078,7 +1078,7 @@ function nickname_template(current, nickname_check_txt, check_nickname) {
     <label for="nickname">새 닉네임</label>
 
     <div class="row">
-        <p><input type="nickname" name="nickname" placeholder="nickname" value="${check_nickname}" formaction="/mypage/user_information/nickname_check"> </p>
+        <p><input type="nickname" maxlength="10" name="nickname" placeholder="nickname" value="${check_nickname}" formaction="/mypage/user_information/nickname_check"> </p>
         <input type="submit" id="nickname" value="닉네임 중복 확인" formaction="/mypage/user_information/nickname_check"></p>
         </div>
         <label id="nickname_check">${nickname_check_txt}</label>
@@ -2441,9 +2441,9 @@ app.get('/user_information/password/',function(req,res){
     <form action="/mypage/user_information/password_update/" method="post">
         <div class="text"><b> 비밀번호 변경하기</b> </div>
         <label for="pwd">새 비밀번호</label>
-        <p><input type="password" name="pwd1" placeholder="password"></p>
+        <p><input maxlength="8" type="password" name="pwd1" placeholder="password"></p>
         <label for="pwd">새 비밀번호 확인</label>
-        <p><input type="password" name="pwd2" placeholder="password check"></p>    
+        <p><input maxlength="8" type="password" name="pwd2" placeholder="password check"></p>    
         <p><input type="submit" value="확인"></p>
         
     </form>
