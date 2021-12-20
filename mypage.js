@@ -1561,7 +1561,7 @@ function last_resign_template(current) {
             }
             </style>
             <style>
-            body {
+            .last_resign {
                 height: 100vh;
                 justify-content: center;
                 width: 70vw;
@@ -1623,11 +1623,13 @@ function last_resign_template(current) {
                 ${current}
             </ul>
         </nav>
-        <div class="text"><b> 정말 탈퇴하시겠습니까?</b> </div>
-        <label for="caution"> 삭제된 계정은 다시 복구할 수 없고 계정의 게시물이나 정보는 완전히 삭제되는 점을 기억해주세요.</label>
-        <div class="row">
-            <p><input type="submit" value="예" onClick="location.href='/mypage/resign'">
-            <input type="submit" value="아니오" onClick="location.href='/mypage/'"></p>
+        <div class="last_resign">
+            <div class="text"><b> 정말 탈퇴하시겠습니까?</b> </div>
+            <label for="caution"> 삭제된 계정은 다시 복구할 수 없고 계정의 게시물이나 정보는 완전히 삭제되는 점을 기억해주세요.</label>
+            <div class="row">
+                <p><input type="submit" value="예" onClick="location.href='/mypage/resign'">
+                <input type="submit" value="아니오" onClick="location.href='/mypage/'"></p>
+            </div>
         </div>
         </body>
     </html>
