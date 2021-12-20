@@ -9,21 +9,21 @@ app.use(body_parser.urlencoded({ extended: false}));
 
 var db = require('./db');
 
-const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
+// const session = require('express-session');
+// const MySQLStore = require('express-mysql-session')(session);
 
-app.use(session({
-    key: 'LoginSession',
-    secret: 'Secret',
-    resave: false,
-    saveUninitialized: true,
-    store: new MySQLStore({
-        host: 'localhost',
-        user: 'root',
-        password: 'password',
-        database: 'pit_a_pet'
-    })
-}))
+// app.use(session({
+//     key: 'LoginSession',
+//     secret: 'Secret',
+//     resave: false,
+//     saveUninitialized: true,
+//     store: new MySQLStore({
+//         host: 'localhost',
+//         user: 'root',
+//         password: 'password',
+//         database: 'pit_a_pet'
+//     })
+// }))
 
 
 function main_template(current,nickname) {
