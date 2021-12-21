@@ -922,7 +922,7 @@ app.get('/', function(req, res) {
     db.query(`SELECT * FROM question ORDER BY date DESC`, function(error, questions) {
         if (Object.keys(questions).length > 0) {
             for (var i = 0; i < Object.keys(questions).length; i++) {
-                const qdate = String(questions[0].date).split(" ");
+                const qdate = String(questions[i].date).split(" ");
                 var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
                 question_list += 
                 `<div class="question_row">
@@ -1101,7 +1101,7 @@ app.get('/search/', function(req, res) {
     
             if (Object.keys(questions).length > 0) {
                 for (var i = 0; i < Object.keys(questions).length; i++) {
-                    const qdate = String(questions[0].date).split(" ");
+                    const qdate = String(questions[i].date).split(" ");
                     var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
                     question_list += 
                     `<div class="question_row">
@@ -1128,7 +1128,7 @@ app.get('/search/', function(req, res) {
         function(err, answers) {
             if (Object.keys(answers).length > 0) {
                 for (var i = 0; i < Object.keys(answers).length; i++) {
-                    const qdate = String(answers[0].date).split(" ");
+                    const qdate = String(answers[i].date).split(" ");
                     var formating_qdate = qdate[3] + "-" + qdate[1] + "-" + qdate[2] + "-" + qdate[4];
                     question_list += 
                     `<div class="question_row">
